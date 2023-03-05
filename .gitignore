@@ -1,0 +1,5 @@
+/build/
+/.vscode/
+/src/html/
+/src/latex/
+/src/main.cfg
