@@ -185,9 +185,9 @@ void Game::initUI() {
 
     this->scienceList = {10, (int32_t)this->dh - 5 * 74, (int32_t)this->dw - 20, 64, 10, this->human, this->storage};
     this->scienceList.addGood(this->storage->getTexture("house", this->human->getColor()), "Это исследование позволит увеличить защиту Ваших зданий, кроме стен.", Resources(0, 1000, 0, 0, 0));
-    this->scienceList.addGood(this->storage->getTexture("infantryman"), "Это исследование позволит увеличить грузоподъемность Ваших войск.", Resources(500, 500, 0, 0, 0));
+    this->scienceList.addGood(this->storage->getTexture("infantryman"), "Это исследование позволит увеличить грузоподъемность Ваших войск.", Resources(1000, 0, 0, 0, 0));
     this->scienceList.addGood(this->storage->getTexture("wall", this->human->getColor()), "Это исследование позволит увеличить защиту Ваших стен.", Resources(0, 0, 1000, 0, 0));
-    this->scienceList.addGood(this->storage->getTexture("tower", this->human->getColor()), "Это исследование позволит увеличить скорость атаки Ваших защитных зданий.", Resources(500, 0, 0, 500, 0));
+    this->scienceList.addGood(this->storage->getTexture("tower", this->human->getColor()), "Это исследование позволит увеличить скорость атаки Ваших защитных зданий.", Resources(0, 0, 0, 1000, 0));
     this->scienceList.addGood(this->storage->getTexture("goBack"), "Вернуться назад.", Resources());
 }
 void Game::initPlayersUnits() {
