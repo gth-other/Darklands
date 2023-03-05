@@ -43,5 +43,5 @@ float Infantryman::getSpeed() const {
     return 32;
 }
 float Infantryman::getCapacity() const {
-    return 2;
+    return 2 * (1 + this->player->researched(Science::Keys::WarriorsCapacity));
 }

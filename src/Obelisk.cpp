@@ -38,7 +38,7 @@ const sf::SoundBuffer &Obelisk::getSelectSoundBuffer() const {
     return this->storage->getSoundBuffer("thunder");
 }
 float Obelisk::getMaxHP() const {
-    return 1000;
+    return 1000 * (1 + this->player->researched(Science::Keys::Buildings));
 }
 float Obelisk::getRepairSpeed() const {
     return 50;
@@ -47,7 +47,7 @@ float Obelisk::getRadius() const {
     return 6 * 64;
 }
 int32_t Obelisk::getShootingDelay() const {
-    return 4000;
+    return 4000 / (1 + this->player->researched(Science::Keys::DefenseBuildings));
 }
 const sf::SoundBuffer &Obelisk::getShootingSoundBuffer() const {
     return this->storage->getSoundBuffer("thunder");

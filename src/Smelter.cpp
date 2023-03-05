@@ -38,7 +38,7 @@ const sf::SoundBuffer &Smelter::getSelectSoundBuffer() const {
     return this->storage->getSoundBuffer("steam");
 }
 float Smelter::getMaxHP() const {
-    return 800;
+    return 800 * (1 + this->player->researched(Science::Keys::Buildings));
 }
 float Smelter::getRepairSpeed() const {
     return 25;

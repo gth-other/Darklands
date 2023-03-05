@@ -38,7 +38,7 @@ const sf::SoundBuffer &Wall::getSelectSoundBuffer() const {
     return this->storage->getSoundBuffer("stone");
 }
 float Wall::getMaxHP() const {
-    return 9000;
+    return 9000 * (1 + this->player->researched(Science::Keys::Walls));
 }
 float Wall::getRepairSpeed() const {
     return 50;

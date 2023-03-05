@@ -38,7 +38,7 @@ const sf::SoundBuffer &Windmill::getSelectSoundBuffer() const {
     return this->storage->getSoundBuffer("wind");
 }
 float Windmill::getMaxHP() const {
-    return 800;
+    return 800 * (1 + this->player->researched(Science::Keys::Buildings));
 }
 float Windmill::getRepairSpeed() const {
     return 25;

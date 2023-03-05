@@ -38,7 +38,7 @@ const sf::SoundBuffer &Quarry::getSelectSoundBuffer() const {
     return this->storage->getSoundBuffer("stone");
 }
 float Quarry::getMaxHP() const {
-    return 800;
+    return 800 * (1 + this->player->researched(Science::Keys::Buildings));
 }
 float Quarry::getRepairSpeed() const {
     return 25;

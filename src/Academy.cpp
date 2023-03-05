@@ -38,7 +38,7 @@ const sf::SoundBuffer &Academy::getSelectSoundBuffer() const {
     return this->storage->getSoundBuffer("book");
 }
 float Academy::getMaxHP() const {
-    return 2000;
+    return 2000 * (1 + this->player->researched(Science::Keys::Buildings));
 }
 float Academy::getRepairSpeed() const {
     return 25;

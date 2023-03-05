@@ -116,6 +116,7 @@ private:
     void addBuildingFromLayout();
     void addWarriorsFromLayout();
     void makeTrade(Resources cost);
+    void makeResearch(uint8_t key, Resources cost);
     void updateStationarySelection();
     void unselectWarriors();
     void sendSelectedWarriors();

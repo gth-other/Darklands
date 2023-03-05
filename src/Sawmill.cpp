@@ -38,7 +38,7 @@ const sf::SoundBuffer &Sawmill::getSelectSoundBuffer() const {
     return this->storage->getSoundBuffer("saw");
 }
 float Sawmill::getMaxHP() const {
-    return 800;
+    return 800 * (1 + this->player->researched(Science::Keys::Buildings));
 }
 float Sawmill::getRepairSpeed() const {
     return 25;

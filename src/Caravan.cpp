@@ -38,7 +38,7 @@ const sf::SoundBuffer &Caravan::getSelectSoundBuffer() const {
     return this->storage->getSoundBuffer("glasses");
 }
 float Caravan::getMaxHP() const {
-    return 1500;
+    return 1500 * (1 + this->player->researched(Science::Keys::Buildings));
 }
 float Caravan::getRepairSpeed() const {
     return 25;

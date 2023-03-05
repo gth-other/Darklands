@@ -21,5 +21,11 @@
 
 
 Science::Science() {
-    
+    this->data = 0;
+}
+void Science::conductResearch(uint8_t key) {
+    this->data = this->data | key;
+}
+bool Science::researched(uint8_t key) const {
+    return (this->data & key);
 }

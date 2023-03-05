@@ -38,7 +38,7 @@ const sf::SoundBuffer &Fort::getSelectSoundBuffer() const {
     return this->storage->getSoundBuffer("stone");
 }
 float Fort::getMaxHP() const {
-    return 3000;
+    return 3000 * (1 + this->player->researched(Science::Keys::Buildings));
 }
 float Fort::getRepairSpeed() const {
     return 50;
