@@ -91,9 +91,9 @@ int32_t Game::open() {
                         }
                     }
                     else if (this->scienceListVisible()) {
-                        if (this->scienceList.clicked(0) and this->human->canBuy(this->scienceList.getCost(1))) this->makeResearch(Science::Keys::WarriorsCapacity, this->scienceList.getCost(1));
-                        if (this->scienceList.clicked(1) and this->human->canBuy(this->scienceList.getCost(2))) this->makeResearch(Science::Keys::Walls, this->scienceList.getCost(2));
-                        if (this->scienceList.clicked(2) and this->human->canBuy(this->scienceList.getCost(3))) this->makeResearch(Science::Keys::DefenseBuildings, this->scienceList.getCost(3));
+                        if (this->scienceList.clicked(0) and this->human->canBuy(this->scienceList.getCost(0))) this->makeResearch(Science::Keys::WarriorsCapacity, this->scienceList.getCost(0));
+                        if (this->scienceList.clicked(1) and this->human->canBuy(this->scienceList.getCost(1))) this->makeResearch(Science::Keys::Walls, this->scienceList.getCost(1));
+                        if (this->scienceList.clicked(2) and this->human->canBuy(this->scienceList.getCost(2))) this->makeResearch(Science::Keys::DefenseBuildings, this->scienceList.getCost(2));
                         else if (this->scienceList.clicked(3)) {
                             this->soundQueue->push(this->storage->getSoundBuffer("click"));
                             this->unselectAcademies();
