@@ -33,3 +33,6 @@ void DefenseBuilding::shoot() {
     this->soundQueue->push(this->getShootingSoundBuffer(), dst);
     this->shootingTimer.restart();
 }
+int32_t DefenseBuilding::getShootingDelay() const {
+    return this->getBaseShootingDelay() / (1 + this->player->researched(Science::Keys::DefenseBuildings));
+}

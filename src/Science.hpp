@@ -31,10 +31,9 @@ public:
     [[nodiscard]] bool researched(uint8_t key) const;
 
     struct Keys {
-        static constexpr uint8_t Buildings = 0b1;
-        static constexpr uint8_t WarriorsCapacity = 0b10;
-        static constexpr uint8_t Walls = 0b100;
-        static constexpr uint8_t DefenseBuildings = 0b1000;
+        static constexpr uint8_t WarriorsCapacity = 0b1;
+        static constexpr uint8_t Walls = 0b10;
+        static constexpr uint8_t DefenseBuildings = 0b100;
     };
 private:
     uint8_t data;

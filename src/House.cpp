@@ -38,7 +38,7 @@ const sf::SoundBuffer &House::getSelectSoundBuffer() const {
     return this->storage->getSoundBuffer("glasses");
 }
 float House::getMaxHP() const {
-    return 1200 * (1 + this->player->researched(Science::Keys::Buildings));
+    return 1200;
 }
 float House::getRepairSpeed() const {
     return 25;

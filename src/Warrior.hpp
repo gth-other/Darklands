@@ -69,7 +69,8 @@ public:
     void setY(float newY);
 protected:
     [[nodiscard]] virtual float getSpeed() const = 0;
-    [[nodiscard]] virtual float getCapacity() const = 0;
+    [[nodiscard]] float getCapacity() const;
+    [[nodiscard]] virtual float getBaseCapacity() const = 0;
     [[nodiscard]] sf::IntRect getTextureRect() const override;
 private:
     float x, y;

@@ -142,6 +142,9 @@ void Warrior::setX(float newX) {
 void Warrior::setY(float newY) {
     this->y = newY;
 }
+float Warrior::getCapacity() const {
+    return this->getBaseCapacity() * (1 + this->player->researched(Science::Keys::WarriorsCapacity));
+}
 sf::IntRect Warrior::getTextureRect() const {
     int32_t animations = (int32_t)this->getTexture().getSize().x / 32;
     int32_t ms = 1000 / animations;

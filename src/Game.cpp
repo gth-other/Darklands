@@ -91,11 +91,10 @@ int32_t Game::open() {
                         }
                     }
                     else if (this->scienceListVisible()) {
-                        if (this->scienceList.clicked(0) and this->human->canBuy(this->scienceList.getCost(0))) this->makeResearch(Science::Keys::Buildings, this->scienceList.getCost(0));
-                        if (this->scienceList.clicked(1) and this->human->canBuy(this->scienceList.getCost(1))) this->makeResearch(Science::Keys::WarriorsCapacity, this->scienceList.getCost(1));
-                        if (this->scienceList.clicked(2) and this->human->canBuy(this->scienceList.getCost(2))) this->makeResearch(Science::Keys::Walls, this->scienceList.getCost(2));
-                        if (this->scienceList.clicked(3) and this->human->canBuy(this->scienceList.getCost(3))) this->makeResearch(Science::Keys::DefenseBuildings, this->scienceList.getCost(3));
-                        else if (this->scienceList.clicked(4)) {
+                        if (this->scienceList.clicked(0) and this->human->canBuy(this->scienceList.getCost(1))) this->makeResearch(Science::Keys::WarriorsCapacity, this->scienceList.getCost(1));
+                        if (this->scienceList.clicked(1) and this->human->canBuy(this->scienceList.getCost(2))) this->makeResearch(Science::Keys::Walls, this->scienceList.getCost(2));
+                        if (this->scienceList.clicked(2) and this->human->canBuy(this->scienceList.getCost(3))) this->makeResearch(Science::Keys::DefenseBuildings, this->scienceList.getCost(3));
+                        else if (this->scienceList.clicked(3)) {
                             this->soundQueue->push(this->storage->getSoundBuffer("click"));
                             this->unselectAcademies();
                         }
@@ -183,8 +182,7 @@ void Game::initUI() {
     this->tradingList.addGood(this->storage->getTexture("gold"), "Избыток железа можно обменять на сто золотых.", Resources(0, 0, 0, 200, -100));
     this->tradingList.addGood(this->storage->getTexture("goBack"), "Вернуться назад.", Resources());
 
-    this->scienceList = {10, (int32_t)this->dh - 5 * 74, (int32_t)this->dw - 20, 64, 10, this->human, this->storage};
-    this->scienceList.addGood(this->storage->getTexture("house", this->human->getColor()), "Это исследование позволит увеличить защиту Ваших зданий, кроме стен.", Resources(0, 1000, 0, 0, 0));
+    this->scienceList = {10, (int32_t)this->dh - 4 * 74, (int32_t)this->dw - 20, 64, 10, this->human, this->storage};
     this->scienceList.addGood(this->storage->getTexture("infantryman"), "Это исследование позволит увеличить грузоподъемность Ваших войск.", Resources(1000, 0, 0, 0, 0));
     this->scienceList.addGood(this->storage->getTexture("wall", this->human->getColor()), "Это исследование позволит увеличить защиту Ваших стен.", Resources(0, 0, 1000, 0, 0));
     this->scienceList.addGood(this->storage->getTexture("tower", this->human->getColor()), "Это исследование позволит увеличить скорость атаки Ваших защитных зданий.", Resources(0, 0, 0, 1000, 0));

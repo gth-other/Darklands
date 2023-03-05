@@ -34,5 +34,5 @@ private:
     [[nodiscard]] const sf::SoundBuffer& getSelectSoundBuffer() const override;
     [[nodiscard]] const sf::Texture& getTexture() const override;
     [[nodiscard]] float getSpeed() const override;
-    [[nodiscard]] float getCapacity() const override;
+    [[nodiscard]] float getBaseCapacity() const override;
 };

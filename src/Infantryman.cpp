@@ -42,6 +42,6 @@ const sf::Texture &Infantryman::getTexture() const {
 float Infantryman::getSpeed() const {
     return 32;
 }
-float Infantryman::getCapacity() const {
-    return 2 * (1 + this->player->researched(Science::Keys::WarriorsCapacity));
+float Infantryman::getBaseCapacity() const {
+    return 2;
 }

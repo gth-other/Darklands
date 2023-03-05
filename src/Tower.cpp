@@ -38,7 +38,7 @@ const sf::SoundBuffer &Tower::getSelectSoundBuffer() const {
     return this->storage->getSoundBuffer("archery");
 }
 float Tower::getMaxHP() const {
-    return 1000 * (1 + this->player->researched(Science::Keys::Buildings));
+    return 1000;
 }
 float Tower::getRepairSpeed() const {
     return 50;
@@ -46,8 +46,8 @@ float Tower::getRepairSpeed() const {
 float Tower::getRadius() const {
     return 3 * 64;
 }
-int32_t Tower::getShootingDelay() const {
-    return 1000 / (1 + this->player->researched(Science::Keys::DefenseBuildings));
+int32_t Tower::getBaseShootingDelay() const {
+    return 1000;
 }
 const sf::SoundBuffer &Tower::getShootingSoundBuffer() const {
     return this->storage->getSoundBuffer("archery");

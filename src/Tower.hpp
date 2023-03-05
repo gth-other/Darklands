@@ -37,6 +37,6 @@ private:
     [[nodiscard]] float getMaxHP() const override;
     [[nodiscard]] float getRepairSpeed() const override;
     [[nodiscard]] float getRadius() const override;
-    [[nodiscard]] int32_t getShootingDelay() const override;
+    [[nodiscard]] int32_t getBaseShootingDelay() const override;
     [[nodiscard]] const sf::SoundBuffer &getShootingSoundBuffer() const override;
 };

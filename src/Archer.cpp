@@ -42,6 +42,6 @@ const sf::Texture &Archer::getTexture() const {
 float Archer::getSpeed() const {
     return 32;
 }
-float Archer::getCapacity() const {
-    return 1 * (1 + this->player->researched(Science::Keys::WarriorsCapacity));
+float Archer::getBaseCapacity() const {
+    return 1;
 }

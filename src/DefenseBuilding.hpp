@@ -33,6 +33,7 @@ public:
 protected:
     sf::Clock shootingTimer;
 
-    [[nodiscard]] virtual int32_t getShootingDelay() const = 0;
+    [[nodiscard]] int32_t getShootingDelay() const;
+    [[nodiscard]] virtual int32_t getBaseShootingDelay() const = 0;
     [[nodiscard]] virtual const sf::SoundBuffer &getShootingSoundBuffer() const = 0;
 };
