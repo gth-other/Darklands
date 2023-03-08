@@ -55,25 +55,51 @@ int32_t Game::open() {
                         this->warriorsListButtonClick();
                     }
                     else if (this->showBuildingList) {
-                        if (this->buildingList.clicked(0) and this->human->canBuy(this->buildingList.getCost(0))) this->buyBuildingButtonClick<Windmill>();
-                        else if (this->buildingList.clicked(1) and this->human->canBuy(this->buildingList.getCost(1))) this->buyBuildingButtonClick<Sawmill>();
-                        else if (this->buildingList.clicked(2) and this->human->canBuy(this->buildingList.getCost(2))) this->buyBuildingButtonClick<Quarry>();
-                        else if (this->buildingList.clicked(3) and this->human->canBuy(this->buildingList.getCost(3))) this->buyBuildingButtonClick<Smelter>();
-                        else if (this->buildingList.clicked(4) and this->human->canBuy(this->buildingList.getCost(4))) this->buyBuildingButtonClick<House>();
-                        else if (this->buildingList.clicked(5) and this->human->canBuy(this->buildingList.getCost(5))) this->buyBuildingButtonClick<Caravan>();
-                        else if (this->buildingList.clicked(6) and this->human->canBuy(this->buildingList.getCost(6))) this->buyBuildingButtonClick<Academy>();
-                        else if (this->buildingList.clicked(7) and this->human->canBuy(this->buildingList.getCost(7))) this->buyBuildingButtonClick<Wall>();
-                        else if (this->buildingList.clicked(8) and this->human->canBuy(this->buildingList.getCost(8))) this->buyBuildingButtonClick<Tower>();
-                        else if (this->buildingList.clicked(9) and this->human->canBuy(this->buildingList.getCost(9))) this->buyBuildingButtonClick<Obelisk>();
-                        else if (this->buildingList.clicked(10) and this->human->canBuy(this->buildingList.getCost(10))) this->buyBuildingButtonClick<Fort>();
+                        if (this->buildingList.clicked(0) and this->human->canBuy(this->buildingList.getCost(0))) {
+                            this->buyBuildingButtonClick<Windmill>();
+                        }
+                        else if (this->buildingList.clicked(1) and this->human->canBuy(this->buildingList.getCost(1))) {
+                            this->buyBuildingButtonClick<Sawmill>();
+                        }
+                        else if (this->buildingList.clicked(2) and this->human->canBuy(this->buildingList.getCost(2))) {
+                            this->buyBuildingButtonClick<Quarry>();
+                        }
+                        else if (this->buildingList.clicked(3) and this->human->canBuy(this->buildingList.getCost(3))) {
+                            this->buyBuildingButtonClick<Smelter>();
+                        }
+                        else if (this->buildingList.clicked(4) and this->human->canBuy(this->buildingList.getCost(4))) {
+                            this->buyBuildingButtonClick<House>();
+                        }
+                        else if (this->buildingList.clicked(5) and this->human->canBuy(this->buildingList.getCost(5))) {
+                            this->buyBuildingButtonClick<Caravan>();
+                        }
+                        else if (this->buildingList.clicked(6) and this->human->canBuy(this->buildingList.getCost(6))) {
+                            this->buyBuildingButtonClick<Academy>();
+                        }
+                        else if (this->buildingList.clicked(7) and this->human->canBuy(this->buildingList.getCost(7))) {
+                            this->buyBuildingButtonClick<Wall>();
+                        }
+                        else if (this->buildingList.clicked(8) and this->human->canBuy(this->buildingList.getCost(8))) {
+                            this->buyBuildingButtonClick<Tower>();
+                        }
+                        else if (this->buildingList.clicked(9) and this->human->canBuy(this->buildingList.getCost(9))) {
+                            this->buyBuildingButtonClick<Obelisk>();
+                        }
+                        else if (this->buildingList.clicked(10) and this->human->canBuy(this->buildingList.getCost(10))) {
+                            this->buyBuildingButtonClick<Fort>();
+                        }
                         else if (this->buildingList.clicked(11)) {
                             this->showBuildingList = false;
                             this->soundQueue->push(this->storage->getSoundBuffer("click"));
                         }
                     }
                     else if (this->showWarriorsList) {
-                        if (this->warriorsList.clicked(0) and this->human->getHumanNumber() + this->warriorsLayout.size() <= this->human->getHumanLimit() and this->human->canBuy(this->warriorsList.getCost(0))) this->buyWarriorsButtonClick<Infantryman>();
-                        else if (this->warriorsList.clicked(1) and this->human->getHumanNumber() + this->warriorsLayout.size() <= this->human->getHumanLimit() and this->human->canBuy(this->warriorsList.getCost(1))) this->buyWarriorsButtonClick<Archer>();
+                        if (this->warriorsList.clicked(0) and this->human->canBuy(this->warriorsList.getCost(0)) and this->human->getHumanNumber() + this->warriorsLayout.size() <= this->human->getHumanLimit()) {
+                            this->buyWarriorsButtonClick<Infantryman>();
+                        }
+                        else if (this->warriorsList.clicked(1) and this->human->canBuy(this->warriorsList.getCost(1)) and this->human->getHumanNumber() + this->warriorsLayout.size() <= this->human->getHumanLimit()) {
+                            this->buyWarriorsButtonClick<Archer>();
+                        }
                         else if (this->warriorsList.clicked(2)) {
                             this->showWarriorsList = false;
                             this->soundQueue->push(this->storage->getSoundBuffer("click"));
@@ -91,9 +117,18 @@ int32_t Game::open() {
                         }
                     }
                     else if (this->scienceListVisible()) {
-                        if (this->scienceList.clicked(0) and this->human->canBuy(this->scienceList.getCost(0))) this->makeResearch(Science::Keys::WarriorsCapacity, this->scienceList.getCost(0));
-                        if (this->scienceList.clicked(1) and this->human->canBuy(this->scienceList.getCost(1))) this->makeResearch(Science::Keys::Walls, this->scienceList.getCost(1));
-                        if (this->scienceList.clicked(2) and this->human->canBuy(this->scienceList.getCost(2))) this->makeResearch(Science::Keys::DefenseBuildings, this->scienceList.getCost(2));
+                        if (this->scienceList.clicked(0) and this->human->canBuy(this->scienceList.getCost(0)) and !this->scienceList.blocked(0)) {
+                            this->makeResearch(Science::Keys::WarriorsCapacity, this->scienceList.getCost(0));
+                            this->scienceList.blockGood(0);
+                        }
+                        if (this->scienceList.clicked(1) and this->human->canBuy(this->scienceList.getCost(1)) and !this->scienceList.blocked(1)) {
+                            this->makeResearch(Science::Keys::Walls, this->scienceList.getCost(1));
+                            this->scienceList.blockGood(1);
+                        }
+                        if (this->scienceList.clicked(2) and this->human->canBuy(this->scienceList.getCost(2)) and !this->scienceList.blocked(2)) {
+                            this->makeResearch(Science::Keys::DefenseBuildings, this->scienceList.getCost(2));
+                            this->scienceList.blockGood(2);
+                        }
                         else if (this->scienceList.clicked(3)) {
                             this->soundQueue->push(this->storage->getSoundBuffer("click"));
                             this->unselectAcademies();

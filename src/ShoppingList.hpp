@@ -32,8 +32,10 @@ public:
 
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
     void addGood(const sf::Texture& texture, std::string message, Resources cost, int32_t place = 0);
-    [[nodiscard]] bool clicked(int32_t i);
-    [[nodiscard]] Resources getCost(int32_t i);
+    void blockGood(int32_t i);
+    [[nodiscard]] bool blocked(int32_t i) const;
+    [[nodiscard]] bool clicked(int32_t i) const;
+    [[nodiscard]] Resources getCost(int32_t i) const;
 private:
     int32_t x, y;
     int32_t w, h;
@@ -46,4 +48,5 @@ private:
     std::vector<sf::Text> texts;
     std::vector<Resources> costs;
     std::vector<int32_t> places;
+    std::vector<bool> blocks;
 };

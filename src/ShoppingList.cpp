@@ -35,14 +35,21 @@ ShoppingList::ShoppingList(int32_t x, int32_t y, int32_t w, int32_t h, int32_t d
 void ShoppingList::draw(sf::RenderTarget &target, sf::RenderStates states) const {
     for (int32_t i = 0; i < costs.size(); i = i + 1) {
         sf::RectangleShape rect = this->rects[i];
-        sf::Sprite sprite = this->sprites[i];
-        sf::Text text = this->texts[i];
-        if (this->player->canBuy(this->costs[i]) and (this->places[i] == 0 or this->player->getHumanNumber() + this->places[i] <= this->player->getHumanLimit())) text.setFillColor({255, 255, 255, 255});
-        else text.setFillColor({255, 0, 0, 255});
-
         target.draw(rect, states);
-        target.draw(sprite, states);
-        target.draw(text, states);
+        
+        if (!this->blocks[i]) {
+            sf::Sprite sprite = this->sprites[i];
+            sf::Text text = this->texts[i];
+            if (this->player->canBuy(this->costs[i]) and (this->places[i] == 0 or this->player->getHumanNumber() + this->places[i] <= this->player->getHumanLimit())) {
+                text.setFillColor({255, 255, 255, 255});
+            }
+            else {
+                text.setFillColor({255, 0, 0, 255});
+            }
+
+            target.draw(sprite, states);
+            target.draw(text, states);
+        }
     }
 }
 void ShoppingList::addGood(const sf::Texture& texture, std::string message, Resources cost, int32_t place) {
@@ -97,10 +104,17 @@ void ShoppingList::addGood(const sf::Texture& texture, std::string message, Reso
     this->texts.push_back(text);
     this->costs.push_back(cost);
     this->places.push_back(place);
+    this->blocks.push_back(false);
 }
-bool ShoppingList::clicked(int32_t i) {
+void ShoppingList::blockGood(int32_t i) {
+    this->blocks[i] = true;
+}
+bool ShoppingList::blocked(int32_t i) const {
+    return this->blocks[i];
+}
+bool ShoppingList::clicked(int32_t i) const {
     return Cursor().on(this->rects[i]);
 }
-Resources ShoppingList::getCost(int32_t i) {
+Resources ShoppingList::getCost(int32_t i) const {
     return this->costs[i];
 }
