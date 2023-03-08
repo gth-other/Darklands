@@ -184,7 +184,7 @@ void Game::initUI() {
     this->buildingListButton.setTexture(this->storage->getTexture("hammerButton"));
     this->buildingListButton.setPosition(this->dw - this->buildingListButton.getLocalBounds().width - 10, this->dh - this->buildingListButton.getLocalBounds().height - 10);
     this->showBuildingList = false;
-    this->buildingList = {10, (int32_t)this->dh - 12 * 74, (int32_t)this->dw - 20, 64, 10, this->human, this->storage};
+    this->buildingList = {10, (int32_t)this->dh - 6 * 74, (int32_t)this->dw - 20, 64, 10, this->human, this->storage};
     this->buildingList.addGood(this->storage->getTexture("windmill", this->human->getColor()), Windmill().getDescription(), Windmill().getCost());
     this->buildingList.addGood(this->storage->getTexture("sawmill", this->human->getColor()), Sawmill().getDescription(), Sawmill().getCost());
     this->buildingList.addGood(this->storage->getTexture("quarry", this->human->getColor()), Quarry().getDescription(), Quarry().getCost());
@@ -201,12 +201,12 @@ void Game::initUI() {
     this->warriorsListButton.setTexture(this->storage->getTexture("humanButton"));
     this->warriorsListButton.setPosition(this->buildingListButton.getPosition().x - this->buildingListButton.getLocalBounds().width - 10, this->buildingListButton.getPosition().y);
     this->showWarriorsList = false;
-    this->warriorsList = {10, (int32_t)this->dh - 3 * 74, (int32_t)this->dw - 20, 64, 10, this->human, this->storage};
+    this->warriorsList = {10, (int32_t)this->dh - 2 * 74, (int32_t)this->dw - 20, 64, 10, this->human, this->storage};
     this->warriorsList.addGood(this->storage->getTexture("infantryman"), Infantryman().getDescription(), (float)this->warriorsLayout.size() * Infantryman().getCost(), (int32_t)this->warriorsLayout.size());
     this->warriorsList.addGood(this->storage->getTexture("archer"), Archer().getDescription(), (float)this->warriorsLayout.size() * Archer().getCost(), (int32_t)this->warriorsLayout.size());
     this->warriorsList.addGood(this->storage->getTexture("goBack"), "Вернуться назад.", Resources());
 
-    this->tradingList = {10, (int32_t)this->dh - 9 * 74, (int32_t)this->dw - 20, 64, 10, this->human, this->storage};
+    this->tradingList = {10, (int32_t)this->dh - 5 * 74, (int32_t)this->dw - 20, 64, 10, this->human, this->storage};
     this->tradingList.addGood(this->storage->getTexture("food"), "Сто единиц еды помогут накормить войска.", Resources(-100, 0, 0, 0, 200));
     this->tradingList.addGood(this->storage->getTexture("wood"), "Сто единиц древесины помогут возвести мирные здания.", Resources(0, -100, 0, 0, 200));
     this->tradingList.addGood(this->storage->getTexture("stone"), "Сто единиц камня помогут возвести защитные здания.", Resources(0, 0, -100, 0, 200));
@@ -217,7 +217,7 @@ void Game::initUI() {
     this->tradingList.addGood(this->storage->getTexture("gold"), "Избыток железа можно обменять на сто золотых.", Resources(0, 0, 0, 200, -100));
     this->tradingList.addGood(this->storage->getTexture("goBack"), "Вернуться назад.", Resources());
 
-    this->scienceList = {10, (int32_t)this->dh - 4 * 74, (int32_t)this->dw - 20, 64, 10, this->human, this->storage};
+    this->scienceList = {10, (int32_t)this->dh - 2 * 74, (int32_t)this->dw - 20, 64, 10, this->human, this->storage};
     this->scienceList.addGood(this->storage->getTexture("infantryman"), "Это исследование позволит увеличить грузоподъемность Ваших войск.", Resources(1000, 0, 0, 0, 0));
     this->scienceList.addGood(this->storage->getTexture("wall", this->human->getColor()), "Это исследование позволит увеличить защиту Ваших стен.", Resources(0, 0, 1000, 0, 0));
     this->scienceList.addGood(this->storage->getTexture("tower", this->human->getColor()), "Это исследование позволит увеличить скорость атаки Ваших защитных зданий.", Resources(0, 0, 0, 1000, 0));

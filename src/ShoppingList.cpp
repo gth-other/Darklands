@@ -63,7 +63,7 @@ void ShoppingList::addGood(const sf::Texture& texture, std::string message, Reso
 
     sf::RectangleShape rect;
     rect.setPosition((float)this->x, (float)this->y);
-    rect.setSize(sf::Vector2f((float)this->w, (float)this->h));
+    rect.setSize(sf::Vector2f((float)this->w / 2 - this->delay / 2, (float)this->h));
     rect.setOutlineThickness(2);
     rect.setFillColor({0, 0, 0, 127});
     rect.setOutlineColor({0, 0, 0, 255});
@@ -75,29 +75,40 @@ void ShoppingList::addGood(const sf::Texture& texture, std::string message, Reso
     sf::Text text;
     text.setPosition((float)this->x + sprite.getLocalBounds().width + 10, (float)this->y + 10);
     text.setFont(this->storage->getFont("main"));
-    text.setCharacterSize(14);
     text.setOutlineThickness(1);
     text.setFillColor({255, 255, 255, 255});
     text.setOutlineColor({0, 0, 0, 255});
-
-    std::string buff;
-    for (int32_t i = 0; i < message.size(); i = i + 1) {
-        buff.push_back(message[i]);
-        if (buff.back() == ' ' or i == message.size() - 1) {
-            text.setString(sf::String::fromUtf8(buff.begin(), buff.end()));
-            if (text.getPosition().x + text.getLocalBounds().width + 10 > rect.getPosition().x + rect.getSize().x) {
-                for (int32_t j = i - 1; j >= 0; j = j - 1) {
-                    if (buff[j] == ' ') {
-                        buff[j] = '\n';
-                        break;
+    
+    for (int32_t i = 14; i > 0; i = i - 2) {
+        text.setCharacterSize(i);
+        std::string buff;
+        for (int32_t j = 0; j < message.size(); j = j + 1) {
+            buff.push_back(message[j]);
+            if (buff.back() == ' ' or j == message.size() - 1) {
+                text.setString(sf::String::fromUtf8(buff.begin(), buff.end()));
+                if (text.getPosition().x + text.getLocalBounds().width + 10 > rect.getPosition().x + rect.getSize().x) {
+                    for (int32_t k = j - 1; k >= 0; k = k - 1) {
+                        if (buff[k] == ' ') {
+                            buff[k] = '\n';
+                            break;
+                        }
                     }
                 }
             }
         }
+        text.setString(sf::String::fromUtf8(buff.begin(), buff.end()));
+        if (text.getPosition().y + text.getLocalBounds().height + 10 < rect.getPosition().y + rect.getSize().y) {
+            break;
+        }
     }
-    text.setString(sf::String::fromUtf8(buff.begin(), buff.end()));
 
-    this->y = this->y + this->h + this->delay;
+    if (this->x >= this->w / 2) {
+        this->x = this->x - this->w / 2 - this->delay;
+        this->y = this->y + this->h + this->delay;
+    }
+    else {
+        this->x = this->x + this->w / 2 + this->delay;
+    }
 
     this->rects.push_back(rect);
     this->sprites.push_back(sprite);
