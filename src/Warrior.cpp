@@ -36,6 +36,9 @@ Warrior::Warrior(float x, float y, Player *player, Camera *camera, SoundQueue *s
     this->ironCollectionInProgress = false;
 
     this->bag = 0;
+
+    std::random_device rd;
+    this->mersenne = std::mt19937(rd());
 }
 void Warrior::draw(sf::RenderTarget &target, sf::RenderStates states) const {
     if (!this->camera->contain(this->x, this->y, 32, 32)) {
@@ -67,9 +70,10 @@ void Warrior::draw(sf::RenderTarget &target, sf::RenderStates states) const {
 
     target.draw(sprite, states);
 }
-void Warrior::update(std::vector<DefenseBuilding*> &defenseBuildings, std::vector<ResourceBuilding *> &rbs, std::vector<ResourcePoint *> &rps) {
+void Warrior::update(std::vector<DefenseBuilding*> &defenseBuildings, std::vector<Building*> &buildings, std::vector<Warrior*> &warriors, std::vector<ResourceBuilding*> &rbs, std::vector<ResourcePoint*> &rps) {
     this->updateMoving();
     this->updateDefenseBuildings(defenseBuildings);
+    this->updateAttack(buildings, warriors);
     this->updateCollection(rbs, rps);
 }
 void Warrior::setTarget(float newTargetX, float newTargetY) {
@@ -243,6 +247,39 @@ void Warrior::updateDefenseBuildings(std::vector<DefenseBuilding*> &defenseBuild
             db->shoot();
             this->kill();
             break;
+        }
+    }
+}
+void Warrior::updateAttack(std::vector<Building*> &buildings, std::vector<Warrior*> &warriors) {
+    if (this->attackTimer.getElapsedTime().asMilliseconds() < this->getAttackDelay()) {
+        return;
+    }
+
+    for (const auto &w : warriors) {
+        if (!w->alive() or w->getPlayerPtr() == this->getPlayerPtr()) continue;
+        float dstX = (this->getX() + 16) - (w->getX() + 16);
+        float dstY = (this->getY() + 16) - (w->getY() + 16);
+        auto dst = (float)std::sqrt(std::pow(dstX, 2) + std::pow(dstY, 2));
+        if (dst < this->getAttackRadius()) {
+            uint32_t probability = (uint32_t)(this->getWarriorAttack() / w->getDefense() * 100);
+            uint32_t random = this->mersenne() % 100;
+            if (random < probability) {
+                w->kill();
+            }
+            this->attackTimer.restart();
+            return;
+        }
+    }
+
+    for (const auto& b : buildings) {
+        if (!b->alive() or b->getPlayerPtr() == this->getPlayerPtr()) continue;
+        float dstX = (this->getX() + 16) - (b->getCX() * 64 + 32);
+        float dstY = (this->getY() + 16) - (b->getCY() * 64 + 32);
+        auto dst = (float)std::sqrt(std::pow(dstX, 2) + std::pow(dstY, 2));
+        if (dst < this->getAttackRadius()) {
+            b->setHP(std::max(0.f, b->getHP() - this->getBuildingAttack()));
+            this->attackTimer.restart();
+            return;
         }
     }
 }

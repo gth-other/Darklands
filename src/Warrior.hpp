@@ -19,6 +19,7 @@
 
 #include <cmath>
 #include <vector>
+#include <random>
 #include "Plant.hpp"
 #include "Tree.hpp"
 #include "Mountain.hpp"
@@ -45,7 +46,7 @@ public:
     Warrior(float x, float y, Player *player, Camera *camera, SoundQueue *soundQueue, Storage *storage);
 
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
-    void update(std::vector<DefenseBuilding*> &defenseBuildings, std::vector<ResourceBuilding*> &rbs, std::vector<ResourcePoint*> &rps);
+    void update(std::vector<DefenseBuilding*> &defenseBuildings, std::vector<Building*> &buildings, std::vector<Warrior*> &warriors, std::vector<ResourceBuilding*> &rbs, std::vector<ResourcePoint*> &rps);
 
     void setTarget(float newTargetX, float newTargetY);
     void setTarget(int32_t newTargetCX, int32_t newTargetCY);
@@ -86,8 +87,10 @@ private:
     bool stoneCollectionInProgress;
     bool ironCollectionInProgress;
     float bag;
+    std::mt19937 mersenne;
 
     sf::Clock movementTimer;
+    sf::Clock attackTimer;
     sf::Clock animationClock;
     sf::Clock deathAnimationClock;
 
@@ -99,5 +102,6 @@ private:
 
     void updateMoving();
     void updateDefenseBuildings(std::vector<DefenseBuilding*> &defenseBuildings);
+    void updateAttack(std::vector<Building*> &buildings, std::vector<Warrior*> &warriors);
     void updateCollection(std::vector<ResourceBuilding*> &rbs, std::vector<ResourcePoint*> &rps);
 };

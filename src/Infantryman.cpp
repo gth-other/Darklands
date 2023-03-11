@@ -49,7 +49,7 @@ float Infantryman::getWarriorAttack() const {
     return 1;
 }
 float Infantryman::getAttackRadius() const {
-    return 16;
+    return 32;
 }
 int32_t Infantryman::getAttackDelay() const {
     return 1000;
