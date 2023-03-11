@@ -38,21 +38,32 @@ Warrior::Warrior(float x, float y, Player *player, Camera *camera, SoundQueue *s
     this->bag = 0;
 }
 void Warrior::draw(sf::RenderTarget &target, sf::RenderStates states) const {
-    if (!this->camera->contain(this->x, this->y, 32, 32)) return;
+    if (!this->camera->contain(this->x, this->y, 32, 32)) {
+        return;
+    }
 
     sf::Sprite sprite;
     sprite.setTexture(this->getTexture());
     sprite.setTextureRect(this->getTextureRect());
     sprite.setPosition(this->x - this->camera->getX(), this->y - this->camera->getY());
 
-    sf::Color brightPlayerColor = this->player->getColor();
-    uint8_t brightK;
-    if (this->selected()) brightK = std::max(brightPlayerColor.r, std::max(brightPlayerColor.g, brightPlayerColor.b)) / 2;
-    else brightK = std::max(brightPlayerColor.r, std::max(brightPlayerColor.g, brightPlayerColor.b)) * 3 / 4;
-    brightPlayerColor.r = brightPlayerColor.r + (brightPlayerColor.r == 0) * brightK;
-    brightPlayerColor.g = brightPlayerColor.g + (brightPlayerColor.g == 0) * brightK;
-    brightPlayerColor.b = brightPlayerColor.b + (brightPlayerColor.b == 0) * brightK;
-    sprite.setColor(brightPlayerColor);
+    sf::Color playerColor = this->player->getColor();
+    if (playerColor.r > playerColor.g and playerColor.r > playerColor.b) {
+        playerColor.r = 200;
+        playerColor.g = 180 - 50 * this->selected();
+        playerColor.b = 180 - 50 * this->selected();
+    }
+    else if (playerColor.g > playerColor.r and playerColor.g > playerColor.b) {
+        playerColor.r = 225 - 50 * this->selected();
+        playerColor.g = 255;
+        playerColor.b = 225 - 50 * this->selected();
+    }
+    else {
+        playerColor.r = 150 - 50 * this->selected();
+        playerColor.g = 150 - 50 * this->selected();
+        playerColor.b = 255;
+    }
+    sprite.setColor(playerColor);
 
     target.draw(sprite, states);
 }

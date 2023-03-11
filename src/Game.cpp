@@ -25,8 +25,8 @@ Game::Game(Storage *storage, SoundQueue *soundQueue, sf::RenderWindow *window) :
     Resources start = {500, 500, 500, 500, 0};
     this->conf = {60, 33, 6, 2, 2, 2, 2, 67, 33, std::make_pair(10, 20), std::make_pair(1, 4)};
     this->camera = new Camera(0, 0, this->dw, this->dh, this->conf.cw, this->conf.ch);
-    this->human = new Player(sf::Color(0, 0, 255), start, this->dw, this->storage);
-    this->computer = new Player(sf::Color(0, 127, 0), start, this->dw, this->storage);
+    this->human = new Player(sf::Color(0, 0, 120), start, this->dw, this->storage);
+    this->computer = new Player(sf::Color(0, 60, 0), start, this->dw, this->storage);
 
     LandscapeGenerator generator = {this->storage, this->camera, this->soundQueue, this->conf, LandscapeGenerator::generatePseudoRandomSeed()};
     std::vector<ResourcePoint*> generatedResourcePoints = generator.generate();

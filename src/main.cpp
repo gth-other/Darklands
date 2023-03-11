@@ -46,7 +46,7 @@ int main() {
     if (loadingScreen.open() == Screen::Status::Exit) return 0;
 
     for (std::string s: {"fort", "smelter", "windmill", "wall", "house", "sawmill", "quarry", "tower", "obelisk", "caravan", "academy"}) {
-        for (sf::Color c: {sf::Color(0, 0, 255), sf::Color(0, 127, 0)}) {
+        for (sf::Color c: {sf::Color(0, 0, 120), sf::Color(0, 60, 0)}) {
             storage.addTexture(s, "images/buildings/" + s + ".png", c);
         }
     }
