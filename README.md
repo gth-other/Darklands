@@ -1,12 +1,11 @@
 # Darklands
 
-2D RTS `<br>`
-[Видео с игровым процессом на Youtube (может отличаться от последней версии)](https://youtu.be/xklnQPFrjQ4)`<br>`
-`<img src="https://img.youtube.com/vi/xklnQPFrjQ4/maxresdefault.jpg" alt="drawing" width="400"/>`
+2D RTS.
+[Видео с игровым процессом на Youtube (может отличаться от последней версии)](https://youtu.be/xklnQPFrjQ4)<br><img src="https://img.youtube.com/vi/xklnQPFrjQ4/maxresdefault.jpg" alt="drawing" width="400"/>
 
 ## Предупреждение
 
-Проект находится в разработке!`<br>`
+Проект находится в разработке!
 
 ## Зависимости
 
