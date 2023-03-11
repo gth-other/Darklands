@@ -226,7 +226,7 @@ void Warrior::updateMoving() {
 }
 void Warrior::updateDefenseBuildings(std::vector<DefenseBuilding*> &defenseBuildings) {
     for (auto &db : defenseBuildings) {
-        if (db->alive() and db->readyToShoot() and db->cover(this->x + 16, this->y + 16)) {
+        if (db->alive() and db->getPlayerPtr() != this->getPlayerPtr() and db->readyToShoot() and db->cover(this->x + 16, this->y + 16)) {
             db->shoot();
             this->kill();
             break;
