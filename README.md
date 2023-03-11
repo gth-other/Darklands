@@ -1,18 +1,28 @@
 # Darklands
-2D RTS<br>
-[Видео с игровым процессом на Youtube (может отличаться от последней версии)](https://www.youtube.com/watch?v=St1PrzgjdGo)<br>
-<img src="https://img.youtube.com/vi/St1PrzgjdGo/maxresdefault.jpg" alt="drawing" width="400"/>
+
+2D RTS `<br>`
+[Видео с игровым процессом на Youtube (может отличаться от последней версии)](https://youtu.be/xklnQPFrjQ4)`<br>`
+`<img src="https://img.youtube.com/vi/xklnQPFrjQ4/maxresdefault.jpg" alt="drawing" width="400"/>`
+
 ## Предупреждение
-Проект находится в разработке!<br>
+
+Проект находится в разработке!`<br>`
+
 ## Зависимости
+
 * **SFML System**
 * **SFML Window**
 * **SFML Graphics**
 * **SFML Audio**
+
 ## Документация
+
 ### Структура наследования (может отличаться от последней версии)
+
 ![](docs/inheritance.png)
+
 ## Заимствованные материалы
+
 * [Шрифт от **Sol Matas**](https://fonts-online.ru/fonts/bitter-pro)
 * [Изображения некоторых зданий и гор от **Nicu**](http://clipart.nicubunu.ro/?gallery=rpg_map)
 * [Фоновая музыка, изображение лесопилки и изображение курсора из проекта **Widelands**](https://github.com/widelands/widelands)
