@@ -21,12 +21,11 @@
 
 
 SoundQueue::SoundQueue() = default;
-void SoundQueue::push(const sf::SoundBuffer &buffer, float dst) {
+void SoundQueue::push(const sf::SoundBuffer &buffer) {
     this->removeOld();
 
     this->sounds.emplace();
     this->sounds.back().setBuffer(buffer);
-    this->sounds.back().setVolume(std::max(0.f, 100 - SoundQueue::AttenuationK * dst));
     this->sounds.back().play();
 }
 void SoundQueue::removeOld() {

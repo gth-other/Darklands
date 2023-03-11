@@ -29,11 +29,9 @@ class SoundQueue {
 public:
     SoundQueue();
 
-    void push(const sf::SoundBuffer &buffer, float dst = 0);
+    void push(const sf::SoundBuffer &buffer);
 private:
     std::queue<sf::Sound> sounds;
 
     void removeOld();
-
-    static constexpr float AttenuationK = 0.025;
 };

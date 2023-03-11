@@ -26,11 +26,7 @@ bool DefenseBuilding::readyToShoot() const {
     return this->shootingTimer.getElapsedTime().asMilliseconds() >= this->getShootingDelay();
 }
 void DefenseBuilding::shoot() {
-    float dstX = (float)this->getCX() * 64 + 32 - this->camera->getMiddleX();
-    float dstY = (float)this->getCY() * 64 + 32 - this->camera->getMiddleY();
-    auto dst = (float)std::sqrt(std::pow(dstX, 2) + std::pow(dstY, 2));
-
-    this->soundQueue->push(this->getShootingSoundBuffer(), dst);
+    this->soundQueue->push(this->getShootingSoundBuffer());
     this->shootingTimer.restart();
 }
 int32_t DefenseBuilding::getShootingDelay() const {
