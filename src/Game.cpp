@@ -231,6 +231,14 @@ void Game::initPlayersUnits() {
 
     this->push(new Fort(this->conf.cw - 1 - 5, this->conf.ch - 1 - 5, this->computer, this->camera, this->soundQueue, this->storage));
     this->push(new Caravan(this->conf.cw - 1 - 4, this->conf.ch - 1 - 5, this->computer, this->camera, this->soundQueue, this->storage));
+    this->push(new Obelisk(this->conf.cw - 1 - 3, this->conf.ch - 1 - 4, this->computer, this->camera, this->soundQueue, this->storage));
+    for (int32_t i = 12; i >= 0; i = i - 1) {
+        this->push(new Wall(this->conf.cw - 1 - i, this->conf.ch - 1 - 6, this->computer, this->camera, this->soundQueue, this->storage));
+    }
+    for (int32_t i = 0; i < 12; i = i + 1) {
+        this->push(new Infantryman(this->conf.cw * 64 - 300 + i * 16, this->conf.ch * 64 - 100, this->computer, this->camera, this->soundQueue, this->storage));
+        this->push(new Archer(this->conf.cw * 64 - 300 + i * 16, this->conf.ch * 64 - 116, this->computer, this->camera, this->soundQueue, this->storage));
+    }
 }
 template<class Type> void Game::push(Type *a) {
     if (auto *t = dynamic_cast<Academy*>(a)) this->academies.push_back(t);

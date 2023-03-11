@@ -155,7 +155,9 @@ sf::IntRect Warrior::getTextureRect() const {
     return {number * 32, 0, 32, 32};
 }
 std::pair<float, float> Warrior::calcSpeed() const {
-    if (this->targetReached()) return std::make_pair(0, 0);
+    if (this->targetReached()) {
+        return std::make_pair(0, 0);
+    }
 
     float dstX = this->x - this->targetX;
     float dstY = this->y - this->targetY;
@@ -234,7 +236,9 @@ void Warrior::updateDefenseBuildings(std::vector<DefenseBuilding*> &defenseBuild
     }
 }
 void Warrior::updateCollection(std::vector<ResourceBuilding*> &rbs, std::vector<ResourcePoint*> &rps) {
-    if ((!this->foodCollectionInProgress and !this->woodCollectionInProgress and !this->stoneCollectionInProgress and !this->ironCollectionInProgress) or !this->targetReached()) return;
+    if ((!this->foodCollectionInProgress and !this->woodCollectionInProgress and !this->stoneCollectionInProgress and !this->ironCollectionInProgress) or !this->targetReached()) {
+        return;
+    }
 
     auto humanCX = (int32_t)this->getX() / 64;
     auto humanCY = (int32_t)this->getY() / 64;
