@@ -34,4 +34,6 @@ private:
     std::queue<sf::Sound> sounds;
 
     void removeOld();
+
+    static constexpr int32_t SoundsLimit = 32;
 };

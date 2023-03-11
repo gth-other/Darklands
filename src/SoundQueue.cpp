@@ -24,6 +24,10 @@ SoundQueue::SoundQueue() = default;
 void SoundQueue::push(const sf::SoundBuffer &buffer) {
     this->removeOld();
 
+    if (this->sounds.size() == SoundQueue::SoundsLimit) {
+        return;
+    }
+
     this->sounds.emplace();
     this->sounds.back().setBuffer(buffer);
     this->sounds.back().play();
