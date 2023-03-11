@@ -267,6 +267,7 @@ void Warrior::updateAttack(std::vector<Building*> &buildings, std::vector<Warrio
                 w->kill();
             }
             this->attackTimer.restart();
+            this->soundQueue->push(this->getSelectSoundBuffer());
             return;
         }
     }
@@ -279,6 +280,7 @@ void Warrior::updateAttack(std::vector<Building*> &buildings, std::vector<Warrio
         if (dst < this->getAttackRadius()) {
             b->setHP(std::max(0.f, b->getHP() - this->getBuildingAttack()));
             this->attackTimer.restart();
+            this->soundQueue->push(this->getSelectSoundBuffer());
             return;
         }
     }
