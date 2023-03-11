@@ -39,6 +39,18 @@ const sf::Texture &Infantryman::getTexture() const {
     if (this->targetReached()) return this->storage->getTexture("infantrymanDie" + this->calcDirection());
     return this->storage->getTexture("infantrymanDie" + this->calcDirection());
 }
+float Infantryman::getDefense() const {
+    return 2;
+}
+float Infantryman::getBuildingAttack() const {
+    return 5;
+}
+float Infantryman::getWarriorAttack() const {
+    return 1;
+}
+float Infantryman::getAttackRadius() const {
+    return 16;
+}
 float Infantryman::getSpeed() const {
     return 32;
 }

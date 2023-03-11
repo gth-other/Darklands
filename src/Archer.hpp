@@ -33,6 +33,10 @@ public:
 private:
     [[nodiscard]] const sf::SoundBuffer& getSelectSoundBuffer() const override;
     [[nodiscard]] const sf::Texture& getTexture() const override;
+    [[nodiscard]] virtual float getDefense() const override;
+    [[nodiscard]] virtual float getBuildingAttack() const override;
+    [[nodiscard]] virtual float getWarriorAttack() const override;
+    [[nodiscard]] virtual float getAttackRadius() const override;
     [[nodiscard]] float getSpeed() const override;
     [[nodiscard]] float getBaseCapacity() const override;
 };
