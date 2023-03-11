@@ -72,6 +72,7 @@ protected:
     [[nodiscard]] virtual float getBuildingAttack() const = 0;
     [[nodiscard]] virtual float getWarriorAttack() const = 0;
     [[nodiscard]] virtual float getAttackRadius() const = 0;
+    [[nodiscard]] virtual int32_t getAttackDelay() const = 0;
     [[nodiscard]] virtual float getSpeed() const = 0;
     [[nodiscard]] float getCapacity() const;
     [[nodiscard]] virtual float getBaseCapacity() const = 0;

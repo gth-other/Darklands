@@ -37,6 +37,7 @@ private:
     [[nodiscard]] virtual float getBuildingAttack() const override;
     [[nodiscard]] virtual float getWarriorAttack() const override;
     [[nodiscard]] virtual float getAttackRadius() const override;
+    [[nodiscard]] virtual int32_t getAttackDelay() const override;
     [[nodiscard]] float getSpeed() const override;
     [[nodiscard]] float getBaseCapacity() const override;
 };
