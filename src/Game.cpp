@@ -45,7 +45,9 @@ int32_t Game::open() {
                 this->storage->getMusic("game" + std::to_string(soundtrackNumber)).stop();
                 return Screen::Status::Exit;
             }
-            if (event.type == sf::Event::KeyPressed and event.key.code == sf::Keyboard::F10) this->fps.invertVisibility();
+            if (event.type == sf::Event::KeyPressed and event.key.code == sf::Keyboard::F10) {
+                this->fps.invertVisibility();
+            }
             if (event.type == sf::Event::MouseButtonPressed) {
                 if (event.mouseButton.button == sf::Mouse::Button::Left) {
                     if (this->cursor.on(this->buildingListButton)) {
@@ -440,7 +442,9 @@ template<class Type> void Game::buyWarriorsButtonClick() {
 }
 void Game::buildingListButtonClick() {
     this->soundQueue->push(this->storage->getSoundBuffer("click"));
-    if (this->showBuildingList) this->showBuildingList = false;
+    if (this->showBuildingList) {
+        this->showBuildingList = false;
+    }
     else {
         this->showBuildingList = true;
         this->showWarriorsList = false;
@@ -453,7 +457,9 @@ void Game::buildingListButtonClick() {
 }
 void Game::warriorsListButtonClick() {
     this->soundQueue->push(this->storage->getSoundBuffer("click"));
-    if (this->showWarriorsList) this->showWarriorsList = false;
+    if (this->showWarriorsList) {
+        this->showWarriorsList = false;
+    }
     else {
         this->showBuildingList = false;
         this->showWarriorsList = true;
@@ -527,8 +533,12 @@ void Game::updateStationarySelection() {
     for (auto& s : this->stationary) {
         if (auto* u = dynamic_cast<Unit*>(s)) if (u->getPlayerPtr() != this->human) continue;
         if (s->alive() and this->cursor.on(s->getCX(), s->getCY())) {
-            if (s->selected()) s->unselect(true);
-            else s->select(true);
+            if (s->selected()) {
+                s->unselect(true);
+            }
+            else {
+                s->select(true);
+            }
         }
         else s->unselect();
     }
@@ -551,17 +561,27 @@ void Game::sendSelectedWarriors() {
         if (!w->selected()) continue;
 
         w->setTarget(targetX, targetY);
-        for (auto &p : this->plants) if (p->getCX() == targetCX and p->getCY() == targetCY) w->startFoodCollection(targetCX, targetCY);
-        for (auto &t : this->trees) if (t->getCX() == targetCX and t->getCY() == targetCY) w->startWoodCollection(targetCX, targetCY);
-        for (auto &m : this->mountains) if (m->getCX() == targetCX and m->getCY() == targetCY) w->startStoneCollection(targetCX, targetCY);
-        for (auto &rm : this->redMountains) if (rm->getCX() == targetCX and rm->getCY() == targetCY) w->startIronCollection(targetCX, targetCY);
+        for (auto &p : this->plants) if (p->getCX() == targetCX and p->getCY() == targetCY) {
+            w->startFoodCollection(targetCX, targetCY);
+        }
+        for (auto &t : this->trees) if (t->getCX() == targetCX and t->getCY() == targetCY) {
+            w->startWoodCollection(targetCX, targetCY);
+        }
+        for (auto &m : this->mountains) if (m->getCX() == targetCX and m->getCY() == targetCY) {
+            w->startStoneCollection(targetCX, targetCY);
+        }
+        for (auto &rm : this->redMountains) if (rm->getCX() == targetCX and rm->getCY() == targetCY) {
+            w->startIronCollection(targetCX, targetCY);
+        }
     }
 
     this->banner.setPosition(this->camera->getX() + (float)sf::Mouse::getPosition().x, this->camera->getY() + (float)sf::Mouse::getPosition().y, true);
 }
 void Game::selectForts() {
     for (auto& f : this->forts) {
-        if (f->alive() and f->getPlayerPtr() == this->human) f->select();
+        if (f->alive() and f->getPlayerPtr() == this->human) {
+            f->select();
+        }
     }
 }
 void Game::unselectEverything() {
