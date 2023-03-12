@@ -112,6 +112,7 @@ void Warrior::stopCollection() {
 }
 void Warrior::kill() {
     this->_alive = false;
+    this->unselect();
     this->deathAnimationClock.restart();
 }
 bool Warrior::targetReached() const {
