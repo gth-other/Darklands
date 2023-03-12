@@ -260,10 +260,24 @@ bool Warrior::correctResourcePoint(ResourcePoint *rp) const {
 Building* Warrior::tryToFindBuildingInAttackRadius(std::vector<Building*> &buildings) const {
     for (const auto& b : buildings) {
         if (!b->alive() or b->getPlayerPtr() == this->getPlayerPtr()) continue;
-        float dstX = (this->getX() + 16) - (b->getCX() * 64 + 32);
-        float dstY = (this->getY() + 16) - (b->getCY() * 64 + 32);
-        auto dst = (float)std::sqrt(std::pow(dstX, 2) + std::pow(dstY, 2));
-        if (dst < this->getAttackRadius()) {
+
+        float dstX1 = (this->getX() + 16) - (b->getCX() * 64);
+        float dstY1 = (this->getY() + 16) - (b->getCY() * 64);
+        auto dst1 = (float)std::sqrt(std::pow(dstX1, 2) + std::pow(dstY1, 2));
+
+        float dstX2 = (this->getX() + 16) - (b->getCX() * 64 + 64);
+        float dstY2 = (this->getY() + 16) - (b->getCY() * 64 + 64);
+        auto dst2 = (float)std::sqrt(std::pow(dstX2, 2) + std::pow(dstY2, 2));
+
+        float dstX3 = (this->getX() + 16) - (b->getCX() * 64 + 64);
+        float dstY3 = (this->getY() + 16) - (b->getCY() * 64);
+        auto dst3 = (float)std::sqrt(std::pow(dstX3, 2) + std::pow(dstY3, 2));
+
+        float dstX4 = (this->getX() + 16) - (b->getCX() * 64);
+        float dstY4 = (this->getY() + 16) - (b->getCY() * 64 + 64);
+        auto dst4 = (float)std::sqrt(std::pow(dstX4, 2) + std::pow(dstY4, 2));
+
+        if (std::min(std::min(dst1, dst2), std::min(dst3, dst4)) < this->getAttackRadius()) {
             return b;
         }
     }
@@ -272,9 +286,11 @@ Building* Warrior::tryToFindBuildingInAttackRadius(std::vector<Building*> &build
 Warrior* Warrior::tryToFindWarriorInAttackRadius(std::vector<Warrior*> &warriors) const {
     for (const auto &w : warriors) {
         if (!w->alive() or w->getPlayerPtr() == this->getPlayerPtr()) continue;
+
         float dstX = (this->getX() + 16) - (w->getX() + 16);
         float dstY = (this->getY() + 16) - (w->getY() + 16);
         auto dst = (float)std::sqrt(std::pow(dstX, 2) + std::pow(dstY, 2));
+
         if (dst < this->getAttackRadius()) {
             return w;
         }
