@@ -17,17 +17,8 @@
  */
 
 
-#include <cmath>
-#include <vector>
 #include <random>
-#include "Plant.hpp"
-#include "Tree.hpp"
-#include "Mountain.hpp"
-#include "RedMountain.hpp"
-#include "Windmill.hpp"
-#include "Sawmill.hpp"
-#include "Quarry.hpp"
-#include "Smelter.hpp"
+#include "Earner.hpp"
 #include "House.hpp"
 #include "Caravan.hpp"
 #include "Academy.hpp"
@@ -40,79 +31,30 @@
 #pragma once
 
 
-class Warrior : public Unit, public GameObject {
+class Warrior : public Earner {
 public:
     Warrior();
     Warrior(float x, float y, Player *player, Camera *camera, SoundQueue *soundQueue, Storage *storage);
 
-    void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
-    void update(std::vector<DefenseBuilding*> &defenseBuildings, std::vector<Building*> &buildings, std::vector<Warrior*> &warriors, std::vector<ResourceBuilding*> &rbs, std::vector<ResourcePoint*> &rps);
-
-    void setTarget(float newTargetX, float newTargetY);
-    void setTarget(int32_t newTargetCX, int32_t newTargetCY);
-
-    void startFoodCollection(int32_t cx, int32_t cy);
-    void startWoodCollection(int32_t cx, int32_t cy);
-    void startStoneCollection(int32_t cx, int32_t cy);
-    void startIronCollection(int32_t cx, int32_t cy);
-    void stopCollection();
-
-    void kill();
-
-    [[nodiscard]] bool targetReached() const;
-    [[nodiscard]] bool alive() const override;
-    [[nodiscard]] std::string calcMovementDirection() const;
+    void update(std::vector<DefenseBuilding*> &defenseBuildings, std::vector<ResourceBuilding*> &rbs, std::vector<ResourcePoint*> &rps, std::vector<Building*> &buildings, std::vector<Warrior*> &warriors);
     [[nodiscard]] std::string calcAttackDirection() const;
-
-    [[nodiscard]] float getX() const;
-    [[nodiscard]] float getY() const;
-
-    void setX(float newX);
-    void setY(float newY);
 protected:
     [[nodiscard]] virtual float getDefense() const = 0;
     [[nodiscard]] virtual float getBuildingAttack() const = 0;
     [[nodiscard]] virtual float getWarriorAttack() const = 0;
     [[nodiscard]] virtual float getAttackRadius() const = 0;
     [[nodiscard]] virtual int32_t getAttackDelay() const = 0;
-    [[nodiscard]] virtual float getSpeed() const = 0;
-    [[nodiscard]] float getCapacity() const;
-    [[nodiscard]] virtual float getBaseCapacity() const = 0;
     [[nodiscard]] sf::IntRect getTextureRect() const override;
 
     [[nodiscard]] bool attackStarted() const;
 private:
-    float x, y;
-    float targetX, targetY;
     float attackTargetX, attackTargetY;
-    bool _alive;
-    bool foodCollectionInProgress;
-    bool woodCollectionInProgress;
-    bool stoneCollectionInProgress;
-    bool ironCollectionInProgress;
-    float bag;
     std::mt19937 mersenne;
 
-    sf::Clock movementTimer;
-    sf::Clock animationClock;
-    sf::Clock deathAnimationTimer;
     sf::Clock attackAnimationTimer;
     bool _attackStarted;
 
-    static std::string calcDirection(float x1, float y1, float x2, float y2);
-
-    [[nodiscard]] std::pair<float, float> calcSpeed() const;
-
-    [[nodiscard]] std::pair<int32_t, int32_t> tryToFindBestResourceBuilding(std::vector<ResourceBuilding*> &rbs) const;
-    [[nodiscard]] std::pair<int32_t, int32_t> tryToFindBestResourcePoint(std::vector<ResourcePoint*> &rps) const;
-    [[nodiscard]] bool correctResourceBuilding(ResourceBuilding *rb) const;
-    [[nodiscard]] bool correctResourcePoint(ResourcePoint *rp) const;
-
+    void updateAttack(std::vector<Building*> &buildings, std::vector<Warrior*> &warriors);
     [[nodiscard]] Building* tryToFindBuildingInAttackRadius(std::vector<Building*> &buildings) const;
     [[nodiscard]] Warrior* tryToFindWarriorInAttackRadius(std::vector<Warrior*> &warriors) const;
-
-    void updateMoving();
-    void updateDefenseBuildings(std::vector<DefenseBuilding*> &defenseBuildings);
-    void updateAttack(std::vector<Building*> &buildings, std::vector<Warrior*> &warriors);
-    void updateCollection(std::vector<ResourceBuilding*> &rbs, std::vector<ResourcePoint*> &rps);
 };

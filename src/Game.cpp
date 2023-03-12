@@ -326,7 +326,7 @@ void Game::updateBuildings() {
 void Game::updateWarriors() {
     for (const auto& w : this->warriors) {
         if (w->alive()) {
-            w->update(defenseBuildings, buildings, warriors, resourceBuildings, resourcePoints);
+            w->update(defenseBuildings, resourceBuildings, resourcePoints, buildings, warriors);
         }
     }
 }

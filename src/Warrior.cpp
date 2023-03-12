@@ -21,134 +21,45 @@
 
 
 Warrior::Warrior() = default;
-Warrior::Warrior(float x, float y, Player *player, Camera *camera, SoundQueue *soundQueue, Storage *storage) : Unit(player), GameObject(camera, soundQueue, storage) {
-    this->x = x;
-    this->y = y;
-
-    this->targetX = this->x;
-    this->targetY = this->y;
-
+Warrior::Warrior(float x, float y, Player *player, Camera *camera, SoundQueue *soundQueue, Storage *storage) : Earner(x, y, player, camera, soundQueue, storage) {
     this->attackTargetX = 0;
     this->attackTargetY = 0;
-
-    this->_alive = true;
-
-    this->foodCollectionInProgress = false;
-    this->woodCollectionInProgress = false;
-    this->stoneCollectionInProgress = false;
-    this->ironCollectionInProgress = false;
-
-    this->bag = 0;
 
     std::random_device rd;
     this->mersenne = std::mt19937(rd());
 
     this->_attackStarted = false;
 }
-void Warrior::draw(sf::RenderTarget &target, sf::RenderStates states) const {
-    if (!this->camera->contain(this->x, this->y, 32, 32)) {
-        return;
-    }
-
-    sf::Sprite sprite;
-    sprite.setTexture(this->getTexture());
-    sprite.setTextureRect(this->getTextureRect());
-    sprite.setPosition(this->x - this->camera->getX(), this->y - this->camera->getY());
-
-    sf::Color playerColor = this->player->getColor();
-    if (playerColor.r > playerColor.g and playerColor.r > playerColor.b) {
-        playerColor.r = 200;
-        playerColor.g = 180 - 50 * this->selected();
-        playerColor.b = 180 - 50 * this->selected();
-    }
-    else if (playerColor.g > playerColor.r and playerColor.g > playerColor.b) {
-        playerColor.r = 225 - 50 * this->selected();
-        playerColor.g = 255;
-        playerColor.b = 225 - 50 * this->selected();
-    }
-    else {
-        playerColor.r = 150 - 50 * this->selected();
-        playerColor.g = 150 - 50 * this->selected();
-        playerColor.b = 255;
-    }
-    sprite.setColor(playerColor);
-
-    target.draw(sprite, states);
-}
-void Warrior::update(std::vector<DefenseBuilding*> &defenseBuildings, std::vector<Building*> &buildings, std::vector<Warrior*> &warriors, std::vector<ResourceBuilding*> &rbs, std::vector<ResourcePoint*> &rps) {
+void Warrior::update(std::vector<DefenseBuilding*> &defenseBuildings, std::vector<ResourceBuilding*> &rbs, std::vector<ResourcePoint*> &rps, std::vector<Building*> &buildings, std::vector<Warrior*> &warriors) {
     this->updateMoving();
     this->updateDefenseBuildings(defenseBuildings);
-    this->updateAttack(buildings, warriors);
     this->updateCollection(rbs, rps);
-}
-void Warrior::setTarget(float newTargetX, float newTargetY) {
-    this->targetX = newTargetX;
-    this->targetY = newTargetY;
-}
-void Warrior::setTarget(int32_t newTargetCX, int32_t newTargetCY) {
-    this->setTarget(64 * (float) newTargetCX + 16, 64 * (float) newTargetCY + 16);
-}
-void Warrior::startFoodCollection(int32_t cx, int32_t cy) {
-    this->setTarget(cx, cy);
-    this->foodCollectionInProgress = true;
-    this->bag = 0;
-}
-void Warrior::startWoodCollection(int32_t cx, int32_t cy) {
-    this->setTarget(cx, cy);
-    this->woodCollectionInProgress = true;
-    this->bag = 0;
-}
-void Warrior::startStoneCollection(int32_t cx, int32_t cy) {
-    this->setTarget(cx, cy);
-    this->stoneCollectionInProgress = true;
-    this->bag = 0;
-}
-void Warrior::startIronCollection(int32_t cx, int32_t cy) {
-    this->setTarget(cx, cy);
-    this->ironCollectionInProgress = true;
-    this->bag = 0;
-}
-void Warrior::stopCollection() {
-    this->setTarget(this->getX(), this->getY());
-    this->foodCollectionInProgress = false;
-    this->woodCollectionInProgress = false;
-    this->stoneCollectionInProgress = false;
-    this->ironCollectionInProgress = false;
-}
-void Warrior::kill() {
-    this->_alive = false;
-    this->unselect();
-    this->deathAnimationTimer.restart();
-}
-bool Warrior::targetReached() const {
-    bool dxZero = std::abs(this->x - this->targetX) < 16;
-    bool dyZero = std::abs(this->y - this->targetY) < 16;
-
-    return (dxZero and dyZero);
-}
-bool Warrior::alive() const {
-    return this->_alive;
-}
-std::string Warrior::calcMovementDirection() const {
-    return Warrior::calcDirection(this->x, this->y, this->targetX, this->targetY);
+    this->updateAttack(buildings, warriors);
 }
 std::string Warrior::calcAttackDirection() const {
-    return Warrior::calcDirection(this->x, this->y, this->attackTargetX, this->attackTargetY);
-}
-float Warrior::getX() const {
-    return this->x;
-}
-float Warrior::getY() const {
-    return this->y;
-}
-void Warrior::setX(float newX) {
-    this->x = newX;
-}
-void Warrior::setY(float newY) {
-    this->y = newY;
-}
-float Warrior::getCapacity() const {
-    return this->getBaseCapacity() * (1 + this->player->researched(Science::Keys::WarriorsCapacity));
+    double dstX = std::abs(this->getX() - this->attackTargetX);
+    double dstY = std::abs(this->getY() - this->attackTargetY);
+    double dst = std::sqrt(std::pow(dstX, 2) + std::pow(dstY, 2));
+
+    double sin = dstX / dst;
+    double degree = std::asin(sin) * 180 / M_PI;
+
+    if (degree <= 30) {
+        if (this->attackTargetY < this->getY()) return "N";
+        return "S";
+    }
+    else if (degree <= 60) {
+        std::string result;
+        if (this->attackTargetY < this->getY()) result.append("N");
+        else result.append("S");
+        if (this->attackTargetX < this->getX()) result.append("W");
+        else result.append("E");
+        return result;
+    }
+    else {
+        if (this->attackTargetX < this->getX()) return "W";
+        return "E";
+    }
 }
 sf::IntRect Warrior::getTextureRect() const {
     int32_t animations = (int32_t)this->getTexture().getSize().x / 32;
@@ -169,93 +80,6 @@ sf::IntRect Warrior::getTextureRect() const {
 }
 bool Warrior::attackStarted() const {
     return this->_attackStarted;
-}
-std::string Warrior::calcDirection(float x1, float y1, float x2, float y2) {
-    double dstX = std::abs(x1 - x2);
-    double dstY = std::abs(y1 - y2);
-    double dst = std::sqrt(std::pow(dstX, 2) + std::pow(dstY, 2));
-
-    double sin = dstX / dst;
-    double degree = std::asin(sin) * 180 / M_PI;
-
-    if (degree <= 30) {
-        if (y2 < y1) return "N";
-        return "S";
-    }
-    else if (degree <= 60) {
-        std::string result;
-        if (y2 < y1) result.append("N");
-        else result.append("S");
-        if (x2 < x1) result.append("W");
-        else result.append("E");
-        return result;
-    }
-    else {
-        if (x2 < x1) return "W";
-        return "E";
-    }
-}
-std::pair<float, float> Warrior::calcSpeed() const {
-    if (this->targetReached()) {
-        return std::make_pair(0, 0);
-    }
-
-    float dstX = this->x - this->targetX;
-    float dstY = this->y - this->targetY;
-
-    auto vy = (float)std::sqrt(std::pow(dstY * this->getSpeed(), 2) / (std::pow(dstY, 2) + std::pow(dstX, 2)));
-    auto vx = (float)std::sqrt(std::pow(this->getSpeed(), 2) - std::pow(vy, 2));
-
-    if (dstX > 0) vx = -vx;
-    if (dstY > 0) vy = -vy;
-
-    return std::make_pair(vx, vy);
-}
-std::pair<int32_t, int32_t> Warrior::tryToFindBestResourceBuilding(std::vector<ResourceBuilding*> &rbs) const {
-    auto closestDST = 1e+9;
-    int32_t closestIndex = -1;
-    for (int32_t i = 0; i < rbs.size(); i = i + 1) {
-        if (!rbs[i]->alive() or rbs[i]->getPlayerPtr() != this->player) continue;
-        if (this->correctResourceBuilding(rbs[i])) {
-            auto dst = std::sqrt(std::pow(x - 64.f * (float)(rbs[i]->getCX()), 2) + std::pow(y - 64.f * (float)(rbs[i]->getCY()), 2));
-            if (closestDST > dst) {
-                closestDST = dst;
-                closestIndex = i;
-            }
-        }
-    }
-
-    if (closestIndex == -1) throw std::exception();
-    return std::make_pair(rbs[closestIndex]->getCX(), rbs[closestIndex]->getCY());
-}
-std::pair<int32_t, int32_t> Warrior::tryToFindBestResourcePoint(std::vector<ResourcePoint*> &rps) const {
-    auto closestDST = 1e+9;
-    int32_t closestIndex = -1;
-    for (int32_t i = 0; i < rps.size(); i = i + 1) {
-        if (!rps[i]->alive()) continue;
-        if (this->correctResourcePoint(rps[i])) {
-            auto dst = std::sqrt(std::pow(x - 64.f * (float)(rps[i]->getCX()), 2) + std::pow(y - 64.f * (float)(rps[i]->getCY()), 2));
-            if (closestDST > dst) {
-                closestDST = dst;
-                closestIndex = i;
-            }
-        }
-    }
-
-    if (closestIndex == -1) throw std::exception();
-    return std::make_pair(rps[closestIndex]->getCX(), rps[closestIndex]->getCY());
-}
-bool Warrior::correctResourceBuilding(ResourceBuilding *rb) const {
-    return (this->foodCollectionInProgress and dynamic_cast<Windmill*>(rb)) or
-           (this->woodCollectionInProgress and dynamic_cast<Sawmill*>(rb)) or
-           (this->stoneCollectionInProgress and dynamic_cast<Quarry*>(rb)) or
-           (this->ironCollectionInProgress and dynamic_cast<Smelter*>(rb));
-}
-bool Warrior::correctResourcePoint(ResourcePoint *rp) const {
-    return (this->foodCollectionInProgress and dynamic_cast<Plant*>(rp)) or
-           (this->woodCollectionInProgress and dynamic_cast<Tree*>(rp)) or
-           (this->stoneCollectionInProgress and dynamic_cast<Mountain*>(rp)) or
-           (this->ironCollectionInProgress and dynamic_cast<RedMountain*>(rp));
 }
 Building* Warrior::tryToFindBuildingInAttackRadius(std::vector<Building*> &buildings) const {
     for (const auto& b : buildings) {
@@ -296,25 +120,6 @@ Warrior* Warrior::tryToFindWarriorInAttackRadius(std::vector<Warrior*> &warriors
         }
     }
     throw std::exception();
-}
-void Warrior::updateMoving() {
-    float t = (float) this->movementTimer.getElapsedTime().asMilliseconds() / 1000;
-    this->movementTimer.restart();
-
-    float vx, vy;
-    std::tie(vx, vy) = this->calcSpeed();
-
-    this->x = this->x + vx * t;
-    this->y = this->y + vy * t;
-}
-void Warrior::updateDefenseBuildings(std::vector<DefenseBuilding*> &defenseBuildings) {
-    for (auto &db : defenseBuildings) {
-        if (db->alive() and db->getPlayerPtr() != this->getPlayerPtr() and db->readyToShoot() and db->cover(this->x + 16, this->y + 16)) {
-            db->shoot();
-            this->kill();
-            break;
-        }
-    }
 }
 void Warrior::updateAttack(std::vector<Building*> &buildings, std::vector<Warrior*> &warriors) {
     if (this->_attackStarted and this->attackAnimationTimer.getElapsedTime().asMilliseconds() >= this->getAttackDelay()) {
@@ -357,81 +162,6 @@ void Warrior::updateAttack(std::vector<Building*> &buildings, std::vector<Warrio
                 this->attackTargetY = (float)b->getCY() * 64 + 32;
             }
             catch (std::exception &e) {}
-        }
-    }
-}
-void Warrior::updateCollection(std::vector<ResourceBuilding*> &rbs, std::vector<ResourcePoint*> &rps) {
-    if ((!this->foodCollectionInProgress and !this->woodCollectionInProgress and !this->stoneCollectionInProgress and !this->ironCollectionInProgress) or !this->targetReached()) {
-        return;
-    }
-
-    auto humanCX = (int32_t)this->getX() / 64;
-    auto humanCY = (int32_t)this->getY() / 64;
-
-    for (const auto& rb : rbs) {
-        if (rb->getPlayerPtr() != this->getPlayerPtr() or humanCX != rb->getCX() or humanCY != rb->getCY()) {
-            continue;
-        }
-        if (this->correctResourceBuilding(rb)) {
-            if (rb->alive()) {
-                rb->getPlayerPtr()->addResources({(float)this->foodCollectionInProgress * this->bag, (float)this->woodCollectionInProgress * this->bag, (float)this->stoneCollectionInProgress * this->bag, (float)this->ironCollectionInProgress * bag, 0});
-                this->bag = 0;
-                try {
-                    auto p = this->tryToFindBestResourcePoint(rps);
-                    this->setTarget(p.first, p.second);
-                }
-                catch (std::exception& e) {
-                    this->stopCollection();
-                }
-                return;
-            }
-            else {
-                try {
-                    auto p = this->tryToFindBestResourceBuilding(rbs);
-                    this->setTarget(p.first, p.second);
-                }
-                catch (std::exception& e) {
-                    this->stopCollection();
-                }
-                return;
-            }
-        }
-    }
-
-    for (const auto& rp : rps) {
-        if (humanCX != rp->getCX() or humanCY != rp->getCY()) {
-            continue;
-        }
-        if (this->correctResourcePoint(rp)) {
-            float get = std::min(this->getCapacity() - this->bag, rp->getHP());
-            this->bag = this->bag + get;
-            rp->setHP(rp->getHP() - get);
-            break;
-        }
-    }
-
-    if (this->bag == this->getCapacity()) {
-        try {
-            auto p = this->tryToFindBestResourceBuilding(rbs);
-            this->setTarget(p.first, p.second);
-        }
-        catch (std::exception& e) {
-            this->stopCollection();
-        }
-    }
-    else {
-        try {
-            auto p = this->tryToFindBestResourcePoint(rps);
-            this->setTarget(p.first, p.second);
-        }
-        catch (std::exception& e) {
-            try {
-                auto p = this->tryToFindBestResourceBuilding(rbs);
-                this->setTarget(p.first, p.second);
-            }
-            catch (std::exception& e) {
-                this->stopCollection();
-            }
         }
     }
 }
