@@ -53,7 +53,7 @@ float Archer::getAttackRadius() const {
     return 2 * 64;
 }
 int32_t Archer::getAttackDelay() const {
-    return 2000;
+    return 1000;
 }
 float Archer::getSpeed() const {
     return 32;
