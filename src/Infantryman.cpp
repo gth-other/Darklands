@@ -33,12 +33,12 @@ const sf::SoundBuffer &Infantryman::getSelectSoundBuffer() const {
 }
 const sf::Texture &Infantryman::getTexture() const {
     if (this->alive()) {
-        if (this->attackStarted()) return this->storage->getTexture("infantrymanAttack" + this->calcDirection());
-        if (this->targetReached()) return this->storage->getTexture("infantrymanRest" + this->calcDirection());
-        return this->storage->getTexture("infantrymanWalk" + this->calcDirection());
+        if (this->attackStarted()) return this->storage->getTexture("infantrymanAttack" + this->calcAttackDirection());
+        if (this->targetReached()) return this->storage->getTexture("infantrymanRest" + this->calcMovementDirection());
+        return this->storage->getTexture("infantrymanWalk" + this->calcMovementDirection());
     }
-    if (this->targetReached()) return this->storage->getTexture("infantrymanDie" + this->calcDirection());
-    return this->storage->getTexture("infantrymanDie" + this->calcDirection());
+    if (this->targetReached()) return this->storage->getTexture("infantrymanDie" + this->calcMovementDirection());
+    return this->storage->getTexture("infantrymanDie" + this->calcMovementDirection());
 }
 float Infantryman::getDefense() const {
     return 5;

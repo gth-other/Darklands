@@ -28,6 +28,9 @@ Warrior::Warrior(float x, float y, Player *player, Camera *camera, SoundQueue *s
     this->targetX = this->x;
     this->targetY = this->y;
 
+    this->attackTargetX = 0;
+    this->attackTargetY = 0;
+
     this->_alive = true;
 
     this->foodCollectionInProgress = false;
@@ -126,27 +129,11 @@ bool Warrior::targetReached() const {
 bool Warrior::alive() const {
     return this->_alive;
 }
-std::string Warrior::calcDirection() const {
-    float vMedium = this->getSpeed() / 1.4142f;
-    float vMediumPart = vMedium / 3;
-
-    float vx, vy;
-    std::tie(vx, vy) = this->calcSpeed();
-
-    if (vy > vMediumPart) {
-        if (vx > vMediumPart) return "SE";
-        if (vx < -vMediumPart) return "SW";
-        return "S";
-    }
-
-    if (vy < -vMediumPart) {
-        if (vx > vMediumPart) return "NE";
-        if (vx < -vMediumPart) return "NW";
-        return "N";
-    }
-
-    if (vx < -vMediumPart) return "W";
-    return "E";
+std::string Warrior::calcMovementDirection() const {
+    return Warrior::calcDirection(this->x, this->y, this->targetX, this->targetY);
+}
+std::string Warrior::calcAttackDirection() const {
+    return Warrior::calcDirection(this->x, this->y, this->attackTargetX, this->attackTargetY);
 }
 float Warrior::getX() const {
     return this->x;
@@ -182,6 +169,31 @@ sf::IntRect Warrior::getTextureRect() const {
 }
 bool Warrior::attackStarted() const {
     return this->_attackStarted;
+}
+std::string Warrior::calcDirection(float x1, float y1, float x2, float y2) {
+    double dstX = std::abs(x1 - x2);
+    double dstY = std::abs(y1 - y2);
+    double dst = std::sqrt(std::pow(dstX, 2) + std::pow(dstY, 2));
+
+    double sin = dstX / dst;
+    double degree = std::asin(sin) * 180 / M_PI;
+
+    if (degree <= 30) {
+        if (y2 < y1) return "N";
+        return "S";
+    }
+    else if (degree <= 60) {
+        std::string result;
+        if (y2 < y1) result.append("N");
+        else result.append("S");
+        if (x2 < x1) result.append("W");
+        else result.append("E");
+        return result;
+    }
+    else {
+        if (x2 < x1) return "W";
+        return "E";
+    }
 }
 std::pair<float, float> Warrior::calcSpeed() const {
     if (this->targetReached()) {
@@ -316,6 +328,8 @@ void Warrior::updateAttack(std::vector<Building*> &buildings, std::vector<Warrio
             this->_attackStarted = true;
             this->setTarget(this->getX(), this->getY());
             this->attackAnimationTimer.restart();
+            this->attackTargetX = w->getX() + 16;
+            this->attackTargetY = w->getY() + 16;
         }
         catch (std::exception &e) {
             try {
@@ -323,6 +337,8 @@ void Warrior::updateAttack(std::vector<Building*> &buildings, std::vector<Warrio
                 this->_attackStarted = true;
                 this->setTarget(this->getX(), this->getY());
                 this->attackAnimationTimer.restart();
+                this->attackTargetX = (float)b->getCX() * 64 + 32;
+                this->attackTargetY = (float)b->getCY() * 64 + 32;
             }
             catch (std::exception &e) {}
         }

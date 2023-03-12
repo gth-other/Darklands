@@ -61,7 +61,8 @@ public:
 
     [[nodiscard]] bool targetReached() const;
     [[nodiscard]] bool alive() const override;
-    [[nodiscard]] std::string calcDirection() const;
+    [[nodiscard]] std::string calcMovementDirection() const;
+    [[nodiscard]] std::string calcAttackDirection() const;
 
     [[nodiscard]] float getX() const;
     [[nodiscard]] float getY() const;
@@ -83,6 +84,7 @@ protected:
 private:
     float x, y;
     float targetX, targetY;
+    float attackTargetX, attackTargetY;
     bool _alive;
     bool foodCollectionInProgress;
     bool woodCollectionInProgress;
@@ -96,6 +98,8 @@ private:
     sf::Clock deathAnimationTimer;
     sf::Clock attackAnimationTimer;
     bool _attackStarted;
+
+    static std::string calcDirection(float x1, float y1, float x2, float y2);
 
     [[nodiscard]] std::pair<float, float> calcSpeed() const;
 

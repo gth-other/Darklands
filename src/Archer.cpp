@@ -33,12 +33,12 @@ const sf::SoundBuffer &Archer::getSelectSoundBuffer() const {
 }
 const sf::Texture &Archer::getTexture() const {
     if (this->alive()) {
-        if (this->attackStarted()) return this->storage->getTexture("archerAttack" + this->calcDirection());
-        if (this->targetReached()) return this->storage->getTexture("archerRest" + this->calcDirection());
-        return this->storage->getTexture("archerWalk" + this->calcDirection());
+        if (this->attackStarted()) return this->storage->getTexture("archerAttack" + this->calcAttackDirection());
+        if (this->targetReached()) return this->storage->getTexture("archerRest" + this->calcMovementDirection());
+        return this->storage->getTexture("archerWalk" + this->calcMovementDirection());
     }
-    if (this->targetReached()) return this->storage->getTexture("archerDie" + this->calcDirection());
-    return this->storage->getTexture("archerDie" + this->calcDirection());
+    if (this->targetReached()) return this->storage->getTexture("archerDie" + this->calcMovementDirection());
+    return this->storage->getTexture("archerDie" + this->calcMovementDirection());
 }
 float Archer::getDefense() const {
     return 2;
