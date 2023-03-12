@@ -41,7 +41,7 @@ const sf::Texture &Archer::getTexture() const {
     return this->storage->getTexture("archerDie" + this->calcDirection());
 }
 float Archer::getDefense() const {
-    return 1;
+    return 2;
 }
 float Archer::getBuildingAttack() const {
     return 5;
@@ -53,7 +53,7 @@ float Archer::getAttackRadius() const {
     return 2 * 64;
 }
 int32_t Archer::getAttackDelay() const {
-    return 1000;
+    return 2000;
 }
 float Archer::getSpeed() const {
     return 32;

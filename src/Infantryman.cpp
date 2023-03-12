@@ -41,7 +41,7 @@ const sf::Texture &Infantryman::getTexture() const {
     return this->storage->getTexture("infantrymanDie" + this->calcDirection());
 }
 float Infantryman::getDefense() const {
-    return 2;
+    return 5;
 }
 float Infantryman::getBuildingAttack() const {
     return 5;
@@ -53,7 +53,7 @@ float Infantryman::getAttackRadius() const {
     return 32;
 }
 int32_t Infantryman::getAttackDelay() const {
-    return 1000;
+    return 2000;
 }
 float Infantryman::getSpeed() const {
     return 32;
