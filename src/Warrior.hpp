@@ -78,6 +78,8 @@ protected:
     [[nodiscard]] float getCapacity() const;
     [[nodiscard]] virtual float getBaseCapacity() const = 0;
     [[nodiscard]] sf::IntRect getTextureRect() const override;
+
+    [[nodiscard]] bool attackStarted() const;
 private:
     float x, y;
     float targetX, targetY;
@@ -90,15 +92,20 @@ private:
     std::mt19937 mersenne;
 
     sf::Clock movementTimer;
-    sf::Clock attackTimer;
     sf::Clock animationClock;
-    sf::Clock deathAnimationClock;
+    sf::Clock deathAnimationTimer;
+    sf::Clock attackAnimationTimer;
+    bool _attackStarted;
 
     [[nodiscard]] std::pair<float, float> calcSpeed() const;
+
     [[nodiscard]] std::pair<int32_t, int32_t> tryToFindBestResourceBuilding(std::vector<ResourceBuilding*> &rbs) const;
     [[nodiscard]] std::pair<int32_t, int32_t> tryToFindBestResourcePoint(std::vector<ResourcePoint*> &rps) const;
     [[nodiscard]] bool correctResourceBuilding(ResourceBuilding *rb) const;
     [[nodiscard]] bool correctResourcePoint(ResourcePoint *rp) const;
+
+    [[nodiscard]] Building* tryToFindBuildingInAttackRadius(std::vector<Building*> &buildings) const;
+    [[nodiscard]] Warrior* tryToFindWarriorInAttackRadius(std::vector<Warrior*> &warriors) const;
 
     void updateMoving();
     void updateDefenseBuildings(std::vector<DefenseBuilding*> &defenseBuildings);

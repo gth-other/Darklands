@@ -33,6 +33,7 @@ const sf::SoundBuffer &Archer::getSelectSoundBuffer() const {
 }
 const sf::Texture &Archer::getTexture() const {
     if (this->alive()) {
+        if (this->attackStarted()) return this->storage->getTexture("archerAttack" + this->calcDirection());
         if (this->targetReached()) return this->storage->getTexture("archerRest" + this->calcDirection());
         return this->storage->getTexture("archerWalk" + this->calcDirection());
     }

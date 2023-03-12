@@ -33,6 +33,7 @@ const sf::SoundBuffer &Infantryman::getSelectSoundBuffer() const {
 }
 const sf::Texture &Infantryman::getTexture() const {
     if (this->alive()) {
+        if (this->attackStarted()) return this->storage->getTexture("infantrymanAttack" + this->calcDirection());
         if (this->targetReached()) return this->storage->getTexture("infantrymanRest" + this->calcDirection());
         return this->storage->getTexture("infantrymanWalk" + this->calcDirection());
     }

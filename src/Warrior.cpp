@@ -39,6 +39,8 @@ Warrior::Warrior(float x, float y, Player *player, Camera *camera, SoundQueue *s
 
     std::random_device rd;
     this->mersenne = std::mt19937(rd());
+
+    this->_attackStarted = false;
 }
 void Warrior::draw(sf::RenderTarget &target, sf::RenderStates states) const {
     if (!this->camera->contain(this->x, this->y, 32, 32)) {
@@ -113,7 +115,7 @@ void Warrior::stopCollection() {
 void Warrior::kill() {
     this->_alive = false;
     this->unselect();
-    this->deathAnimationClock.restart();
+    this->deathAnimationTimer.restart();
 }
 bool Warrior::targetReached() const {
     bool dxZero = std::abs(this->x - this->targetX) < 16;
@@ -163,12 +165,23 @@ float Warrior::getCapacity() const {
 }
 sf::IntRect Warrior::getTextureRect() const {
     int32_t animations = (int32_t)this->getTexture().getSize().x / 32;
-    int32_t ms = 1000 / animations;
     int32_t number;
-    if (this->alive()) number = this->animationClock.getElapsedTime().asMilliseconds() / ms % animations;
-    else number = std::min(animations - 1, this->deathAnimationClock.getElapsedTime().asMilliseconds() * 2 / ms);
+    if (this->alive()) {
+        if (this->attackStarted()) {
+            number = this->attackAnimationTimer.getElapsedTime().asMilliseconds() / (this->getAttackDelay() / animations);
+        }
+        else {
+            number = this->animationClock.getElapsedTime().asMilliseconds() / (1000 / animations) % animations;
+        }
+    }
+    else {
+        number = std::min(animations - 1, this->deathAnimationTimer.getElapsedTime().asMilliseconds() * 2 / (1000 / animations));
+    }
 
     return {number * 32, 0, 32, 32};
+}
+bool Warrior::attackStarted() const {
+    return this->_attackStarted;
 }
 std::pair<float, float> Warrior::calcSpeed() const {
     if (this->targetReached()) {
@@ -232,6 +245,30 @@ bool Warrior::correctResourcePoint(ResourcePoint *rp) const {
            (this->stoneCollectionInProgress and dynamic_cast<Mountain*>(rp)) or
            (this->ironCollectionInProgress and dynamic_cast<RedMountain*>(rp));
 }
+Building* Warrior::tryToFindBuildingInAttackRadius(std::vector<Building*> &buildings) const {
+    for (const auto& b : buildings) {
+        if (!b->alive() or b->getPlayerPtr() == this->getPlayerPtr()) continue;
+        float dstX = (this->getX() + 16) - (b->getCX() * 64 + 32);
+        float dstY = (this->getY() + 16) - (b->getCY() * 64 + 32);
+        auto dst = (float)std::sqrt(std::pow(dstX, 2) + std::pow(dstY, 2));
+        if (dst < this->getAttackRadius()) {
+            return b;
+        }
+    }
+    throw std::exception();
+}
+Warrior* Warrior::tryToFindWarriorInAttackRadius(std::vector<Warrior*> &warriors) const {
+    for (const auto &w : warriors) {
+        if (!w->alive() or w->getPlayerPtr() == this->getPlayerPtr()) continue;
+        float dstX = (this->getX() + 16) - (w->getX() + 16);
+        float dstY = (this->getY() + 16) - (w->getY() + 16);
+        auto dst = (float)std::sqrt(std::pow(dstX, 2) + std::pow(dstY, 2));
+        if (dst < this->getAttackRadius()) {
+            return w;
+        }
+    }
+    throw std::exception();
+}
 void Warrior::updateMoving() {
     float t = (float) this->movementTimer.getElapsedTime().asMilliseconds() / 1000;
     this->movementTimer.restart();
@@ -252,37 +289,40 @@ void Warrior::updateDefenseBuildings(std::vector<DefenseBuilding*> &defenseBuild
     }
 }
 void Warrior::updateAttack(std::vector<Building*> &buildings, std::vector<Warrior*> &warriors) {
-    if (this->attackTimer.getElapsedTime().asMilliseconds() < this->getAttackDelay()) {
-        return;
-    }
-
-    for (const auto &w : warriors) {
-        if (!w->alive() or w->getPlayerPtr() == this->getPlayerPtr()) continue;
-        float dstX = (this->getX() + 16) - (w->getX() + 16);
-        float dstY = (this->getY() + 16) - (w->getY() + 16);
-        auto dst = (float)std::sqrt(std::pow(dstX, 2) + std::pow(dstY, 2));
-        if (dst < this->getAttackRadius()) {
-            uint32_t probability = (uint32_t)(this->getWarriorAttack() / w->getDefense() * 100);
-            uint32_t random = this->mersenne() % 100;
+    if (this->_attackStarted and this->attackAnimationTimer.getElapsedTime().asMilliseconds() >= this->getAttackDelay()) {
+        try {
+            Warrior *w = this->tryToFindWarriorInAttackRadius(warriors);
+            auto probability = (uint32_t)(this->getWarriorAttack() / w->getDefense() * 100.f);
+            uint32_t random = mersenne() % 100;
             if (random < probability) {
-                w->kill();
+                w->kill();;
             }
-            this->attackTimer.restart();
-            this->soundQueue->push(this->getSelectSoundBuffer());
-            return;
         }
-    }
+        catch (std::exception &e) {
+            try {
+                Building *b = this->tryToFindBuildingInAttackRadius(buildings);
+                b->setHP(std::max(0.f, b->getHP() - this->getBuildingAttack()));
+            }
+            catch (std::exception &e) {}
+        }
+        this->soundQueue->push(this->getSelectSoundBuffer());
+        this->_attackStarted = false;
+        return;
+    } 
 
-    for (const auto& b : buildings) {
-        if (!b->alive() or b->getPlayerPtr() == this->getPlayerPtr()) continue;
-        float dstX = (this->getX() + 16) - (b->getCX() * 64 + 32);
-        float dstY = (this->getY() + 16) - (b->getCY() * 64 + 32);
-        auto dst = (float)std::sqrt(std::pow(dstX, 2) + std::pow(dstY, 2));
-        if (dst < this->getAttackRadius()) {
-            b->setHP(std::max(0.f, b->getHP() - this->getBuildingAttack()));
-            this->attackTimer.restart();
-            this->soundQueue->push(this->getSelectSoundBuffer());
-            return;
+    if (!this->_attackStarted) {
+        try {
+            Warrior *w = this->tryToFindWarriorInAttackRadius(warriors);
+            this->_attackStarted = true;
+            this->attackAnimationTimer.restart();
+        }
+        catch (std::exception &e) {
+            try {
+                Building *b = this->tryToFindBuildingInAttackRadius(buildings);
+                this->_attackStarted = true;
+                this->attackAnimationTimer.restart();
+            }
+            catch (std::exception &e) {}
         }
     }
 }
@@ -295,7 +335,9 @@ void Warrior::updateCollection(std::vector<ResourceBuilding*> &rbs, std::vector<
     auto humanCY = (int32_t)this->getY() / 64;
 
     for (const auto& rb : rbs) {
-        if (rb->getPlayerPtr() != this->getPlayerPtr() or humanCX != rb->getCX() or humanCY != rb->getCY()) continue;
+        if (rb->getPlayerPtr() != this->getPlayerPtr() or humanCX != rb->getCX() or humanCY != rb->getCY()) {
+            continue;
+        }
         if (this->correctResourceBuilding(rb)) {
             if (rb->alive()) {
                 rb->getPlayerPtr()->addResources({(float)this->foodCollectionInProgress * this->bag, (float)this->woodCollectionInProgress * this->bag, (float)this->stoneCollectionInProgress * this->bag, (float)this->ironCollectionInProgress * bag, 0});
@@ -304,7 +346,9 @@ void Warrior::updateCollection(std::vector<ResourceBuilding*> &rbs, std::vector<
                     auto p = this->tryToFindBestResourcePoint(rps);
                     this->setTarget(p.first, p.second);
                 }
-                catch (std::exception& e) {this->stopCollection();}
+                catch (std::exception& e) {
+                    this->stopCollection();
+                }
                 return;
             }
             else {
@@ -312,14 +356,18 @@ void Warrior::updateCollection(std::vector<ResourceBuilding*> &rbs, std::vector<
                     auto p = this->tryToFindBestResourceBuilding(rbs);
                     this->setTarget(p.first, p.second);
                 }
-                catch (std::exception& e) {this->stopCollection();}
+                catch (std::exception& e) {
+                    this->stopCollection();
+                }
                 return;
             }
         }
     }
 
     for (const auto& rp : rps) {
-        if (humanCX != rp->getCX() or humanCY != rp->getCY()) continue;
+        if (humanCX != rp->getCX() or humanCY != rp->getCY()) {
+            continue;
+        }
         if (this->correctResourcePoint(rp)) {
             float get = std::min(this->getCapacity() - this->bag, rp->getHP());
             this->bag = this->bag + get;
@@ -333,7 +381,9 @@ void Warrior::updateCollection(std::vector<ResourceBuilding*> &rbs, std::vector<
             auto p = this->tryToFindBestResourceBuilding(rbs);
             this->setTarget(p.first, p.second);
         }
-        catch (std::exception& e) {this->stopCollection();}
+        catch (std::exception& e) {
+            this->stopCollection();
+        }
     }
     else {
         try {
@@ -345,7 +395,9 @@ void Warrior::updateCollection(std::vector<ResourceBuilding*> &rbs, std::vector<
                 auto p = this->tryToFindBestResourceBuilding(rbs);
                 this->setTarget(p.first, p.second);
             }
-            catch (std::exception& e) {this->stopCollection();}
+            catch (std::exception& e) {
+                this->stopCollection();
+            }
         }
     }
 }
