@@ -155,14 +155,14 @@ sf::IntRect Warrior::getTextureRect() const {
     int32_t number;
     if (this->alive()) {
         if (this->attackStarted()) {
-            number = this->attackAnimationTimer.getElapsedTime().asMilliseconds() / (this->getAttackDelay() / animations);
+            number = this->attackAnimationTimer.getElapsedTime().asMilliseconds() / (this->getAttackDelay() / animations) % animations;
         }
         else {
             number = this->animationClock.getElapsedTime().asMilliseconds() / (1000 / animations) % animations;
         }
     }
     else {
-        number = std::min(animations - 1, this->deathAnimationTimer.getElapsedTime().asMilliseconds() * 2 / (1000 / animations));
+        number = std::min(animations - 1, this->deathAnimationTimer.getElapsedTime().asMilliseconds() * 2 / (1000 / animations)) % animations;
     }
 
     return {number * 32, 0, 32, 32};
