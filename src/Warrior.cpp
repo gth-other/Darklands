@@ -314,12 +314,14 @@ void Warrior::updateAttack(std::vector<Building*> &buildings, std::vector<Warrio
         try {
             Warrior *w = this->tryToFindWarriorInAttackRadius(warriors);
             this->_attackStarted = true;
+            this->setTarget(this->getX(), this->getY());
             this->attackAnimationTimer.restart();
         }
         catch (std::exception &e) {
             try {
                 Building *b = this->tryToFindBuildingInAttackRadius(buildings);
                 this->_attackStarted = true;
+                this->setTarget(this->getX(), this->getY());
                 this->attackAnimationTimer.restart();
             }
             catch (std::exception &e) {}
