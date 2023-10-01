@@ -30,8 +30,9 @@ public:
     Lord();
     Lord(sf::Vector2f position, Player *player, Storage *storage, SoundQueue *soundQueue, Map *map, std::vector<sf::Vector2f> *resPositions, std::list<std::unique_ptr<Enemy>> *enemies);
     void kill(const std::string &reason) override;
-
     [[nodiscard]] std::string getMurderSoundName() const override;
+    [[nodiscard]] int32_t getID() const override;
+    [[nodiscard]] bool isBoss() const override;
 private:
     int32_t deathCtr;
     std::vector<sf::Vector2f> *resPositions;
@@ -45,7 +46,6 @@ private:
     [[nodiscard]] float getG() const override;
     [[nodiscard]] std::string getTextureName() const override;
     [[nodiscard]] int32_t getMSPerFrame() const override;
-
     void teleport();
     void callSouls();
 };

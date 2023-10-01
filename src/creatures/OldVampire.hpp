@@ -29,8 +29,9 @@ public:
     OldVampire(sf::Vector2f position, Player *player, Storage *storage, SoundQueue *soundQueue, Map *map);
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
     void update() override;
-
     [[nodiscard]] std::string getMurderSoundName() const override;
+    [[nodiscard]] int32_t getID() const override;
+    [[nodiscard]] bool isBoss() const override;
 private:
     sf::Clock increaseTimer;
     sf::Clock delayTimer;

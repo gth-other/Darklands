@@ -25,6 +25,12 @@ Vampire::Vampire(sf::Vector2f position, Player *player, Storage *storage, SoundQ
 std::string Vampire::getMurderSoundName() const {
     return "bite";
 }
+int32_t Vampire::getID() const {
+    return 314;
+}
+bool Vampire::isBoss() const {
+    return false;
+}
 float Vampire::getMaximalMoveSpeed() const {
     return 32 * 13;
 }

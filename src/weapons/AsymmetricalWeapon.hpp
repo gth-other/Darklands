@@ -33,6 +33,7 @@ protected:
     [[nodiscard]] virtual int32_t getRightMuzzleID() const = 0;
 private:
     bool right;
+
     [[nodiscard]] bool impossibleToShoot() const override;
     [[nodiscard]] float getAlpha() const override;
 };

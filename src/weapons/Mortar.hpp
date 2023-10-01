@@ -27,7 +27,6 @@ class Mortar : public SymmetricalWeapon {
 public:
     Mortar();
     Mortar(sf::Vector2f position, Storage *storage, SoundQueue *soundQueue, Map *map, Player *player);
-
     [[nodiscard]] float getMinimalLength() const override;
     [[nodiscard]] float getMaximalLength() const override;
     [[nodiscard]] float getDeltaAlpha() const override;

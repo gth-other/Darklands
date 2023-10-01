@@ -40,6 +40,12 @@ void Lord::kill(const std::string &reason) {
 std::string Lord::getMurderSoundName() const {
     return "sword";
 }
+int32_t Lord::getID() const {
+    return 320;
+}
+bool Lord::isBoss() const {
+    return true;
+}
 float Lord::getMaximalMoveSpeed() const {
     return 32 * (float)(MAXIMAL_DEATHS - this->deathCtr) * 2;
 }

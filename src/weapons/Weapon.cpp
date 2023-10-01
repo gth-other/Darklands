@@ -75,6 +75,7 @@ float Weapon::getMaxVAbs(float alpha) const {
     return maxVAbs;
 }
 float Weapon::getBestVAbs(float alpha, float maxVAbs) const {
+    // TODO: Возможно, что следует оптимизировать поиск через формулы балистики.
     int32_t l = 0, r = (int32_t)maxVAbs;
     while (l <= r) {
         int32_t m = (l + r) / 2;

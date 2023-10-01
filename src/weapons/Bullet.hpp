@@ -48,6 +48,7 @@ private:
     Storage *storage;
     Map *map;
     SoundQueue *soundQueue;
+
     void collisionX();
     void collisionY();
 };

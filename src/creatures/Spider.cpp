@@ -25,6 +25,12 @@ Spider::Spider(sf::Vector2f position, Player *player, Storage *storage, SoundQue
 std::string Spider::getMurderSoundName() const {
     return "bite";
 }
+int32_t Spider::getID() const {
+    return 317;
+}
+bool Spider::isBoss() const {
+    return false;
+}
 float Spider::getMaximalMoveSpeed() const {
     return 32 * 30;
 }

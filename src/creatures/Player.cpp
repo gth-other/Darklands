@@ -64,6 +64,9 @@ void Player::draw(sf::RenderTarget& target, sf::RenderStates states) const {
 std::string Player::getMurderSoundName() const {
     return "sword";
 }
+int32_t Player::getID() const {
+    return 313;
+}
 float Player::getMaximalMoveSpeed() const {
     return 32 * 10;
 }

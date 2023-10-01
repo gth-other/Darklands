@@ -158,25 +158,25 @@ uint8_t Game::startLevel(const std::string &path, bool lastLevel) {
             else if (id == Mortar().getMuzzleID()) {
                 this->weapons.push_back(std::make_unique<Mortar>(position, &this->storage, &this->soundQueue, &this->map, &this->player));
             }
-            else if (id == 313) {
+            else if (id == Player().getID()) {
                 this->player = Player(position, &storage, &soundQueue, &map);
             }
-            else if (id == 314) {
+            else if (id == Vampire().getID()) {
                 this->enemies.push_back(std::make_unique<Vampire>(position, &this->player, &this->storage, &this->soundQueue, &this->map));
             }
             else if (id == 316) {
                 finishX = 32 * (float)x;
             }
-            else if (id == 317) {
+            else if (id == Spider().getID()) {
                 this->enemies.push_back(std::make_unique<Spider>(position, &this->player, &this->storage, &this->soundQueue, &this->map));
             }
-            else if (id == 318) {
+            else if (id == Soul().getID()) {
                 this->enemies.push_back(std::make_unique<Soul>(position, &this->player, &this->storage, &this->soundQueue, &this->map));
             }
-            else if (id == 319) {
+            else if (id == OldVampire().getID()) {
                 this->enemies.push_back(std::make_unique<OldVampire>(position, &this->player, &this->storage, &this->soundQueue, &this->map));
             }
-            else if (id == 320) {
+            else if (id == Lord().getID()) {
                 this->enemies.push_back(std::make_unique<Lord>(position, &this->player, &this->storage, &this->soundQueue, &this->map, &lordResPositions, &this->enemies));
             }
             else if (id == 321) {
@@ -293,7 +293,7 @@ uint8_t Game::startLevel(const std::string &path, bool lastLevel) {
 bool Game::finish(bool lastLevel) const {
     if (lastLevel) {
         for (auto &enemy : this->enemies) {
-            if (enemy->isAlive() and dynamic_cast<Lord*>(enemy.get())) {
+            if (enemy->isAlive() and enemy->isBoss()) {
                 return false;
             }
         }

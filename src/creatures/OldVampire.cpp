@@ -64,6 +64,12 @@ void OldVampire::update() {
 std::string OldVampire::getMurderSoundName() const {
     return "bite";
 }
+int32_t OldVampire::getID() const {
+    return 319;
+}
+bool OldVampire::isBoss() const {
+    return false;
+}
 float OldVampire::getMaximalMoveSpeed() const {
     return 32 * 7;
 }

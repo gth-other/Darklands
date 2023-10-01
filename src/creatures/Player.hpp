@@ -27,24 +27,24 @@ class Player : public Creature {
 public:
     Player();
     Player(sf::Vector2f position, Storage *storage, SoundQueue *soundQueue, Map *map);
-
     [[nodiscard]] bool wasObservingSpheresUsed() const;
     void useObservingSpheres();
     [[nodiscard]] bool isObservingSpheres() const;
-
     [[nodiscard]] bool wasAbandonedLivesUsed() const;
     void useAbandonedLives();
     [[nodiscard]] bool isAbandonedLives() const;
 
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
-
     [[nodiscard]] std::string getMurderSoundName() const override;
+    [[nodiscard]] int32_t getID() const override;
 private:
     bool observingSpheresUsed;
     sf::Clock observingSpheresClock;
-
     bool abandonedLivesUsed;
     sf::Clock abandonedLivesClock;
+
+    static constexpr float OBSERVING_SPHERES_LENGTH = 5;
+    static constexpr float ABANDONED_LIVES_LENGTH = 5;
 
     [[nodiscard]] float getMaximalMoveSpeed() const override;
     [[nodiscard]] float getMoveAcceleration() const override;
@@ -53,7 +53,4 @@ private:
     [[nodiscard]] std::string getTextureName() const override;
     [[nodiscard]] int32_t getMSPerFrame() const override;
     [[nodiscard]] bool isAI() const override;
-
-    static constexpr float OBSERVING_SPHERES_LENGTH = 5;
-    static constexpr float ABANDONED_LIVES_LENGTH = 5;
 };

@@ -29,8 +29,9 @@ public:
     Soul();
     Soul(sf::Vector2f position, Player *player, Storage *storage, SoundQueue *soundQueue, Map *map);
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
-
     [[nodiscard]] std::string getMurderSoundName() const override;
+    [[nodiscard]] int32_t getID() const override;
+    [[nodiscard]] bool isBoss() const override;
 private:
     static constexpr float VISIBLE_DST = 32 * 10;
 

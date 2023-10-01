@@ -35,9 +35,7 @@ public:
 protected:
     [[nodiscard]] float getPlayerCenterX() const;
     [[nodiscard]] float getPositionX() const;
-
     [[nodiscard]] virtual bool impossibleToShoot() const;
-
     [[nodiscard]] virtual float getMinimalLength() const = 0;
     [[nodiscard]] virtual float getMaximalLength() const = 0;
     [[nodiscard]] virtual int32_t getShotsInRow() const = 0;
@@ -54,6 +52,7 @@ private:
     SoundQueue *soundQueue;
     Map *map;
     Player *player;
+
     void restartTimer();
     void updateShotsCtr();
     [[nodiscard]] float getMaxVAbs(float alpha) const;

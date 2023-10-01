@@ -37,8 +37,8 @@ public:
     virtual void kill(const std::string &reason);
     [[nodiscard]] sf::Vector2f getV() const;
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
-
     [[nodiscard]] virtual std::string getMurderSoundName() const = 0;
+    [[nodiscard]] virtual int32_t getID() const = 0;
 
     struct Flags {
         static constexpr uint8_t Left = 0b1;
@@ -52,7 +52,6 @@ protected:
     [[nodiscard]] Storage *getStorage() const;
     [[nodiscard]] SoundQueue* getSoundQueue();
     [[nodiscard]] Map *getMap() const;
-
     [[nodiscard]] virtual float getMaximalMoveSpeed() const = 0;
     [[nodiscard]] virtual float getMoveAcceleration() const = 0;
     [[nodiscard]] virtual float getJumpSpeed() const = 0;

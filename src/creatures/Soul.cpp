@@ -33,6 +33,12 @@ void Soul::draw(sf::RenderTarget &target, sf::RenderStates states) const {
 std::string Soul::getMurderSoundName() const {
     return "soul";
 }
+int32_t Soul::getID() const {
+    return 318;
+}
+bool Soul::isBoss() const {
+    return false;
+}
 float Soul::getMaximalMoveSpeed() const {
     return 32 * 7;
 }
