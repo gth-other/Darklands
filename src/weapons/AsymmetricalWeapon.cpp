@@ -21,7 +21,7 @@
 
 
 AsymmetricalWeapon::AsymmetricalWeapon() = default;
-AsymmetricalWeapon::AsymmetricalWeapon(sf::Vector2f position, bool right, Storage *storage, SoundQueue *soundQueue, Map *map, Player *player) : Weapon(position, storage, soundQueue, map, player) {
+AsymmetricalWeapon::AsymmetricalWeapon(sf::Vector2f position, bool right, Map *map, Player *player) : Weapon(position, map, player) {
     this->right = right;
 }
 bool AsymmetricalWeapon::impossibleToShoot() const {

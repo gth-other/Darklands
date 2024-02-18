@@ -26,12 +26,26 @@
 
 class Playlist {
 public:
-    Playlist();
-    Playlist(Storage *storage, int32_t number);
+    static Playlist *get() {
+        if (Playlist::singletone == nullptr) {
+            Playlist::singletone = new Playlist(SOUNDTRACKS_N);
+        }
+        return Playlist::singletone;
+    }
+
     void update();
     void restartMusic();
+
+    static constexpr uint32_t SOUNDTRACKS_N = 20;
 private:
+    Playlist() = default;
+    Playlist(int32_t number) {
+        this->number = number;
+        this->index = (int32_t)(time(nullptr) % this->number);
+    }
+    Playlist(const Playlist& copy);
+    static Playlist *singletone;
+
     int32_t number;
     int32_t index;
-    Storage *storage;
 };

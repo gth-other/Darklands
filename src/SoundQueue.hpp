@@ -27,9 +27,19 @@
 
 class SoundQueue {
 public:
-    SoundQueue();
+    static SoundQueue *get() {
+        if (SoundQueue::singletone == nullptr) {
+            SoundQueue::singletone = new SoundQueue();
+        }
+        return SoundQueue::singletone;
+    }
+
     void push(sf::SoundBuffer *soundbuffer, float dstX, float dstY);
     void clear();
 private:
+    SoundQueue() = default;
+    SoundQueue(const SoundQueue& copy);
+    static SoundQueue *singletone;
+
     std::list<sf::Sound> data;
 };

@@ -26,6 +26,7 @@
 class Patroller : public Enemy {
 public:
     Patroller();
-    Patroller(sf::Vector2f position, Player *player, Storage *storage, SoundQueue *soundQueue);
+    Patroller(sf::Vector2f position, Player *player);
+
     void update(const Map *map) override;
 };

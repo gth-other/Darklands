@@ -26,7 +26,7 @@
 class SymmetricalWeapon : public Weapon {
 public:
     SymmetricalWeapon();
-    SymmetricalWeapon(sf::Vector2f position, Storage *storage, SoundQueue *soundQueue, Map *map, Player *player);
+    SymmetricalWeapon(sf::Vector2f position, Map *map, Player *player);
 protected:
    [[nodiscard]] virtual float getDeltaAlpha() const = 0;
    [[nodiscard]] virtual int32_t getMuzzleID() const = 0;

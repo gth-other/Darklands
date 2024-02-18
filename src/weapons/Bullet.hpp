@@ -29,7 +29,7 @@
 class Bullet : public sf::Drawable {
 public:
     Bullet();
-    Bullet(sf::FloatRect rect, float v, float alpha, float g, Player *player, Storage *storage, SoundQueue *soundQueue, Map *map);
+    Bullet(sf::FloatRect rect, float v, float alpha, float g, Player *player, Map *map);
     void update(float extraTime = 0);
     [[nodiscard]] bool isExist() const;
     [[nodiscard]] sf::FloatRect getRect() const;
@@ -45,9 +45,7 @@ private:
     sf::Clock timer;
     sf::Clock animationClock;
     Player *player;
-    Storage *storage;
     Map *map;
-    SoundQueue *soundQueue;
 
     void collisionX();
     void collisionY();

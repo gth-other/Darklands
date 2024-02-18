@@ -22,11 +22,9 @@
 
 Weapon::Weapon() = default;
 Weapon::~Weapon() = default;
-Weapon::Weapon(sf::Vector2f position, Storage *storage, SoundQueue *soundQueue, Map *map, Player *player) {
+Weapon::Weapon(sf::Vector2f position, Map *map, Player *player) {
     this->position = position;
     this->shots = 0;
-    this->storage = storage;
-    this->soundQueue = soundQueue;
     this->map = map;
     this->player = player;
 }
@@ -79,7 +77,15 @@ float Weapon::getBestVAbs(float alpha, float maxVAbs) const {
     int32_t l = 0, r = (int32_t)maxVAbs;
     while (l <= r) {
         int32_t m = (l + r) / 2;
-        auto bullet = Bullet(sf::FloatRect(this->position.x, this->position.y, this->getBulletSize().x, this->getBulletSize().y), (float)m, alpha, this->getBulletG(), this->player, this->storage, this->soundQueue, this->map);
+        auto bullet = Bullet(sf::FloatRect(this->position.x,
+                                           this->position.y,
+                                           this->getBulletSize().x,
+                                           this->getBulletSize().y),
+                             (float)m,
+                             alpha,
+                             this->getBulletG(),
+                             this->player,
+                             this->map);
         if (bullet.getFinalCenterPosition().x > this->player->getCenterX()) {
             if (alpha > 90) {
                 l = m + 1;
@@ -100,8 +106,10 @@ float Weapon::getBestVAbs(float alpha, float maxVAbs) const {
     return (float)l;
 }
 void Weapon::addBullet(float alpha, float bestVAbs, std::list<Bullet> &bullets) const {
-    bullets.emplace_back(sf::FloatRect(this->position.x, this->position.y, this->getBulletSize().x, this->getBulletSize().y), bestVAbs, alpha, this->getBulletG(), this->player, this->storage, this->soundQueue, this->map);
+    bullets.emplace_back(sf::FloatRect(this->position.x, this->position.y, this->getBulletSize().x, this->getBulletSize().y), bestVAbs, alpha, this->getBulletG(), this->player, this->map);
 }
 void Weapon::playSound() const {
-    this->soundQueue->push(this->storage->getSoundBuffer("fire"), std::abs(this->position.x - this->player->getCenterX()), std::abs(this->position.y - this->player->getCenterY()));
+    SoundQueue::get()->push(Storage::get()->getSoundBuffer("fire"),
+                            std::abs(this->position.x - this->player->getCenterX()),
+                            std::abs(this->position.y - this->player->getCenterY()));
 }

@@ -21,7 +21,7 @@
 
 
 Soul::Soul() = default;
-Soul::Soul(sf::Vector2f position, Player *player, Storage *storage, SoundQueue *soundQueue) : Patroller(position, player, storage, soundQueue) {}
+Soul::Soul(sf::Vector2f position, Player *player) : Patroller(position, player) {}
 void Soul::draw(sf::RenderTarget &target, sf::RenderStates states) const {
     float dx = std::abs(this->getCenterX() - this->getPlayer()->getCenterX());
     float dy = std::abs(this->getCenterY() - this->getPlayer()->getCenterY());

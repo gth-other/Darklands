@@ -26,7 +26,8 @@
 class Enemy : public Creature {
 public:
     Enemy();
-    Enemy(sf::Vector2f position, Player *player, Storage *storage, SoundQueue *soundQueue);
+    Enemy(sf::Vector2f position, Player *player);
+
     virtual void update(const Map *map);
     [[nodiscard]] virtual bool isBoss() const = 0;
 protected:

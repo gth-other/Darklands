@@ -21,7 +21,7 @@
 
 
 Bullet::Bullet() = default;
-Bullet::Bullet(sf::FloatRect rect, float v, float alpha, float g, Player *player, Storage *storage, SoundQueue *soundQueue, Map *map) {
+Bullet::Bullet(sf::FloatRect rect, float v, float alpha, float g, Player *player, Map *map) {
     this->rect = rect;
     this->v.x = v * std::cos(alpha * M_PIf / 180);
     this->v.y = -std::abs(v * std::sin(alpha * M_PIf / 180));
@@ -29,8 +29,6 @@ Bullet::Bullet(sf::FloatRect rect, float v, float alpha, float g, Player *player
     this->exist = true;
     this->noSound = false;
     this->player = player;
-    this->storage = storage;
-    this->soundQueue = soundQueue;
     this->map = map;
 }
 void Bullet::update(float extraTime) {
@@ -58,7 +56,7 @@ void Bullet::remove() {
     if (this->noSound) {
         return;
     }
-    this->soundQueue->push(this->storage->getSoundBuffer("ground"), std::abs(this->player->getCenterX() - this->rect.left), std::abs(this->player->getCenterY() - this->rect.top));
+    SoundQueue::get()->push(Storage::get()->getSoundBuffer("ground"), std::abs(this->player->getCenterX() - this->rect.left), std::abs(this->player->getCenterY() - this->rect.top));
 }
 sf::Vector2f Bullet::getFinalCenterPosition() const {
     sf::Vector2f result;
@@ -85,7 +83,7 @@ void Bullet::draw(sf::RenderTarget &target, sf::RenderStates states) const {
 
     sf::Sprite sprite;
     sprite.setPosition(this->rect.left, this->rect.top);
-    sprite.setTexture(*this->storage->getTexture("bullet"));
+    sprite.setTexture(*Storage::get()->getTexture("bullet"));
     sprite.setTextureRect(sf::IntRect(((int32_t)this->animationClock.getElapsedTime().asMilliseconds() / 50) % 4 * 14, 0, 14, 22));
     sprite.setOrigin(sprite.getLocalBounds().width / 2, sprite.getLocalBounds().height / 2);
     sprite.setScale(this->rect.width / 14, this->rect.height / 22);

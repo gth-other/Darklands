@@ -21,7 +21,7 @@
 
 
 OldVampire::OldVampire() = default;
-OldVampire::OldVampire(sf::Vector2f position, Player *player, Storage *storage, SoundQueue *soundQueue) : Patroller(position, player, storage, soundQueue) {
+OldVampire::OldVampire(sf::Vector2f position, Player *player) : Patroller(position, player) {
     this->radius = 0;
 }
 void OldVampire::draw(sf::RenderTarget &target, sf::RenderStates states) const {

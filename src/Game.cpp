@@ -31,50 +31,47 @@ Game::Game() {
 
     this->playerView = sf::View(sf::FloatRect(0, 0, (float)this->window.getSize().x, (float)this->window.getSize().y));
 
-    this->storage = Storage(std::string(ROOT));
-    this->storage.addTexture("playerBase", "images/creatures/player/base.png");
-    this->storage.addTexture("playerRun", "images/creatures/player/run.png");
-    this->storage.addTexture("vampireBase", "images/creatures/vampire/base.png");
-    this->storage.addTexture("vampireRun", "images/creatures/vampire/run.png");
-    this->storage.addTexture("spiderBase", "images/creatures/spider/base.png");
-    this->storage.addTexture("spiderRun", "images/creatures/spider/run.png");
-    this->storage.addTexture("soulBase", "images/creatures/soul/base.png");
-    this->storage.addTexture("soulRun", "images/creatures/soul/run.png");
-    this->storage.addTexture("oldVampireBase", "images/creatures/oldVampire/base.png");
-    this->storage.addTexture("oldVampireRun", "images/creatures/oldVampire/run.png");
-    this->storage.addTexture("lordBase", "images/creatures/lord/base.png");
-    this->storage.addTexture("lordRun", "images/creatures/lord/run.png");
-    this->storage.addTexture("bullet", "images/bullet.png");
-    this->storage.addTexture("tileset1", "images/tilesets/1.png");
-    this->storage.addTexture("tileset2", "images/tilesets/2.png");
-    this->storage.addTexture("tileset3", "images/tilesets/3.png");
-    this->storage.addTexture("tileset4", "images/tilesets/4.png");
-    this->storage.addTexture("sun", "images/sun.png");
-    this->storage.addTexture("background", "images/background.png");
-    this->storage.addTexture("observingSpheres", "images/blackBooks/observingSpheres.png");
-    this->storage.addTexture("abandonedLives", "images/blackBooks/abandonedLives.png");
-    this->storage.addFont("font1", "fonts/1.ttf");
-    this->storage.addSoundBuffer("bite", "sounds/bite.ogg");
-    this->storage.addSoundBuffer("blackBook", "sounds/blackBook.ogg");
-    this->storage.addSoundBuffer("soul", "sounds/soul.ogg");
-    this->storage.addSoundBuffer("ground", "sounds/ground.ogg");
-    this->storage.addSoundBuffer("sword", "sounds/sword.ogg");
-    this->storage.addSoundBuffer("fire", "sounds/fire.ogg");
-    this->storage.addSoundBuffer("cannonBall", "sounds/cannonBall.ogg");
-    this->storage.addSoundBuffer("darkMagick", "sounds/darkMagick.ogg");
-    for (int32_t i = 0; i < 20; i = i + 1) {
-        this->storage.addMusic("music" + std::to_string(i + 1), "music/" + std::to_string(i + 1) + ".ogg");
+    Storage::get()->addTexture("playerBase", "images/creatures/player/base.png");
+    Storage::get()->addTexture("playerRun", "images/creatures/player/run.png");
+    Storage::get()->addTexture("vampireBase", "images/creatures/vampire/base.png");
+    Storage::get()->addTexture("vampireRun", "images/creatures/vampire/run.png");
+    Storage::get()->addTexture("spiderBase", "images/creatures/spider/base.png");
+    Storage::get()->addTexture("spiderRun", "images/creatures/spider/run.png");
+    Storage::get()->addTexture("soulBase", "images/creatures/soul/base.png");
+    Storage::get()->addTexture("soulRun", "images/creatures/soul/run.png");
+    Storage::get()->addTexture("oldVampireBase", "images/creatures/oldVampire/base.png");
+    Storage::get()->addTexture("oldVampireRun", "images/creatures/oldVampire/run.png");
+    Storage::get()->addTexture("lordBase", "images/creatures/lord/base.png");
+    Storage::get()->addTexture("lordRun", "images/creatures/lord/run.png");
+    Storage::get()->addTexture("bullet", "images/bullet.png");
+    Storage::get()->addTexture("tileset1", "images/tilesets/1.png");
+    Storage::get()->addTexture("tileset2", "images/tilesets/2.png");
+    Storage::get()->addTexture("tileset3", "images/tilesets/3.png");
+    Storage::get()->addTexture("tileset4", "images/tilesets/4.png");
+    Storage::get()->addTexture("sun", "images/sun.png");
+    Storage::get()->addTexture("background", "images/background.png");
+    Storage::get()->addTexture("observingSpheres", "images/blackBooks/observingSpheres.png");
+    Storage::get()->addTexture("abandonedLives", "images/blackBooks/abandonedLives.png");
+    Storage::get()->addFont("font1", "fonts/1.ttf");
+    Storage::get()->addSoundBuffer("bite", "sounds/bite.ogg");
+    Storage::get()->addSoundBuffer("blackBook", "sounds/blackBook.ogg");
+    Storage::get()->addSoundBuffer("soul", "sounds/soul.ogg");
+    Storage::get()->addSoundBuffer("ground", "sounds/ground.ogg");
+    Storage::get()->addSoundBuffer("sword", "sounds/sword.ogg");
+    Storage::get()->addSoundBuffer("fire", "sounds/fire.ogg");
+    Storage::get()->addSoundBuffer("cannonBall", "sounds/cannonBall.ogg");
+    Storage::get()->addSoundBuffer("darkMagick", "sounds/darkMagick.ogg");
+    for (int32_t i = 0; i < Playlist::SOUNDTRACKS_N; i = i + 1) {
+        Storage::get()->addMusic("music" + std::to_string(i + 1), "music/" + std::to_string(i + 1) + ".ogg");
     }
 
-    this->playlist = Playlist(&this->storage, 20);
-
-    this->sun.setTexture(*this->storage.getTexture("sun"));
+    this->sun.setTexture(*Storage::get()->getTexture("sun"));
     this->sun.setPosition((float)this->window.getSize().x - this->sun.getLocalBounds().width - 50, 50);
 
-    this->observingSpheres.setTexture(*this->storage.getTexture("observingSpheres"));
+    this->observingSpheres.setTexture(*Storage::get()->getTexture("observingSpheres"));
     this->observingSpheres.setPosition(10, 20);
 
-    this->abandonedLives.setTexture(*this->storage.getTexture("abandonedLives"));
+    this->abandonedLives.setTexture(*Storage::get()->getTexture("abandonedLives"));
     this->abandonedLives.setPosition(this->observingSpheres.getPosition().x + this->observingSpheres.getLocalBounds().width + 5, this->observingSpheres.getPosition().y);
 
     this->defeatRect.setSize(sf::Vector2f((float)this->window.getSize().x, (float)this->window.getSize().y));
@@ -83,7 +80,7 @@ Game::Game() {
     this->defeatMessage.setFillColor(sf::Color(200, 0, 0));
     this->defeatMessage.setOutlineColor(sf::Color::Black);
     this->defeatMessage.setOutlineThickness(2);
-    this->defeatMessage.setFont(*this->storage.getFont("font1"));
+    this->defeatMessage.setFont(*Storage::get()->getFont("font1"));
     this->defeatMessage.setString(L"история завершена");
     this->defeatMessage.setCharacterSize(40);
     this->defeatMessage.setPosition(((float)this->window.getSize().x - this->defeatMessage.getLocalBounds().width) / 2, ((float)this->window.getSize().y - this->defeatMessage.getLocalBounds().height) / 2);
@@ -136,10 +133,10 @@ void Game::setCurrentLevel(int32_t level) {
     file.close();
 }
 uint8_t Game::startLevel(const std::string &path, bool lastLevel) {
-    this->soundQueue.clear();
-    this->playlist.restartMusic();
+    SoundQueue::get()->clear();
+    Playlist::get()->restartMusic();
 
-    this->map = Map(std::string(ROOT) + "/" + path, &this->playerView, &this->storage);
+    this->map = Map(std::string(ROOT) + "/" + path, &this->playerView);
 
     this->weapons.clear();
     this->bullets.clear();
@@ -150,34 +147,34 @@ uint8_t Game::startLevel(const std::string &path, bool lastLevel) {
             int32_t id = this->map.getID(x, y);
             auto position = sf::Vector2f(32 * (float)x, 32 * (float)y);
             if (id == Cannon().getLeftMuzzleID()) {
-                this->weapons.push_back(std::make_unique<Cannon>(position, false, &this->storage, &this->soundQueue, &this->map, &this->player));
+                this->weapons.push_back(std::make_unique<Cannon>(position, false, &this->map, &this->player));
             }
             else if (id == Cannon().getRightMuzzleID()) {
-                this->weapons.push_back(std::make_unique<Cannon>(position, true, &this->storage, &this->soundQueue, &this->map, &this->player));
+                this->weapons.push_back(std::make_unique<Cannon>(position, true, &this->map, &this->player));
             }
             else if (id == Mortar().getMuzzleID()) {
-                this->weapons.push_back(std::make_unique<Mortar>(position, &this->storage, &this->soundQueue, &this->map, &this->player));
+                this->weapons.push_back(std::make_unique<Mortar>(position, &this->map, &this->player));
             }
             else if (id == Player().getID()) {
-                this->player = Player(position, &storage, &soundQueue);
+                this->player = Player(position);
             }
             else if (id == Vampire().getID()) {
-                this->enemies.push_back(std::make_unique<Vampire>(position, &this->player, &this->storage, &this->soundQueue));
+                this->enemies.push_back(std::make_unique<Vampire>(position, &this->player));
             }
             else if (id == 316) {
                 finishX = 32 * (float)x;
             }
             else if (id == Spider().getID()) {
-                this->enemies.push_back(std::make_unique<Spider>(position, &this->player, &this->storage, &this->soundQueue));
+                this->enemies.push_back(std::make_unique<Spider>(position, &this->player));
             }
             else if (id == Soul().getID()) {
-                this->enemies.push_back(std::make_unique<Soul>(position, &this->player, &this->storage, &this->soundQueue));
+                this->enemies.push_back(std::make_unique<Soul>(position, &this->player));
             }
             else if (id == OldVampire().getID()) {
-                this->enemies.push_back(std::make_unique<OldVampire>(position, &this->player, &this->storage, &this->soundQueue));
+                this->enemies.push_back(std::make_unique<OldVampire>(position, &this->player));
             }
             else if (id == Lord().getID()) {
-                this->enemies.push_back(std::make_unique<Lord>(position, &this->player, &this->storage, &this->soundQueue, &lordResPositions, &this->enemies));
+                this->enemies.push_back(std::make_unique<Lord>(position, &this->player, &lordResPositions, &this->enemies));
             }
             else if (id == 321) {
                 lordResPositions.push_back(position);
@@ -235,7 +232,7 @@ uint8_t Game::startLevel(const std::string &path, bool lastLevel) {
                 }
             }
         }
-        this->playlist.update();
+        Playlist::get()->update();
 
         this->playerView.setCenter(std::min(32 * (float)this->map.getWidth() - (float)this->window.getSize().x / 2, std::max((float)this->window.getSize().x / 2, this->player.getCenterX())), std::min(32 * (float)this->map.getHeight() - (float)this->window.getSize().y / 2, std::max((float)this->window.getSize().y / 2, this->player.getCenterY())));
         this->window.clear(sf::Color(3, 3, 3));
@@ -244,8 +241,8 @@ uint8_t Game::startLevel(const std::string &path, bool lastLevel) {
         int32_t i = -(int32_t)(this->playerView.getCenter().x / 3);
         do {
             sf::Sprite sprite;
-            sprite.setTexture(*this->storage.getTexture("background"));
-            float scale = ((float)this->window.getSize().y - this->sun.getPosition().y - this->sun.getLocalBounds().height) / (float)this->storage.getTexture("background")->getSize().y;
+            sprite.setTexture(*Storage::get()->getTexture("background"));
+            float scale = ((float)this->window.getSize().y - this->sun.getPosition().y - this->sun.getLocalBounds().height) / (float)Storage::get()->getTexture("background")->getSize().y;
             sprite.setScale(scale, scale);
             sprite.setPosition((float)i, this->sun.getPosition().y + this->sun.getLocalBounds().height);
             i = i + (int32_t)((float)sprite.getTexture()->getSize().x * scale);

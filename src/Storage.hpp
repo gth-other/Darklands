@@ -29,17 +29,32 @@
 
 class Storage {
 public:
-    Storage();
-    Storage(const std::string& root);
+    static Storage *get() {
+        if (Storage::singletone == nullptr) {
+            Storage::singletone = new Storage(ROOT);
+        }
+        return Storage::singletone;
+    }
+
     void addTexture(const std::string& name, const std::string& path);
     void addFont(const std::string& name, const std::string& path);
     void addSoundBuffer(const std::string& name, const std::string& path);
     void addMusic(const std::string& name, const std::string& path);
+
     [[nodiscard]] sf::Texture *getTexture(const std::string& name);
     [[nodiscard]] sf::Font *getFont(const std::string& name);
     [[nodiscard]] sf::SoundBuffer *getSoundBuffer(const std::string& name);
     [[nodiscard]] sf::Music *getMusic(const std::string& name);
+
+    static constexpr std::string_view ROOT = "../data";
 private:
+    Storage() = default;
+    Storage(const std::string_view& root) {
+        this->root = root;
+    }
+    Storage(const Storage& copy);
+    static Storage *singletone;
+
     std::string root;
     std::unordered_map<std::string, sf::Texture> textures;
     std::unordered_map<std::string, sf::Font> fonts;

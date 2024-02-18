@@ -30,7 +30,8 @@ class Weapon {
 public:
     Weapon();
     virtual ~Weapon();
-    Weapon(sf::Vector2f position, Storage *storage, SoundQueue *soundQueue, Map *map, Player *player);
+    Weapon(sf::Vector2f position, Map *map, Player *player);
+
     void update(std::list<Bullet> &bullets);
 protected:
     [[nodiscard]] float getPlayerCenterX() const;
@@ -48,8 +49,6 @@ private:
     sf::Vector2f position;
     int32_t shots;
     sf::Clock timer;
-    Storage *storage;
-    SoundQueue *soundQueue;
     Map *map;
     Player *player;
 

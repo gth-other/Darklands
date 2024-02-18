@@ -21,7 +21,7 @@
 
 
 Vampire::Vampire() = default;
-Vampire::Vampire(sf::Vector2f position, Player *player, Storage *storage, SoundQueue *soundQueue) : Patroller(position, player, storage, soundQueue) {}
+Vampire::Vampire(sf::Vector2f position, Player *player) : Patroller(position, player) {}
 std::string Vampire::getMurderSoundName() const {
     return "bite";
 }

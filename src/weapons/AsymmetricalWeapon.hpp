@@ -26,7 +26,7 @@
 class AsymmetricalWeapon : public Weapon {
 public:
     AsymmetricalWeapon();
-    AsymmetricalWeapon(sf::Vector2f position, bool right, Storage *storage, SoundQueue *soundQueue, Map *map, Player *player);
+    AsymmetricalWeapon(sf::Vector2f position, bool right, Map *map, Player *player);
 protected:
     [[nodiscard]] virtual float getNormalAlpha() const = 0;
     [[nodiscard]] virtual int32_t getLeftMuzzleID() const = 0;

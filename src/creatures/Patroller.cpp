@@ -21,7 +21,7 @@
 
 
 Patroller::Patroller() = default;
-Patroller::Patroller(sf::Vector2f position, Player *player, Storage *storage, SoundQueue *soundQueue) : Enemy(position, player, storage, soundQueue) {}
+Patroller::Patroller(sf::Vector2f position, Player *player) : Enemy(position, player) {}
 void Patroller::update(const Map* map) {
     if (this->isRight()) {
         this->Creature::update(Creature::Flags::Right, map);

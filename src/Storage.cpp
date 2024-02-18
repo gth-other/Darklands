@@ -20,10 +20,9 @@
 #include "Storage.hpp"
 
 
-Storage::Storage() = default;
-Storage::Storage(const std::string& root) {
-    this->root = root;
-}
+Storage *Storage::singletone = nullptr;
+
+
 void Storage::addTexture(const std::string& name, const std::string& path) {
     this->textures[name].loadFromFile(this->root + "/" + path);
 }

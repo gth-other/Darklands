@@ -29,7 +29,7 @@
 class Map : public sf::Drawable {
 public:
     Map();
-    Map(const std::string &path, sf::View *view, Storage *storage);
+    Map(const std::string &path, sf::View *view);
     [[nodiscard]] int32_t getID(int32_t x, int32_t y) const;
     [[nodiscard]] bool isSolid(int32_t x, int32_t y, bool checkAIBlocks) const;
     [[nodiscard]] int32_t getWidth() const;
@@ -38,5 +38,4 @@ public:
 private:
     std::vector<std::vector<int32_t>> data;
     sf::View *view;
-    Storage *storage;
 };

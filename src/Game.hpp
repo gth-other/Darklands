@@ -40,9 +40,6 @@ private:
     sf::RenderWindow window;
     sf::View playerView;
     sf::Event event{};
-    Storage storage;
-    SoundQueue soundQueue;
-    Playlist playlist;
     Map map;
     Player player;
     sf::Sprite sun;

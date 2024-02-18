@@ -20,7 +20,9 @@
 #include "SoundQueue.hpp"
 
 
-SoundQueue::SoundQueue() = default;
+SoundQueue *SoundQueue::singletone = nullptr;
+
+
 void SoundQueue::push(sf::SoundBuffer *soundbuffer, float dstX, float dstY) {
     while (!this->data.empty() and this->data.front().getStatus() != sf::Sound::Status::Playing) {
         this->data.erase(this->data.begin());

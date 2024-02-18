@@ -20,22 +20,19 @@
 #include "Playlist.hpp"
 
 
-Playlist::Playlist() = default;
-Playlist::Playlist(Storage *storage, int32_t number) {
-    this->number = number;
-    this->index = (int32_t)(time(nullptr) % this->number);
-    this->storage = storage;
-}
+Playlist *Playlist::singletone = nullptr;
+
+
 void Playlist::update() {
-    if (this->storage->getMusic("music" + std::to_string(this->index + 1))->getStatus() == sf::Music::Status::Playing) {
+    if (Storage::get()->getMusic("music" + std::to_string(this->index + 1))->getStatus() == sf::Music::Status::Playing) {
         return;
     }
     this->index = (this->index + 1) % this->number;
-    this->storage->getMusic("music" + std::to_string(this->index + 1))->play();
-    this->storage->getMusic("music" + std::to_string(this->index + 1))->setVolume(60);
+    Storage::get()->getMusic("music" + std::to_string(this->index + 1))->play();
+    Storage::get()->getMusic("music" + std::to_string(this->index + 1))->setVolume(60);
 }
 void Playlist::restartMusic() {
     for (int32_t i = 0; i < this->number; i = i + 1) {
-        this->storage->getMusic("music" + std::to_string(this->index + 1))->stop();
+        Storage::get()->getMusic("music" + std::to_string(this->index + 1))->stop();
     }
 }

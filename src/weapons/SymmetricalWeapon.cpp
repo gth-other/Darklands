@@ -21,7 +21,7 @@
 
 
 SymmetricalWeapon::SymmetricalWeapon() = default;
-SymmetricalWeapon::SymmetricalWeapon(sf::Vector2f position, Storage *storage, SoundQueue *soundQueue, Map *map, Player *player) : Weapon(position, storage, soundQueue, map, player) {}
+SymmetricalWeapon::SymmetricalWeapon(sf::Vector2f position, Map *map, Player *player) : Weapon(position, map, player) {}
 float SymmetricalWeapon::getAlpha() const {
     float alpha = 90;
     if (this->getPlayerCenterX() > this->getPositionX()) {

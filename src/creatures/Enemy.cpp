@@ -21,7 +21,7 @@
 
 
 Enemy::Enemy() = default;
-Enemy::Enemy(sf::Vector2f position, Player *player, Storage *storage, SoundQueue *soundQueue) : Creature(position, storage, soundQueue) {
+Enemy::Enemy(sf::Vector2f position, Player *player) : Creature(position) {
     this->player = player;
 }
 void Enemy::update(const Map *map) {

@@ -21,7 +21,7 @@
 
 
 Map::Map() = default;
-Map::Map(const std::string &path, sf::View *view, Storage *storage) {
+Map::Map(const std::string &path, sf::View *view) {
     std::ifstream file(path);
     std::string buff;
     while (std::getline(file, buff)) {
@@ -41,7 +41,6 @@ Map::Map(const std::string &path, sf::View *view, Storage *storage) {
     }
     file.close();
     this->view = view;
-    this->storage = storage;
 }
 int32_t Map::getID(int32_t x, int32_t y) const {
     return this->data[y][x];
@@ -74,19 +73,19 @@ void Map::draw(sf::RenderTarget &target, sf::RenderStates states) const {
             sprite.setPosition((float)x * 32, (float)y * 32);
             if (type >= 1 and type < 129) {
                 type = type - 1;
-                sprite.setTexture(*this->storage->getTexture("tileset1"));
+                sprite.setTexture(*Storage::get()->getTexture("tileset1"));
             }
             else if (type >= 129 and type < 289) {
                 type = type - 129;
-                sprite.setTexture(*this->storage->getTexture("tileset2"));
+                sprite.setTexture(*Storage::get()->getTexture("tileset2"));
             }
             else if (type >= 289 and type < 307) {
                 type = type - 289;
-                sprite.setTexture(*this->storage->getTexture("tileset3"));
+                sprite.setTexture(*Storage::get()->getTexture("tileset3"));
             }
             else if (type >= 307 and type < 313) {
                 type = type - 307;
-                sprite.setTexture(*this->storage->getTexture("tileset4"));
+                sprite.setTexture(*Storage::get()->getTexture("tileset4"));
             }
             else if (type >= 313) {
                 // Это спец-символы для обозначения существ - пропускаем.

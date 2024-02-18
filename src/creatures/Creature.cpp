@@ -21,13 +21,11 @@
 
 
 Creature::Creature() = default;
-Creature::Creature(sf::Vector2f position, Storage *storage, SoundQueue *soundQueue) {
+Creature::Creature(sf::Vector2f position) {
     this->position = position;
     this->alive = true;
     this->onGround = false;
     this->right = true;
-    this->storage = storage;
-    this->soundQueue = soundQueue;
 }
 void Creature::update(uint8_t flag, const Map *map) {
     float fullTime = this->movementTimer.getElapsedTime().asSeconds();
@@ -78,11 +76,17 @@ float Creature::getCenterY() const {
     return this->position.y + this->getRect().height / 2;
 }
 sf::FloatRect Creature::getRect() const {
-    return {this->position.x, this->position.y, (float)this->storage->getTexture(this->getTextureName() + "Base")->getSize().x, (float)this->storage->getTexture(this->getTextureName() + "Base")->getSize().y};
+    return {this->position.x,
+            this->position.y,
+            (float)Storage::get()->getTexture(this->getTextureName() + "Base")->getSize().x,
+            (float)Storage::get()->getTexture(this->getTextureName() + "Base")->getSize().y};
 }
 sf::FloatRect Creature::getCompressedRect() const {
     sf::FloatRect defaultRect = this->getRect();
-    return {defaultRect.left + defaultRect.width / 4, defaultRect.top + defaultRect.height / 4, defaultRect.width / 2, defaultRect.height / 2};
+    return {defaultRect.left + defaultRect.width / 4,
+            defaultRect.top + defaultRect.height / 4,
+            defaultRect.width / 2,
+            defaultRect.height / 2};
 }
 bool Creature::isAlive() const {
     return this->alive;
@@ -90,7 +94,7 @@ bool Creature::isAlive() const {
 void Creature::kill(const std::string &reason) {
     this->alive = false;
     if (!reason.empty()) {
-        this->getSoundQueue()->push(this->getStorage()->getSoundBuffer(reason), 0, 0);
+        SoundQueue::get()->push(Storage::get()->getSoundBuffer(reason), 0, 0);
     }
 }
 sf::Vector2f Creature::getV() const {
@@ -100,12 +104,14 @@ void Creature::draw(sf::RenderTarget &target, sf::RenderStates states) const {
     sf::Sprite sprite;
     sprite.setPosition(this->position);
     if (this->v.x == 0) {
-        sprite.setTexture(*this->storage->getTexture(this->getTextureName() + "Base"));
+        sprite.setTexture(*Storage::get()->getTexture(this->getTextureName() + "Base"));
     }
     else {
-        sprite.setTexture(*this->storage->getTexture(this->getTextureName() + "Run"));
-        sprite.setTextureRect(sf::IntRect(((int32_t)animationClock.getElapsedTime().asMilliseconds() /
-                this->getMSPerFrame()) % ((int32_t)this->storage->getTexture(this->getTextureName() + "Run")->getSize().x / (int32_t)this->getRect().width) * (int32_t)this->getRect().width, 0, (int32_t)this->getRect().width, (int32_t)this->getRect().height));
+        sprite.setTexture(*Storage::get()->getTexture(this->getTextureName() + "Run"));
+        sprite.setTextureRect(sf::IntRect(((int32_t)animationClock.getElapsedTime().asMilliseconds() / this->getMSPerFrame()) % ((int32_t)Storage::get()->getTexture(this->getTextureName() + "Run")->getSize().x / (int32_t)this->getRect().width) * (int32_t)this->getRect().width,
+                                          0,
+                                          (int32_t)this->getRect().width,
+                                          (int32_t)this->getRect().height));
     }
     if (!this->right) {
         sprite.setScale(-1, 1);
@@ -123,12 +129,6 @@ void Creature::invertDirection() {
 void Creature::setPosition(sf::Vector2f newPosition) {
     this->position = newPosition;
     this->onGround = false;
-}
-Storage *Creature::getStorage() const {
-    return this->storage;
-}
-SoundQueue *Creature::getSoundQueue() {
-    return this->soundQueue;
 }
 void Creature::collisionX(const Map *map) {
     if (this->v.x == 0) {

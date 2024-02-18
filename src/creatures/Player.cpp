@@ -21,7 +21,7 @@
 
 
 Player::Player() = default;
-Player::Player(sf::Vector2f position, Storage *storage, SoundQueue *soundQueue) : Creature(position, storage, soundQueue) {
+Player::Player(sf::Vector2f position) : Creature(position) {
     this->observingSpheresUsed = false;
     this->abandonedLivesUsed = false;
 }
@@ -31,7 +31,7 @@ bool Player::wasObservingSpheresUsed() const {
 void Player::useObservingSpheres() {
     this->observingSpheresUsed = true;
     this->observingSpheresClock.restart();
-    this->getSoundQueue()->push(this->getStorage()->getSoundBuffer("blackBook"), 0, 0);
+    SoundQueue::get()->push(Storage::get()->getSoundBuffer("blackBook"), 0, 0);
 }
 bool Player::isObservingSpheres() const {
     return (this->wasObservingSpheresUsed() and this->observingSpheresClock.getElapsedTime().asSeconds() < Player::OBSERVING_SPHERES_LENGTH);
@@ -42,7 +42,7 @@ bool Player::wasAbandonedLivesUsed() const {
 void Player::useAbandonedLives() {
     this->abandonedLivesUsed = true;
     this->abandonedLivesClock.restart();
-    this->getSoundQueue()->push(this->getStorage()->getSoundBuffer("blackBook"), 0, 0);
+    SoundQueue::get()->push(Storage::get()->getSoundBuffer("blackBook"), 0, 0);
 }
 bool Player::isAbandonedLives() const {
     return (this->wasAbandonedLivesUsed() and this->abandonedLivesClock.getElapsedTime().asSeconds() < Player::ABANDONED_LIVES_LENGTH);
@@ -53,10 +53,10 @@ void Player::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     sf::Sprite blackBook;
     blackBook.setScale(0.5, 0.5);
     if (this->isObservingSpheres()) {
-        blackBook.setTexture(*this->getStorage()->getTexture("observingSpheres"));
+        blackBook.setTexture(*Storage::get()->getTexture("observingSpheres"));
     }
     else if (this->isAbandonedLives()) {
-        blackBook.setTexture(*this->getStorage()->getTexture("abandonedLives"));
+        blackBook.setTexture(*Storage::get()->getTexture("abandonedLives"));
     }
     blackBook.setPosition(this->getRect().left, this->getRect().top);
     target.draw(blackBook, states);

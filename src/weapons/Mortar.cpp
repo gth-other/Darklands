@@ -21,7 +21,7 @@
 
 
 Mortar::Mortar() = default;
-Mortar::Mortar(sf::Vector2f position, Storage *storage, SoundQueue *soundQueue, Map *map, Player *player) : SymmetricalWeapon(position, storage, soundQueue, map, player) {}
+Mortar::Mortar(sf::Vector2f position, Map *map, Player *player) : SymmetricalWeapon(position, map, player) {}
 float Mortar::getMinimalLength() const {
     return 32 * 6;
 }
