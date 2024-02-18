@@ -53,50 +53,50 @@ void Game::initPlayerView() {
                                               (float)this->window.getSize().y));
 }
 void Game::loadData() {
-    Storage::get()->addTexture("playerBase", "images/creatures/player/base.png");
-    Storage::get()->addTexture("playerRun", "images/creatures/player/run.png");
-    Storage::get()->addTexture("vampireBase", "images/creatures/vampire/base.png");
-    Storage::get()->addTexture("vampireRun", "images/creatures/vampire/run.png");
-    Storage::get()->addTexture("spiderBase", "images/creatures/spider/base.png");
-    Storage::get()->addTexture("spiderRun", "images/creatures/spider/run.png");
-    Storage::get()->addTexture("soulBase", "images/creatures/soul/base.png");
-    Storage::get()->addTexture("soulRun", "images/creatures/soul/run.png");
-    Storage::get()->addTexture("oldVampireBase", "images/creatures/oldVampire/base.png");
-    Storage::get()->addTexture("oldVampireRun", "images/creatures/oldVampire/run.png");
-    Storage::get()->addTexture("lordBase", "images/creatures/lord/base.png");
-    Storage::get()->addTexture("lordRun", "images/creatures/lord/run.png");
-    Storage::get()->addTexture("bullet", "images/bullet.png");
-    Storage::get()->addTexture("tileset1", "images/tilesets/1.png");
-    Storage::get()->addTexture("tileset2", "images/tilesets/2.png");
-    Storage::get()->addTexture("tileset3", "images/tilesets/3.png");
-    Storage::get()->addTexture("tileset4", "images/tilesets/4.png");
-    Storage::get()->addTexture("sun", "images/sun.png");
-    Storage::get()->addTexture("background", "images/background.png");
-    Storage::get()->addTexture("observingSpheres", "images/blackBooks/observingSpheres.png");
-    Storage::get()->addTexture("abandonedLives", "images/blackBooks/abandonedLives.png");
-    Storage::get()->addFont("font1", "fonts/1.ttf");
-    Storage::get()->addSoundBuffer("bite", "sounds/bite.ogg");
-    Storage::get()->addSoundBuffer("blackBook", "sounds/blackBook.ogg");
-    Storage::get()->addSoundBuffer("soul", "sounds/soul.ogg");
-    Storage::get()->addSoundBuffer("ground", "sounds/ground.ogg");
-    Storage::get()->addSoundBuffer("sword", "sounds/sword.ogg");
-    Storage::get()->addSoundBuffer("fire", "sounds/fire.ogg");
-    Storage::get()->addSoundBuffer("cannonBall", "sounds/cannonBall.ogg");
-    Storage::get()->addSoundBuffer("darkMagick", "sounds/darkMagick.ogg");
+    TextureStorage::get()->add("playerBase", "images/creatures/player/base.png");
+    TextureStorage::get()->add("playerRun", "images/creatures/player/run.png");
+    TextureStorage::get()->add("vampireBase", "images/creatures/vampire/base.png");
+    TextureStorage::get()->add("vampireRun", "images/creatures/vampire/run.png");
+    TextureStorage::get()->add("spiderBase", "images/creatures/spider/base.png");
+    TextureStorage::get()->add("spiderRun", "images/creatures/spider/run.png");
+    TextureStorage::get()->add("soulBase", "images/creatures/soul/base.png");
+    TextureStorage::get()->add("soulRun", "images/creatures/soul/run.png");
+    TextureStorage::get()->add("oldVampireBase", "images/creatures/oldVampire/base.png");
+    TextureStorage::get()->add("oldVampireRun", "images/creatures/oldVampire/run.png");
+    TextureStorage::get()->add("lordBase", "images/creatures/lord/base.png");
+    TextureStorage::get()->add("lordRun", "images/creatures/lord/run.png");
+    TextureStorage::get()->add("bullet", "images/bullet.png");
+    TextureStorage::get()->add("tileset1", "images/tilesets/1.png");
+    TextureStorage::get()->add("tileset2", "images/tilesets/2.png");
+    TextureStorage::get()->add("tileset3", "images/tilesets/3.png");
+    TextureStorage::get()->add("tileset4", "images/tilesets/4.png");
+    TextureStorage::get()->add("sun", "images/sun.png");
+    TextureStorage::get()->add("background", "images/background.png");
+    TextureStorage::get()->add("observingSpheres", "images/blackBooks/observingSpheres.png");
+    TextureStorage::get()->add("abandonedLives", "images/blackBooks/abandonedLives.png");
+    FontStorage::get()->add("font1", "fonts/1.ttf");
+    SoundStorage::get()->add("bite", "sounds/bite.ogg");
+    SoundStorage::get()->add("blackBook", "sounds/blackBook.ogg");
+    SoundStorage::get()->add("soul", "sounds/soul.ogg");
+    SoundStorage::get()->add("ground", "sounds/ground.ogg");
+    SoundStorage::get()->add("sword", "sounds/sword.ogg");
+    SoundStorage::get()->add("fire", "sounds/fire.ogg");
+    SoundStorage::get()->add("cannonBall", "sounds/cannonBall.ogg");
+    SoundStorage::get()->add("darkMagick", "sounds/darkMagick.ogg");
     for (int32_t i = 0; i < Playlist::SOUNDTRACKS_N; i = i + 1) {
-        Storage::get()->addMusic("music" + std::to_string(i + 1), "music/" + std::to_string(i + 1) + ".ogg");
+        MusicStorage::get()->add("music" + std::to_string(i + 1), "music/" + std::to_string(i + 1) + ".ogg");
     }
-    Storage::get()->addTexts({"death", "levelFinished", "gameFinished", "license"}, "locales.txt");
+    TextStorage::get()->add({"death", "levelFinished", "gameFinished", "license"}, "locales.txt");
 }
 void Game::createSun() {
-    this->sun.setTexture(*Storage::get()->getTexture("sun"));
+    this->sun.setTexture(*TextureStorage::get()->get("sun"));
     this->sun.setPosition((float)this->window.getSize().x - this->sun.getLocalBounds().width - 50, 50);
 }
 void Game::createBlackBooks() {
-    this->observingSpheres.setTexture(*Storage::get()->getTexture("observingSpheres"));
+    this->observingSpheres.setTexture(*TextureStorage::get()->get("observingSpheres"));
     this->observingSpheres.setPosition(10, 20);
 
-    this->abandonedLives.setTexture(*Storage::get()->getTexture("abandonedLives"));
+    this->abandonedLives.setTexture(*TextureStorage::get()->get("abandonedLives"));
     this->abandonedLives.setPosition(this->observingSpheres.getPosition().x + this->observingSpheres.getLocalBounds().width + 5, this->observingSpheres.getPosition().y);
 }
 void Game::createEndingMsgs() {
@@ -106,15 +106,15 @@ void Game::createEndingMsgs() {
     this->defeatMessage.setFillColor(sf::Color(200, 0, 0));
     this->defeatMessage.setOutlineColor(sf::Color::Black);
     this->defeatMessage.setOutlineThickness(2);
-    this->defeatMessage.setFont(*Storage::get()->getFont("font1"));
-    this->defeatMessage.setString(*Storage::get()->getText("death"));
+    this->defeatMessage.setFont(*FontStorage::get()->get("font1"));
+    this->defeatMessage.setString(*TextStorage::get()->get("death"));
     this->defeatMessage.setCharacterSize(40);
     this->defeatMessage.setPosition(((float)this->window.getSize().x - this->defeatMessage.getLocalBounds().width) / 2, ((float)this->window.getSize().y - this->defeatMessage.getLocalBounds().height) / 2);
 
     this->finishRect = this->defeatRect;
 
     this->finishMessageDefault = this->defeatMessage;
-    this->finishMessageDefault.setString(*Storage::get()->getText("levelFinished"));
+    this->finishMessageDefault.setString(*TextStorage::get()->get("levelFinished"));
     this->finishMessageDefault.setPosition(((float)this->window.getSize().x - this->finishMessageDefault.getLocalBounds().width) / 2, ((float)this->window.getSize().y - this->finishMessageDefault.getLocalBounds().height) / 2);
 
     this->finishMessageLast.setFillColor(this->finishMessageDefault.getFillColor());
@@ -122,14 +122,14 @@ void Game::createEndingMsgs() {
     this->finishMessageLast.setOutlineThickness(1);
     this->finishMessageLast.setFont(*this->finishMessageDefault.getFont());
     this->finishMessageLast.setCharacterSize(18);
-    this->finishMessageLast.setString(*Storage::get()->getText("gameFinished"));
+    this->finishMessageLast.setString(*TextStorage::get()->get("gameFinished"));
     this->finishMessageLast.setPosition(((float)this->window.getSize().x - this->finishMessageLast.getLocalBounds().width) / 2, ((float)this->window.getSize().y - this->finishMessageLast.getLocalBounds().height) / 2);
 }
 void Game::createLicenseTitle() {
     this->license.setFillColor(this->finishMessageLast.getFillColor());
     this->license.setFont(*this->finishMessageDefault.getFont());
     this->license.setCharacterSize(8);
-    this->license.setString(*Storage::get()->getText("license"));
+    this->license.setString(*TextStorage::get()->get("license"));
     this->license.setPosition(0, 0);
 }
 void Game::updatePhysics(bool lastLevel) {
@@ -163,8 +163,8 @@ void Game::displayEverything(bool lastLevel) {
     int32_t i = -(int32_t)(this->playerView.getCenter().x / 3);
     do {
         sf::Sprite sprite;
-        sprite.setTexture(*Storage::get()->getTexture("background"));
-        float scale = ((float)this->window.getSize().y - this->sun.getPosition().y - this->sun.getLocalBounds().height) / (float)Storage::get()->getTexture("background")->getSize().y;
+        sprite.setTexture(*TextureStorage::get()->get("background"));
+        float scale = ((float)this->window.getSize().y - this->sun.getPosition().y - this->sun.getLocalBounds().height) / (float)TextureStorage::get()->get("background")->getSize().y;
         sprite.setScale(scale, scale);
         sprite.setPosition((float)i, this->sun.getPosition().y + this->sun.getLocalBounds().height);
         i = i + (int32_t)((float)sprite.getTexture()->getSize().x * scale);
@@ -210,7 +210,7 @@ void Game::displayEverything(bool lastLevel) {
 }
 int32_t Game::getCurrentLevel() {
     std::ifstream file;
-    file.open(std::string(Storage::ROOT) + "/appdata/conf.dl");
+    file.open(std::string(ROOT) + "/appdata/conf.dl");
     if (file.is_open()) {
         std::string buff;
         std::getline(file, buff);
@@ -219,11 +219,11 @@ int32_t Game::getCurrentLevel() {
     return 1;
 }
 void Game::setCurrentLevel(int32_t level) {
-    if (!std::filesystem::exists(std::string(Storage::ROOT) + "/appdata")) {
-        std::filesystem::create_directory(std::string(Storage::ROOT) + "/appdata");
+    if (!std::filesystem::exists(std::string(ROOT) + "/appdata")) {
+        std::filesystem::create_directory(std::string(ROOT) + "/appdata");
     }
     std::ofstream file;
-    file.open(std::string(Storage::ROOT) + "/appdata/conf.dl");
+    file.open(std::string(ROOT) + "/appdata/conf.dl");
     file << std::to_string(level);
     file.close();
 }
@@ -242,7 +242,7 @@ uint8_t Game::startLevel(const std::string &path, bool lastLevel) {
     SoundQueue::get()->clear();
     Playlist::get()->restartMusic();
 
-    this->map = Map(std::string(Storage::ROOT) + "/" + path, &this->playerView);
+    this->map = Map(std::string(ROOT) + "/" + path, &this->playerView);
 
     this->weapons.clear();
     this->bullets.clear();

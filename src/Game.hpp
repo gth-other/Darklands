@@ -27,6 +27,8 @@
 #include "creatures/OldVampire.hpp"
 #include "creatures/Lord.hpp"
 #include "Playlist.hpp"
+#include "storages/FontStorage.hpp"
+#include "storages/TextStorage.hpp"
 
 
 #pragma once

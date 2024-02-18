@@ -19,6 +19,7 @@
 
 #include "../SoundQueue.hpp"
 #include "../Map.hpp"
+#include "../storages/SoundStorage.hpp"
 
 
 #pragma once

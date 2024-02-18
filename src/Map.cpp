@@ -73,19 +73,19 @@ void Map::draw(sf::RenderTarget &target, sf::RenderStates states) const {
             sprite.setPosition((float)x * 32, (float)y * 32);
             if (type >= 1 and type < 129) {
                 type = type - 1;
-                sprite.setTexture(*Storage::get()->getTexture("tileset1"));
+                sprite.setTexture(*TextureStorage::get()->get("tileset1"));
             }
             else if (type >= 129 and type < 289) {
                 type = type - 129;
-                sprite.setTexture(*Storage::get()->getTexture("tileset2"));
+                sprite.setTexture(*TextureStorage::get()->get("tileset2"));
             }
             else if (type >= 289 and type < 307) {
                 type = type - 289;
-                sprite.setTexture(*Storage::get()->getTexture("tileset3"));
+                sprite.setTexture(*TextureStorage::get()->get("tileset3"));
             }
             else if (type >= 307 and type < 313) {
                 type = type - 307;
-                sprite.setTexture(*Storage::get()->getTexture("tileset4"));
+                sprite.setTexture(*TextureStorage::get()->get("tileset4"));
             }
             else if (type >= 313) {
                 // Это спец-символы для обозначения существ - пропускаем.

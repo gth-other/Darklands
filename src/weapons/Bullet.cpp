@@ -54,7 +54,7 @@ void Bullet::remove(const Player *player) {
     if (this->noSound) {
         return;
     }
-    SoundQueue::get()->push(Storage::get()->getSoundBuffer("ground"),
+    SoundQueue::get()->push(SoundStorage::get()->get("ground"),
                             std::abs(player->getCenterX() - this->rect.left),
                             std::abs(player->getCenterY() - this->rect.top));
 }
@@ -83,7 +83,7 @@ void Bullet::draw(sf::RenderTarget &target, sf::RenderStates states) const {
 
     sf::Sprite sprite;
     sprite.setPosition(this->rect.left, this->rect.top);
-    sprite.setTexture(*Storage::get()->getTexture("bullet"));
+    sprite.setTexture(*TextureStorage::get()->get("bullet"));
     sprite.setTextureRect(sf::IntRect(((int32_t)this->animationClock.getElapsedTime().asMilliseconds() / 50) % 4 * 14, 0, 14, 22));
     sprite.setOrigin(sprite.getLocalBounds().width / 2, sprite.getLocalBounds().height / 2);
     sprite.setScale(this->rect.width / 14, this->rect.height / 22);

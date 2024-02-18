@@ -29,7 +29,7 @@ Lord::Lord(sf::Vector2f position, const std::vector<sf::Vector2f> *resPositions,
 }
 void Lord::update(const Map *map, Player *player) {
     if (this->teleportIsNeeded) {
-        SoundQueue::get()->push(Storage::get()->getSoundBuffer("darkMagick"), 0, 0);
+        SoundQueue::get()->push(SoundStorage::get()->get("darkMagick"), 0, 0);
         this->teleport(player);
         this->callSouls(player);
         this->teleportIsNeeded = false;

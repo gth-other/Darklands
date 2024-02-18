@@ -20,7 +20,7 @@
 #include <vector>
 #include <fstream>
 #include <sstream>
-#include "Storage.hpp"
+#include "storages/TextureStorage.hpp"
 
 
 #pragma once

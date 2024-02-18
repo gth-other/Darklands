@@ -17,35 +17,35 @@
  */
 
 
-#include <ctime>
-#include "storages/MusicStorage.hpp"
+#include <unordered_map>
+#include <cstdint>
+#include <string>
+#include <vector>
+#include <codecvt>
+#include <fstream>
+#include <iostream>
+#include <SFML/System/String.hpp>
+#include "Root.hpp"
 
 
 #pragma once
 
 
-class Playlist {
+class TextStorage {
 public:
-    static Playlist *get() {
-        if (Playlist::singletone == nullptr) {
-            Playlist::singletone = new Playlist(SOUNDTRACKS_N);
+    static TextStorage *get() {
+        if (TextStorage::singletone == nullptr) {
+            TextStorage::singletone = new TextStorage();
         }
-        return Playlist::singletone;
+        return TextStorage::singletone;
     }
 
-    void update();
-    void restartMusic();
-
-    static constexpr int32_t SOUNDTRACKS_N = 20;
+    void add(const std::vector<std::string>& names, const std::string& path);
+    [[nodiscard]] sf::String *get(const std::string& name);
 private:
-    Playlist() = default;
-    Playlist(int32_t number) {
-        this->number = number;
-        this->index = (int32_t)(time(nullptr) % this->number);
-    }
-    Playlist(const Playlist& copy);
-    static Playlist *singletone;
+    TextStorage() = default;
+    TextStorage(const TextStorage& copy);
+    static TextStorage *singletone;
 
-    int32_t number;
-    int32_t index;
+    std::unordered_map<std::string, sf::String> texts;
 };

@@ -17,22 +17,31 @@
  */
 
 
-#include "Playlist.hpp"
+#include <unordered_map>
+#include <cstdint>
+#include <string>
+#include <SFML/Audio.hpp>
+#include "Root.hpp"
 
 
-Playlist *Playlist::singletone = nullptr;
+#pragma once
 
 
-void Playlist::update() {
-    if (MusicStorage::get()->get("music" + std::to_string(this->index + 1))->getStatus() == sf::Music::Status::Playing) {
-        return;
+class MusicStorage {
+public:
+    static MusicStorage *get() {
+        if (MusicStorage::singletone == nullptr) {
+            MusicStorage::singletone = new MusicStorage();
+        }
+        return MusicStorage::singletone;
     }
-    this->index = (this->index + 1) % this->number;
-    MusicStorage::get()->get("music" + std::to_string(this->index + 1))->play();
-    MusicStorage::get()->get("music" + std::to_string(this->index + 1))->setVolume(60);
-}
-void Playlist::restartMusic() {
-    for (int32_t i = 0; i < this->number; i = i + 1) {
-        MusicStorage::get()->get("music" + std::to_string(this->index + 1))->stop();
-    }
-}
+
+    void add(const std::string& name, const std::string& path);
+    [[nodiscard]] sf::Music *get(const std::string& name);
+private:
+    MusicStorage() = default;
+    MusicStorage(const MusicStorage& copy);
+    static MusicStorage *singletone;
+
+    std::unordered_map<std::string, sf::Music> music;
+};

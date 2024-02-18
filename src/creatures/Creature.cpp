@@ -36,8 +36,8 @@ float Creature::getCenterY() const {
 sf::FloatRect Creature::getRect() const {
     return {this->position.x,
             this->position.y,
-            (float)Storage::get()->getTexture(this->getTextureName() + "Base")->getSize().x,
-            (float)Storage::get()->getTexture(this->getTextureName() + "Base")->getSize().y};
+            (float)TextureStorage::get()->get(this->getTextureName() + "Base")->getSize().x,
+            (float)TextureStorage::get()->get(this->getTextureName() + "Base")->getSize().y};
 }
 sf::FloatRect Creature::getCompressedRect() const {
     sf::FloatRect defaultRect = this->getRect();
@@ -52,7 +52,7 @@ bool Creature::isAlive() const {
 void Creature::kill(const std::string &reason) {
     this->alive = false;
     if (!reason.empty()) {
-        SoundQueue::get()->push(Storage::get()->getSoundBuffer(reason), 0, 0);
+        SoundQueue::get()->push(SoundStorage::get()->get(reason), 0, 0);
     }
 }
 sf::Vector2f Creature::getV() const {
@@ -62,11 +62,11 @@ void Creature::draw(sf::RenderTarget &target, sf::RenderStates states) const {
     sf::Sprite sprite;
     sprite.setPosition(this->position);
     if (this->v.x == 0) {
-        sprite.setTexture(*Storage::get()->getTexture(this->getTextureName() + "Base"));
+        sprite.setTexture(*TextureStorage::get()->get(this->getTextureName() + "Base"));
     }
     else {
-        sprite.setTexture(*Storage::get()->getTexture(this->getTextureName() + "Run"));
-        sprite.setTextureRect(sf::IntRect(((int32_t)animationClock.getElapsedTime().asMilliseconds() / this->getMSPerFrame()) % ((int32_t)Storage::get()->getTexture(this->getTextureName() + "Run")->getSize().x / (int32_t)this->getRect().width) * (int32_t)this->getRect().width,
+        sprite.setTexture(*TextureStorage::get()->get(this->getTextureName() + "Run"));
+        sprite.setTextureRect(sf::IntRect(((int32_t)animationClock.getElapsedTime().asMilliseconds() / this->getMSPerFrame()) % ((int32_t)TextureStorage::get()->get(this->getTextureName() + "Run")->getSize().x / (int32_t)this->getRect().width) * (int32_t)this->getRect().width,
                                           0,
                                           (int32_t)this->getRect().width,
                                           (int32_t)this->getRect().height));

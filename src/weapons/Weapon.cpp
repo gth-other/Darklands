@@ -108,7 +108,7 @@ void Weapon::addBullet(float alpha, float bestVAbs, std::list<Bullet> &bullets) 
                          this->getBulletG());
 }
 void Weapon::playSound(const Player *player) const {
-    SoundQueue::get()->push(Storage::get()->getSoundBuffer("fire"),
+    SoundQueue::get()->push(SoundStorage::get()->get("fire"),
                             std::abs(this->position.x - player->getCenterX()),
                             std::abs(this->position.y - player->getCenterY()));
 }

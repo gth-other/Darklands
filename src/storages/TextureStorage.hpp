@@ -17,22 +17,31 @@
  */
 
 
-#include "Playlist.hpp"
+#include <unordered_map>
+#include <cstdint>
+#include <string>
+#include <SFML/Graphics.hpp>
+#include "Root.hpp"
 
 
-Playlist *Playlist::singletone = nullptr;
+#pragma once
 
 
-void Playlist::update() {
-    if (MusicStorage::get()->get("music" + std::to_string(this->index + 1))->getStatus() == sf::Music::Status::Playing) {
-        return;
+class TextureStorage {
+public:
+    static TextureStorage *get() {
+        if (TextureStorage::singletone == nullptr) {
+            TextureStorage::singletone = new TextureStorage();
+        }
+        return TextureStorage::singletone;
     }
-    this->index = (this->index + 1) % this->number;
-    MusicStorage::get()->get("music" + std::to_string(this->index + 1))->play();
-    MusicStorage::get()->get("music" + std::to_string(this->index + 1))->setVolume(60);
-}
-void Playlist::restartMusic() {
-    for (int32_t i = 0; i < this->number; i = i + 1) {
-        MusicStorage::get()->get("music" + std::to_string(this->index + 1))->stop();
-    }
-}
+
+    void add(const std::string& name, const std::string& path);
+    [[nodiscard]] sf::Texture *get(const std::string& name);
+private:
+    TextureStorage() = default;
+    TextureStorage(const TextureStorage& copy);
+    static TextureStorage *singletone;
+
+    std::unordered_map<std::string, sf::Texture> textures;
+};

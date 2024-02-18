@@ -17,22 +17,15 @@
  */
 
 
-#include "Playlist.hpp"
+#include "SoundStorage.hpp"
 
 
-Playlist *Playlist::singletone = nullptr;
+SoundStorage *SoundStorage::singletone = nullptr;
 
 
-void Playlist::update() {
-    if (MusicStorage::get()->get("music" + std::to_string(this->index + 1))->getStatus() == sf::Music::Status::Playing) {
-        return;
-    }
-    this->index = (this->index + 1) % this->number;
-    MusicStorage::get()->get("music" + std::to_string(this->index + 1))->play();
-    MusicStorage::get()->get("music" + std::to_string(this->index + 1))->setVolume(60);
+void SoundStorage::add(const std::string& name, const std::string& path) {
+    this->sounds[name].loadFromFile(std::string(ROOT) + "/" + path);
 }
-void Playlist::restartMusic() {
-    for (int32_t i = 0; i < this->number; i = i + 1) {
-        MusicStorage::get()->get("music" + std::to_string(this->index + 1))->stop();
-    }
+sf::SoundBuffer *SoundStorage::get(const std::string& name) {
+    return &this->sounds[name];
 }

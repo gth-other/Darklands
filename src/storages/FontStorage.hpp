@@ -17,22 +17,31 @@
  */
 
 
-#include "Playlist.hpp"
+#include <unordered_map>
+#include <cstdint>
+#include <string>
+#include <SFML/Graphics.hpp>
+#include "Root.hpp"
 
 
-Playlist *Playlist::singletone = nullptr;
+#pragma once
 
 
-void Playlist::update() {
-    if (MusicStorage::get()->get("music" + std::to_string(this->index + 1))->getStatus() == sf::Music::Status::Playing) {
-        return;
+class FontStorage {
+public:
+    static FontStorage *get() {
+        if (FontStorage::singletone == nullptr) {
+            FontStorage::singletone = new FontStorage();
+        }
+        return FontStorage::singletone;
     }
-    this->index = (this->index + 1) % this->number;
-    MusicStorage::get()->get("music" + std::to_string(this->index + 1))->play();
-    MusicStorage::get()->get("music" + std::to_string(this->index + 1))->setVolume(60);
-}
-void Playlist::restartMusic() {
-    for (int32_t i = 0; i < this->number; i = i + 1) {
-        MusicStorage::get()->get("music" + std::to_string(this->index + 1))->stop();
-    }
-}
+
+    void add(const std::string& name, const std::string& path);
+    [[nodiscard]] sf::Font *get(const std::string& name);
+private:
+    FontStorage() = default;
+    FontStorage(const FontStorage& copy);
+    static FontStorage *singletone;
+
+    std::unordered_map<std::string, sf::Font> fonts;
+};

@@ -17,22 +17,10 @@
  */
 
 
-#include "Playlist.hpp"
+#include <string_view>
 
 
-Playlist *Playlist::singletone = nullptr;
+#pragma once
 
 
-void Playlist::update() {
-    if (MusicStorage::get()->get("music" + std::to_string(this->index + 1))->getStatus() == sf::Music::Status::Playing) {
-        return;
-    }
-    this->index = (this->index + 1) % this->number;
-    MusicStorage::get()->get("music" + std::to_string(this->index + 1))->play();
-    MusicStorage::get()->get("music" + std::to_string(this->index + 1))->setVolume(60);
-}
-void Playlist::restartMusic() {
-    for (int32_t i = 0; i < this->number; i = i + 1) {
-        MusicStorage::get()->get("music" + std::to_string(this->index + 1))->stop();
-    }
-}
+static constexpr std::string_view ROOT = "../data";
