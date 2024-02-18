@@ -21,8 +21,8 @@
 
 
 Patroller::Patroller() = default;
-Patroller::Patroller(sf::Vector2f position, Player *player) : Enemy(position, player) {}
-void Patroller::update(const Map* map) {
+Patroller::Patroller(sf::Vector2f position) : Enemy(position) {}
+void Patroller::update(const Map* map, Player *player) {
     if (this->isRight()) {
         this->Creature::update(Creature::Flags::Right, map);
     }
@@ -32,5 +32,5 @@ void Patroller::update(const Map* map) {
     if (this->getV().x == 0) {
         this->invertDirection();
     }
-    this->Enemy::update(map);
+    this->Enemy::update(map, player);
 }

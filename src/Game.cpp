@@ -142,7 +142,7 @@ void Game::updatePhysics(bool lastLevel) {
     }
     for (auto &enemy : this->enemies) {
         if (enemy->isAlive()) {
-            enemy->update(&this->map);
+            enemy->update(&this->map, &this->player);
         }
     }
     for (auto &bullet : this->bullets) {
@@ -255,12 +255,12 @@ uint8_t Game::startLevel(const std::string &path, bool lastLevel) {
             else if (id == Cannon().getRightMuzzleID()) this->weapons.push_back(std::make_unique<Cannon>(position, true));
             else if (id == Mortar().getMuzzleID()) this->weapons.push_back(std::make_unique<Mortar>(position));
             else if (id == Player().getID()) this->player = Player(position);
-            else if (id == Vampire().getID()) this->enemies.push_back(std::make_unique<Vampire>(position, &this->player));
+            else if (id == Vampire().getID()) this->enemies.push_back(std::make_unique<Vampire>(position));
             else if (id == 316) finishX = 32 * (float)x;
-            else if (id == Spider().getID()) this->enemies.push_back(std::make_unique<Spider>(position, &this->player));
-            else if (id == Soul().getID()) this->enemies.push_back(std::make_unique<Soul>(position, &this->player));
-            else if (id == OldVampire().getID()) this->enemies.push_back(std::make_unique<OldVampire>(position, &this->player));
-            else if (id == Lord().getID()) this->enemies.push_back(std::make_unique<Lord>(position, &this->player, &lordResPositions, &this->enemies));
+            else if (id == Spider().getID()) this->enemies.push_back(std::make_unique<Spider>(position));
+            else if (id == Soul().getID()) this->enemies.push_back(std::make_unique<Soul>(position));
+            else if (id == OldVampire().getID()) this->enemies.push_back(std::make_unique<OldVampire>(position));
+            else if (id == Lord().getID()) this->enemies.push_back(std::make_unique<Lord>(position, &lordResPositions, &this->enemies));
             else if (id == 321) lordResPositions.push_back(position);
         }
     }

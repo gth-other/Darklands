@@ -21,12 +21,21 @@
 
 
 Soul::Soul() = default;
-Soul::Soul(sf::Vector2f position, Player *player) : Patroller(position, player) {}
-void Soul::draw(sf::RenderTarget &target, sf::RenderStates states) const {
-    float dx = std::abs(this->getCenterX() - this->getPlayer()->getCenterX());
-    float dy = std::abs(this->getCenterY() - this->getPlayer()->getCenterY());
+Soul::Soul(sf::Vector2f position) : Patroller(position) {}
+void Soul::update(const Map *map, Player *player) {
+    float dx = std::abs(this->getCenterX() - player->getCenterX());
+    float dy = std::abs(this->getCenterY() - player->getCenterY());
     float d = std::sqrt(dx * dx + dy * dy);
     if (d < VISIBLE_DST) {
+        this->visible = true;
+    }
+    else {
+        this->visible = false;
+    }
+    Patroller::update(map, player);
+}
+void Soul::draw(sf::RenderTarget &target, sf::RenderStates states) const {
+    if (this->visible) {
         this->Creature::draw(target, states);
     }
 }

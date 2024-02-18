@@ -21,7 +21,7 @@
 
 
 OldVampire::OldVampire() = default;
-OldVampire::OldVampire(sf::Vector2f position, Player *player) : Patroller(position, player) {
+OldVampire::OldVampire(sf::Vector2f position) : Patroller(position) {
     this->radius = 0;
 }
 void OldVampire::draw(sf::RenderTarget &target, sf::RenderStates states) const {
@@ -36,7 +36,7 @@ void OldVampire::draw(sf::RenderTarget &target, sf::RenderStates states) const {
     circle.setPosition(this->getCenterX() - this->radius, this->getCenterY() - this->radius);
     target.draw(circle, states);
 }
-void OldVampire::update(const Map *map) {
+void OldVampire::update(const Map *map, Player *player) {
     float dt = this->increaseTimer.getElapsedTime().asSeconds();
     this->increaseTimer.restart();
 
@@ -47,19 +47,19 @@ void OldVampire::update(const Map *map) {
             this->delayTimer.restart();
         }
 
-        if (this->getPlayer()->isAlive()) {
+        if (player->isAlive()) {
             sf::FloatRect circle;
             circle.left = this->getCenterX() - this->radius;
             circle.top = this->getCenterY() - this->radius;
             circle.width = 2 * this->radius;
             circle.height = 2 * this->radius;
-            if (circle.intersects(this->getPlayer()->getCompressedRect())) {
-                this->getPlayer()->kill("darkMagick");
+            if (circle.intersects(player->getCompressedRect())) {
+                player->kill("darkMagick");
             }
         }
     }
 
-    this->Patroller::update(map);
+    this->Patroller::update(map, player);
 }
 std::string OldVampire::getMurderSoundName() const {
     return "bite";

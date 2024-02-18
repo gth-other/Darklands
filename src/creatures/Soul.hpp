@@ -27,13 +27,16 @@
 class Soul : public Patroller {
 public:
     Soul();
-    Soul(sf::Vector2f position, Player *player);
+    Soul(sf::Vector2f position);
 
+    void update(const Map *map, Player *player) override;
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
     [[nodiscard]] std::string getMurderSoundName() const override;
     [[nodiscard]] int32_t getID() const override;
     [[nodiscard]] bool isBoss() const override;
 private:
+    bool visible;
+
     static constexpr float VISIBLE_DST = 32 * 10;
 
     [[nodiscard]] float getMaximalMoveSpeed() const override;

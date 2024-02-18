@@ -21,10 +21,20 @@
 
 
 Lord::Lord() = default;
-Lord::Lord(sf::Vector2f position, Player *player, const std::vector<sf::Vector2f> *resPositions, std::list<std::unique_ptr<Enemy>> *enemies) : Patroller(position, player) {
+Lord::Lord(sf::Vector2f position, const std::vector<sf::Vector2f> *resPositions, std::list<std::unique_ptr<Enemy>> *enemies) : Patroller(position) {
     this->deathCtr = 0;
+    this->teleportIsNeeded = false;
     this->resPositions = resPositions;
     this->enemies = enemies;
+}
+void Lord::update(const Map *map, Player *player) {
+    if (this->teleportIsNeeded) {
+        SoundQueue::get()->push(Storage::get()->getSoundBuffer("darkMagick"), 0, 0);
+        this->teleport(player);
+        this->callSouls(player);
+        this->teleportIsNeeded = false;
+    }
+    Patroller::update(map, player);
 }
 void Lord::kill(const std::string &reason) {
     this->deathCtr = this->deathCtr + 1;
@@ -32,9 +42,7 @@ void Lord::kill(const std::string &reason) {
         this->Creature::kill(reason);
     }
     else {
-        SoundQueue::get()->push(Storage::get()->getSoundBuffer("darkMagick"), 0, 0);
-        this->teleport();
-        this->callSouls();
+        this->teleportIsNeeded = true;
     }
 }
 std::string Lord::getMurderSoundName() const {
@@ -64,11 +72,11 @@ std::string Lord::getTextureName() const {
 int32_t Lord::getMSPerFrame() const {
     return 125;
 }
-void Lord::teleport() {
+void Lord::teleport(const Player *player) {
     float maxDst = 0;
     int32_t id = 0;
     for (int32_t i = 0; i < this->resPositions->size(); i = i + 1) {
-        float dst = std::abs(this->getPlayer()->getCenterX() - this->resPositions->at(i).x);
+        float dst = std::abs(player->getCenterX() - this->resPositions->at(i).x);
         if (dst > maxDst) {
             maxDst = dst;
             id = i;
@@ -76,11 +84,11 @@ void Lord::teleport() {
     }
     this->setPosition(this->resPositions->at(id));
 }
-void Lord::callSouls() {
+void Lord::callSouls(const Player *player) {
     float minDst = 1e+9;
     int32_t id1 = 0;
     for (int32_t i = 0; i < this->resPositions->size(); i = i + 1) {
-        float dst = std::abs(this->getPlayer()->getCenterX() - this->resPositions->at(i).x);
+        float dst = std::abs(player->getCenterX() - this->resPositions->at(i).x);
         if (dst < minDst) {
             minDst = dst;
             id1 = i;
@@ -93,7 +101,7 @@ void Lord::callSouls() {
         if (i == id1) {
             continue;
         }
-        float dst = std::abs(this->getPlayer()->getCenterX() - this->resPositions->at(i).x);
+        float dst = std::abs(player->getCenterX() - this->resPositions->at(i).x);
         if (dst < minDst) {
             minDst = dst;
             id2 = i;
@@ -104,6 +112,6 @@ void Lord::callSouls() {
         if (i == id1 or i == id2) {
             continue;
         }
-        this->enemies->push_back(std::make_unique<Soul>(this->resPositions->at(i), this->getPlayer()));
+        this->enemies->push_back(std::make_unique<Soul>(this->resPositions->at(i)));
     }
 }

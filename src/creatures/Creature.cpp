@@ -27,48 +27,6 @@ Creature::Creature(sf::Vector2f position) {
     this->onGround = false;
     this->right = true;
 }
-void Creature::update(uint8_t flag, const Map *map) {
-    float fullTime = this->movementTimer.getElapsedTime().asSeconds();
-    this->movementTimer.restart();
-
-    for (float i = 0; i < fullTime; i = i + 1.f / 30.f) {
-        float dt = std::min(1.f / 30.f, fullTime - i);
-
-        if ((flag & Flags::Left) and (flag & Flags::Right)) {
-            flag = flag & (~Flags::Left);
-            flag = flag & (~Flags::Right);
-        }
-
-        if (flag & Flags::Left) {
-            this->v.x = std::max(-this->getMaximalMoveSpeed(), this->v.x - dt * this->getMoveAcceleration());
-            this->right = false;
-        }
-        if (flag & Flags::Right) {
-            this->v.x = std::min(this->getMaximalMoveSpeed(), this->v.x + dt * this->getMoveAcceleration());
-            this->right = true;
-        }
-        if (!(flag & Flags::Left) and !(flag & Flags::Right)) {
-            if (this->v.x > 0) {
-                this->v.x = std::max(0.f, this->v.x - dt * this->getMoveAcceleration());
-            }
-            else if (this->v.x < 0) {
-                this->v.x = std::min(0.f, this->v.x + dt * this->getMoveAcceleration());
-            }
-        }
-        if (this->onGround and (flag & Flags::Jump)) {
-            this->v.y = -this->getJumpSpeed();
-            this->onGround = false;
-        }
-        if (!this->onGround) {
-            this->v.y = this->v.y + dt * this->getG();
-        }
-
-        this->position.x = this->position.x + dt * this->v.x;
-        this->collisionX(map);
-        this->position.y = this->position.y + dt * this->v.y;
-        this->collisionY(map);
-    }
-}
 float Creature::getCenterX() const {
     return this->position.x + this->getRect().width / 2;
 }
@@ -119,6 +77,48 @@ void Creature::draw(sf::RenderTarget &target, sf::RenderStates states) const {
     }
 
     target.draw(sprite, states);
+}
+void Creature::update(uint8_t flag, const Map *map) {
+    float fullTime = this->movementTimer.getElapsedTime().asSeconds();
+    this->movementTimer.restart();
+
+    for (float i = 0; i < fullTime; i = i + 1.f / 30.f) {
+        float dt = std::min(1.f / 30.f, fullTime - i);
+
+        if ((flag & Flags::Left) and (flag & Flags::Right)) {
+            flag = flag & (~Flags::Left);
+            flag = flag & (~Flags::Right);
+        }
+
+        if (flag & Flags::Left) {
+            this->v.x = std::max(-this->getMaximalMoveSpeed(), this->v.x - dt * this->getMoveAcceleration());
+            this->right = false;
+        }
+        if (flag & Flags::Right) {
+            this->v.x = std::min(this->getMaximalMoveSpeed(), this->v.x + dt * this->getMoveAcceleration());
+            this->right = true;
+        }
+        if (!(flag & Flags::Left) and !(flag & Flags::Right)) {
+            if (this->v.x > 0) {
+                this->v.x = std::max(0.f, this->v.x - dt * this->getMoveAcceleration());
+            }
+            else if (this->v.x < 0) {
+                this->v.x = std::min(0.f, this->v.x + dt * this->getMoveAcceleration());
+            }
+        }
+        if (this->onGround and (flag & Flags::Jump)) {
+            this->v.y = -this->getJumpSpeed();
+            this->onGround = false;
+        }
+        if (!this->onGround) {
+            this->v.y = this->v.y + dt * this->getG();
+        }
+
+        this->position.x = this->position.x + dt * this->v.x;
+        this->collisionX(map);
+        this->position.y = this->position.y + dt * this->v.y;
+        this->collisionY(map);
+    }
 }
 bool Creature::isRight() const {
     return this->right;

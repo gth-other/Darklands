@@ -28,14 +28,16 @@
 class Lord : public Patroller {
 public:
     Lord();
-    Lord(sf::Vector2f position, Player *player, const std::vector<sf::Vector2f> *resPositions, std::list<std::unique_ptr<Enemy>> *enemies);
+    Lord(sf::Vector2f position, const std::vector<sf::Vector2f> *resPositions, std::list<std::unique_ptr<Enemy>> *enemies);
 
+    void update(const Map *map, Player *player) override;
     void kill(const std::string &reason) override;
     [[nodiscard]] std::string getMurderSoundName() const override;
     [[nodiscard]] int32_t getID() const override;
     [[nodiscard]] bool isBoss() const override;
 private:
     int32_t deathCtr;
+    bool teleportIsNeeded;
     const std::vector<sf::Vector2f> *resPositions;
     std::list<std::unique_ptr<Enemy>> *enemies;
 
@@ -47,6 +49,6 @@ private:
     [[nodiscard]] float getG() const override;
     [[nodiscard]] std::string getTextureName() const override;
     [[nodiscard]] int32_t getMSPerFrame() const override;
-    void teleport();
-    void callSouls();
+    void teleport(const Player *player);
+    void callSouls(const Player *player);
 };

@@ -21,21 +21,16 @@
 
 
 Enemy::Enemy() = default;
-Enemy::Enemy(sf::Vector2f position, Player *player) : Creature(position) {
-    this->player = player;
-}
-void Enemy::update(const Map *map) {
-    if (this->player->isAlive() and this->getRect().intersects(this->player->getCompressedRect())) {
-        if (this->player->isAbandonedLives() or this->player->getV().y > 0) {
-            this->kill(this->player->getMurderSoundName());
+Enemy::Enemy(sf::Vector2f position) : Creature(position) {}
+void Enemy::update(const Map *map, Player *player) {
+    if (player->isAlive() and this->getRect().intersects(player->getCompressedRect())) {
+        if (player->isAbandonedLives() or player->getV().y > 0) {
+            this->kill(player->getMurderSoundName());
         }
         else {
-            this->player->kill(this->getMurderSoundName());
+            player->kill(this->getMurderSoundName());
         }
     }
-}
-Player *Enemy::getPlayer() const {
-    return this->player;
 }
 bool Enemy::isAI() const {
     return true;

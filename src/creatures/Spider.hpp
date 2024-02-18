@@ -26,7 +26,7 @@
 class Spider : public Patroller {
 public:
     Spider();
-    Spider(sf::Vector2f position, Player *player);
+    Spider(sf::Vector2f position);
 
     [[nodiscard]] std::string getMurderSoundName() const override;
     [[nodiscard]] int32_t getID() const override;

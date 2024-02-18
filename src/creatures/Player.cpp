@@ -25,6 +25,9 @@ Player::Player(sf::Vector2f position) : Creature(position) {
     this->observingSpheresUsed = false;
     this->abandonedLivesUsed = false;
 }
+void Player::update(uint8_t flag, const Map *map) {
+    Creature::update(flag, map);
+}
 bool Player::wasObservingSpheresUsed() const {
     return this->observingSpheresUsed;
 }

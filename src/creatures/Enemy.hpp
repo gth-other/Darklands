@@ -26,14 +26,10 @@
 class Enemy : public Creature {
 public:
     Enemy();
-    Enemy(sf::Vector2f position, Player *player);
+    Enemy(sf::Vector2f position);
 
-    virtual void update(const Map *map);
+    virtual void update(const Map *map, Player *player);
     [[nodiscard]] virtual bool isBoss() const = 0;
-protected:
-    [[nodiscard]] Player *getPlayer() const;
 private:
-    Player *player;
-
     [[nodiscard]] bool isAI() const override;
 };

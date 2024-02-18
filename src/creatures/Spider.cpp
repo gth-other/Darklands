@@ -21,7 +21,7 @@
 
 
 Spider::Spider() = default;
-Spider::Spider(sf::Vector2f position, Player *player) : Patroller(position, player) {}
+Spider::Spider(sf::Vector2f position) : Patroller(position) {}
 std::string Spider::getMurderSoundName() const {
     return "bite";
 }

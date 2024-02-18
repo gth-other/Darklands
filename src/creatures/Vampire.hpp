@@ -26,7 +26,7 @@
 class Vampire : public Patroller {
 public:
     Vampire();
-    Vampire(sf::Vector2f position, Player *player);
+    Vampire(sf::Vector2f position);
 
     [[nodiscard]] std::string getMurderSoundName() const override;
     [[nodiscard]] int32_t getID() const override;

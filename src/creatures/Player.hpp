@@ -28,6 +28,8 @@ public:
     Player();
     Player(sf::Vector2f position);
 
+    void update(uint8_t flag, const Map *map) override;
+
     [[nodiscard]] bool wasObservingSpheresUsed() const;
     void useObservingSpheres();
     [[nodiscard]] bool isObservingSpheres() const;

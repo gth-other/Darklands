@@ -26,10 +26,10 @@
 class OldVampire : public Patroller {
 public:
     OldVampire();
-    OldVampire(sf::Vector2f position, Player *player);
+    OldVampire(sf::Vector2f position);
 
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
-    void update(const Map *map) override;
+    void update(const Map *map, Player *player) override;
     [[nodiscard]] std::string getMurderSoundName() const override;
     [[nodiscard]] int32_t getID() const override;
     [[nodiscard]] bool isBoss() const override;

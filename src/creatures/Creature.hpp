@@ -29,7 +29,6 @@ public:
     Creature();
     Creature(sf::Vector2f position);
 
-    void update(uint8_t flag, const Map *map);
     [[nodiscard]] float getCenterX() const;
     [[nodiscard]] float getCenterY() const;
     [[nodiscard]] sf::FloatRect getRect() const;
@@ -47,6 +46,8 @@ public:
         static constexpr uint8_t Jump = 0b100;
     };
 protected:
+    virtual void update(uint8_t flag, const Map *map);
+
     [[nodiscard]] bool isRight() const;
     void invertDirection();
     void setPosition(sf::Vector2f newPosition);
