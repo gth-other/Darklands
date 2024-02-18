@@ -20,6 +20,9 @@
 #include "Game.hpp"
 
 
+Game *Game::singletone = nullptr;
+
+
 Game::Game() {
     this->initWindow();
     this->initPlayerView();

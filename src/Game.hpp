@@ -36,9 +36,19 @@
 
 class Game {
 public:
-    Game();
+    static Game *get() {
+        if (Game::singletone == nullptr) {
+            Game::singletone = new Game();
+        }
+        return Game::singletone;
+    }
+
     void start();
 private:
+    Game();
+    Game(const TextureStorage& copy) = delete;
+    static Game *singletone;
+
     sf::RenderWindow window;
     sf::View playerView;
     sf::Event event{};

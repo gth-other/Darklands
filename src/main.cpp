@@ -21,8 +21,7 @@
 
 
 int main() {
-    Game game;
-    game.start();
+    Game::get()->start();
 
     return 0;
 }
