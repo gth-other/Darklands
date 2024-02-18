@@ -159,25 +159,25 @@ uint8_t Game::startLevel(const std::string &path, bool lastLevel) {
                 this->weapons.push_back(std::make_unique<Mortar>(position, &this->storage, &this->soundQueue, &this->map, &this->player));
             }
             else if (id == Player().getID()) {
-                this->player = Player(position, &storage, &soundQueue, &map);
+                this->player = Player(position, &storage, &soundQueue);
             }
             else if (id == Vampire().getID()) {
-                this->enemies.push_back(std::make_unique<Vampire>(position, &this->player, &this->storage, &this->soundQueue, &this->map));
+                this->enemies.push_back(std::make_unique<Vampire>(position, &this->player, &this->storage, &this->soundQueue));
             }
             else if (id == 316) {
                 finishX = 32 * (float)x;
             }
             else if (id == Spider().getID()) {
-                this->enemies.push_back(std::make_unique<Spider>(position, &this->player, &this->storage, &this->soundQueue, &this->map));
+                this->enemies.push_back(std::make_unique<Spider>(position, &this->player, &this->storage, &this->soundQueue));
             }
             else if (id == Soul().getID()) {
-                this->enemies.push_back(std::make_unique<Soul>(position, &this->player, &this->storage, &this->soundQueue, &this->map));
+                this->enemies.push_back(std::make_unique<Soul>(position, &this->player, &this->storage, &this->soundQueue));
             }
             else if (id == OldVampire().getID()) {
-                this->enemies.push_back(std::make_unique<OldVampire>(position, &this->player, &this->storage, &this->soundQueue, &this->map));
+                this->enemies.push_back(std::make_unique<OldVampire>(position, &this->player, &this->storage, &this->soundQueue));
             }
             else if (id == Lord().getID()) {
-                this->enemies.push_back(std::make_unique<Lord>(position, &this->player, &this->storage, &this->soundQueue, &this->map, &lordResPositions, &this->enemies));
+                this->enemies.push_back(std::make_unique<Lord>(position, &this->player, &this->storage, &this->soundQueue, &lordResPositions, &this->enemies));
             }
             else if (id == 321) {
                 lordResPositions.push_back(position);
@@ -217,14 +217,14 @@ uint8_t Game::startLevel(const std::string &path, bool lastLevel) {
         this->player.update(this->player.isAlive() * !this->finish(lastLevel) * (
                 sf::Keyboard::isKeyPressed(sf::Keyboard::A) * Player::Flags::Left |
                 sf::Keyboard::isKeyPressed(sf::Keyboard::D) * Player::Flags::Right |
-                sf::Keyboard::isKeyPressed(sf::Keyboard::W) * Player::Flags::Jump)
+                sf::Keyboard::isKeyPressed(sf::Keyboard::W) * Player::Flags::Jump), &this->map
         );
         for (auto &weapon : this->weapons) {
             weapon->update(bullets);
         }
         for (auto &enemy : this->enemies) {
             if (enemy->isAlive()) {
-                enemy->update();
+                enemy->update(&this->map);
             }
         }
         for (auto &bullet : this->bullets) {

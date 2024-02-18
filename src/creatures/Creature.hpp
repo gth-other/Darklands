@@ -27,8 +27,8 @@
 class Creature : public sf::Drawable {
 public:
     Creature();
-    Creature(sf::Vector2f position, Storage *storage, SoundQueue *soundQueue, Map *map);
-    void update(uint8_t flag);
+    Creature(sf::Vector2f position, Storage *storage, SoundQueue *soundQueue);
+    void update(uint8_t flag, const Map *map);
     [[nodiscard]] float getCenterX() const;
     [[nodiscard]] float getCenterY() const;
     [[nodiscard]] sf::FloatRect getRect() const;
@@ -51,7 +51,6 @@ protected:
     void setPosition(sf::Vector2f newPosition);
     [[nodiscard]] Storage *getStorage() const;
     [[nodiscard]] SoundQueue* getSoundQueue();
-    [[nodiscard]] Map *getMap() const;
     [[nodiscard]] virtual float getMaximalMoveSpeed() const = 0;
     [[nodiscard]] virtual float getMoveAcceleration() const = 0;
     [[nodiscard]] virtual float getJumpSpeed() const = 0;
@@ -69,8 +68,7 @@ private:
     sf::Clock movementTimer;
     Storage *storage;
     SoundQueue *soundQueue;
-    Map *map;
 
-    void collisionX();
-    void collisionY();
+    void collisionX(const Map *map);
+    void collisionY(const Map *map);
 };

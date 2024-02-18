@@ -21,7 +21,7 @@
 
 
 Player::Player() = default;
-Player::Player(sf::Vector2f position, Storage *storage, SoundQueue *soundQueue, Map *map) : Creature(position, storage, soundQueue, map) {
+Player::Player(sf::Vector2f position, Storage *storage, SoundQueue *soundQueue) : Creature(position, storage, soundQueue) {
     this->observingSpheresUsed = false;
     this->abandonedLivesUsed = false;
 }

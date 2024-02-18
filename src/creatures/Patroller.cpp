@@ -21,16 +21,16 @@
 
 
 Patroller::Patroller() = default;
-Patroller::Patroller(sf::Vector2f position, Player *player, Storage *storage, SoundQueue *soundQueue, Map *map) : Enemy(position, player, storage, soundQueue, map) {}
-void Patroller::update() {
+Patroller::Patroller(sf::Vector2f position, Player *player, Storage *storage, SoundQueue *soundQueue) : Enemy(position, player, storage, soundQueue) {}
+void Patroller::update(const Map* map) {
     if (this->isRight()) {
-        this->Creature::update(Creature::Flags::Right);
+        this->Creature::update(Creature::Flags::Right, map);
     }
     else {
-        this->Creature::update(Creature::Flags::Left);
+        this->Creature::update(Creature::Flags::Left, map);
     }
     if (this->getV().x == 0) {
         this->invertDirection();
     }
-    this->Enemy::update();
+    this->Enemy::update(map);
 }

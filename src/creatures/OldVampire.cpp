@@ -21,7 +21,7 @@
 
 
 OldVampire::OldVampire() = default;
-OldVampire::OldVampire(sf::Vector2f position, Player *player, Storage *storage, SoundQueue *soundQueue, Map *map) : Patroller(position, player, storage, soundQueue, map) {
+OldVampire::OldVampire(sf::Vector2f position, Player *player, Storage *storage, SoundQueue *soundQueue) : Patroller(position, player, storage, soundQueue) {
     this->radius = 0;
 }
 void OldVampire::draw(sf::RenderTarget &target, sf::RenderStates states) const {
@@ -36,7 +36,7 @@ void OldVampire::draw(sf::RenderTarget &target, sf::RenderStates states) const {
     circle.setPosition(this->getCenterX() - this->radius, this->getCenterY() - this->radius);
     target.draw(circle, states);
 }
-void OldVampire::update() {
+void OldVampire::update(const Map *map) {
     float dt = this->increaseTimer.getElapsedTime().asSeconds();
     this->increaseTimer.restart();
 
@@ -59,7 +59,7 @@ void OldVampire::update() {
         }
     }
 
-    Patroller::update();
+    this->Patroller::update(map);
 }
 std::string OldVampire::getMurderSoundName() const {
     return "bite";

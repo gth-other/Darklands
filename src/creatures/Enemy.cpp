@@ -21,10 +21,10 @@
 
 
 Enemy::Enemy() = default;
-Enemy::Enemy(sf::Vector2f position, Player *player, Storage *storage, SoundQueue *soundQueue, Map *map) : Creature(position, storage, soundQueue, map) {
+Enemy::Enemy(sf::Vector2f position, Player *player, Storage *storage, SoundQueue *soundQueue) : Creature(position, storage, soundQueue) {
     this->player = player;
 }
-void Enemy::update() {
+void Enemy::update(const Map *map) {
     if (this->player->isAlive() and this->getRect().intersects(this->player->getCompressedRect())) {
         if (this->player->isAbandonedLives() or this->player->getV().y > 0) {
             this->kill(this->player->getMurderSoundName());

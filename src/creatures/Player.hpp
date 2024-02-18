@@ -26,7 +26,7 @@
 class Player : public Creature {
 public:
     Player();
-    Player(sf::Vector2f position, Storage *storage, SoundQueue *soundQueue, Map *map);
+    Player(sf::Vector2f position, Storage *storage, SoundQueue *soundQueue);
     [[nodiscard]] bool wasObservingSpheresUsed() const;
     void useObservingSpheres();
     [[nodiscard]] bool isObservingSpheres() const;

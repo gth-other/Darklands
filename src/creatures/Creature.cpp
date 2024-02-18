@@ -21,16 +21,15 @@
 
 
 Creature::Creature() = default;
-Creature::Creature(sf::Vector2f position, Storage *storage, SoundQueue *soundQueue, Map *map) {
+Creature::Creature(sf::Vector2f position, Storage *storage, SoundQueue *soundQueue) {
     this->position = position;
     this->alive = true;
     this->onGround = false;
     this->right = true;
     this->storage = storage;
     this->soundQueue = soundQueue;
-    this->map = map;
 }
-void Creature::update(uint8_t flag) {
+void Creature::update(uint8_t flag, const Map *map) {
     float fullTime = this->movementTimer.getElapsedTime().asSeconds();
     this->movementTimer.restart();
 
@@ -67,9 +66,9 @@ void Creature::update(uint8_t flag) {
         }
 
         this->position.x = this->position.x + dt * this->v.x;
-        this->collisionX();
+        this->collisionX(map);
         this->position.y = this->position.y + dt * this->v.y;
-        this->collisionY();
+        this->collisionY(map);
     }
 }
 float Creature::getCenterX() const {
@@ -131,21 +130,18 @@ Storage *Creature::getStorage() const {
 SoundQueue *Creature::getSoundQueue() {
     return this->soundQueue;
 }
-Map *Creature::getMap() const {
-    return this->map;
-}
-void Creature::collisionX() {
+void Creature::collisionX(const Map *map) {
     if (this->v.x == 0) {
         return;
     }
     for (int32_t y = (int32_t)this->position.y / 32; y <= (int32_t)(this->position.y + this->getRect().height) / 32; y = y + 1) {
         for (int32_t x = (int32_t)this->position.x / 32; x <= (int32_t)(this->position.x + this->getRect().width) / 32; x = x + 1) {
             if (this->getRect().intersects(sf::FloatRect(32 * (float)x, 32 * (float)y, 32, 32))) {
-                if (x < 0 or y < 0 or x >= this->map->getWidth() or y >= this->map->getHeight()) {
+                if (x < 0 or y < 0 or x >= map->getWidth() or y >= map->getHeight()) {
                     this->kill("");
                     return;
                 }
-                if (this->map->isSolid(x, y, this->isAI())) {
+                if (map->isSolid(x, y, this->isAI())) {
                     if (this->v.x > 0) {
                         this->position.x = (float)x * 32 - this->getRect().width;
                     }
@@ -161,18 +157,18 @@ void Creature::collisionX() {
         }
     }
 }
-void Creature::collisionY() {
+void Creature::collisionY(const Map *map) {
     if (this->v.y == 0) {
         return;
     }
     for (int32_t y = (int32_t)this->position.y / 32; y <= (int32_t)(this->position.y + this->getRect().height) / 32; y = y + 1) {
         for (int32_t x = (int32_t)this->position.x / 32; x <= (int32_t)(this->position.x + this->getRect().width) / 32; x = x + 1) {
             if (this->getRect().intersects(sf::FloatRect(32 * (float)x, 32 * (float)y, 32, 32))) {
-                if (x < 0 or y < 0 or x >= this->map->getWidth() or y >= this->map->getHeight()) {
+                if (x < 0 or y < 0 or x >= map->getWidth() or y >= map->getHeight()) {
                     this->kill("");
                     return;
                 }
-                if (this->map->isSolid(x, y, this->isAI())) {
+                if (map->isSolid(x, y, this->isAI())) {
                     if (this->v.y > 0) {
                         this->position.y = (float)y * 32 - this->getRect().height;
                         this->onGround = true;

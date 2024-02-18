@@ -27,7 +27,7 @@
 class Soul : public Patroller {
 public:
     Soul();
-    Soul(sf::Vector2f position, Player *player, Storage *storage, SoundQueue *soundQueue, Map *map);
+    Soul(sf::Vector2f position, Player *player, Storage *storage, SoundQueue *soundQueue);
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
     [[nodiscard]] std::string getMurderSoundName() const override;
     [[nodiscard]] int32_t getID() const override;

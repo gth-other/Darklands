@@ -21,7 +21,7 @@
 
 
 Lord::Lord() = default;
-Lord::Lord(sf::Vector2f position, Player *player, Storage *storage, SoundQueue *soundQueue, Map *map, std::vector<sf::Vector2f> *resPositions, std::list<std::unique_ptr<Enemy>> *enemies) : Patroller(position, player, storage, soundQueue, map) {
+Lord::Lord(sf::Vector2f position, Player *player, Storage *storage, SoundQueue *soundQueue, std::vector<sf::Vector2f> *resPositions, std::list<std::unique_ptr<Enemy>> *enemies) : Patroller(position, player, storage, soundQueue) {
     this->deathCtr = 0;
     this->resPositions = resPositions;
     this->enemies = enemies;
@@ -104,6 +104,6 @@ void Lord::callSouls() {
         if (i == id1 or i == id2) {
             continue;
         }
-        this->enemies->push_back(std::make_unique<Soul>(this->resPositions->at(i), this->getPlayer(), this->getStorage(), this->getSoundQueue(), this->getMap()));
+        this->enemies->push_back(std::make_unique<Soul>(this->resPositions->at(i), this->getPlayer(), this->getStorage(), this->getSoundQueue()));
     }
 }
