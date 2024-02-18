@@ -59,8 +59,20 @@ private:
     enum Flag {NEXT, EXIT};
     static constexpr int32_t LEVELS_NUMBER = 4;
 
+    void initWindow();
+    void initPlayerView();
+    void loadData();
+    void createSun();
+    void createBlackBooks();
+    void createEndingMsgs();
+    void createLicenseTitle();
+
+    void updatePhysics(bool lastLevel);
+    void displayEverything(bool lastLevel);
+
     static int32_t getCurrentLevel();
     static void setCurrentLevel(int32_t level);
-    uint8_t startLevel(const std::string &path, bool lastLevel);
     [[nodiscard]] bool finish(bool lastLevel) const;
+
+    uint8_t startLevel(const std::string &path, bool lastLevel);
 };
