@@ -1,0 +1,10 @@
+история завершена
+[sep]
+глава окончена
+[sep]
+лорд так и не увидел меча, что убил его. он умер мгновенно,
+не успев понять, что мир вернется к прежнему виду.
+[sep]
+Darklands. Copyright (C) 2023 gth-other. Darklands is free software: you can redistribute it and/or modify it under the terms of the
+GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+[end]

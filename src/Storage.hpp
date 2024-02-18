@@ -20,6 +20,10 @@
 #include <unordered_map>
 #include <cstdint>
 #include <string>
+#include <vector>
+#include <fstream>
+#include <iostream>
+#include <codecvt>
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 
@@ -31,7 +35,7 @@ class Storage {
 public:
     static Storage *get() {
         if (Storage::singletone == nullptr) {
-            Storage::singletone = new Storage(ROOT);
+            Storage::singletone = new Storage();
         }
         return Storage::singletone;
     }
@@ -40,24 +44,23 @@ public:
     void addFont(const std::string& name, const std::string& path);
     void addSoundBuffer(const std::string& name, const std::string& path);
     void addMusic(const std::string& name, const std::string& path);
+    void addTexts(const std::vector<std::string> &names, const std::string &path);
 
     [[nodiscard]] sf::Texture *getTexture(const std::string& name);
     [[nodiscard]] sf::Font *getFont(const std::string& name);
     [[nodiscard]] sf::SoundBuffer *getSoundBuffer(const std::string& name);
     [[nodiscard]] sf::Music *getMusic(const std::string& name);
+    [[nodiscard]] sf::String *getText(const std::string &name);
 
     static constexpr std::string_view ROOT = "../data";
 private:
     Storage() = default;
-    Storage(const std::string_view& root) {
-        this->root = root;
-    }
     Storage(const Storage& copy);
     static Storage *singletone;
 
-    std::string root;
     std::unordered_map<std::string, sf::Texture> textures;
     std::unordered_map<std::string, sf::Font> fonts;
     std::unordered_map<std::string, sf::SoundBuffer> soundbuffers;
     std::unordered_map<std::string, sf::Music> music;
+    std::unordered_map<std::string, sf::String> texts;
 };

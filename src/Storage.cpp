@@ -24,16 +24,43 @@ Storage *Storage::singletone = nullptr;
 
 
 void Storage::addTexture(const std::string& name, const std::string& path) {
-    this->textures[name].loadFromFile(this->root + "/" + path);
+    this->textures[name].loadFromFile(std::string(ROOT) + "/" + path);
 }
 void Storage::addFont(const std::string& name, const std::string& path) {
-    this->fonts[name].loadFromFile(this->root + "/" + path);
+    this->fonts[name].loadFromFile(std::string(ROOT) + "/" + path);
 }
 void Storage::addSoundBuffer(const std::string& name, const std::string& path) {
-    this->soundbuffers[name].loadFromFile(this->root + "/" + path);
+    this->soundbuffers[name].loadFromFile(std::string(ROOT) + "/" + path);
 }
 void Storage::addMusic(const std::string& name, const std::string& path) {
-    this->music[name].openFromFile(this->root + "/" + path);
+    this->music[name].openFromFile(std::string(ROOT) + "/" + path);
+}
+void Storage::addTexts(const std::vector<std::string> &names, const std::string &path) {
+    std::ifstream file(std::string(ROOT) + "/" + path);
+    if (!file.is_open()) {
+        std::cerr << "Invalid file" << std::endl;
+        return;
+    }
+    std::string current;
+    int32_t index = 0;
+    for (; ;) {
+        std::string buff;
+        std::getline(file, buff);
+        if (buff == "[sep]" or buff == "[end]") {
+            std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+            std::wstring wCurrent = converter.from_bytes(current);
+            this->texts[names[index]] = wCurrent;
+            current = "";
+            index = index + 1;
+            if (buff == "[end]") {
+                break;
+            }
+        }
+        else {
+            current = current + buff + '\n';
+        }
+    }
+    file.close();
 }
 sf::Texture *Storage::getTexture(const std::string& name) {
     return &this->textures[name];
@@ -46,4 +73,7 @@ sf::SoundBuffer *Storage::getSoundBuffer(const std::string& name) {
 }
 sf::Music *Storage::getMusic(const std::string& name) {
     return &this->music[name];
+}
+sf::String *Storage::getText(const std::string &name) {
+    return &this->texts[name];
 }

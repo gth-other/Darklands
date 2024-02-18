@@ -86,6 +86,7 @@ void Game::loadData() {
     for (int32_t i = 0; i < Playlist::SOUNDTRACKS_N; i = i + 1) {
         Storage::get()->addMusic("music" + std::to_string(i + 1), "music/" + std::to_string(i + 1) + ".ogg");
     }
+    Storage::get()->addTexts({"death", "levelFinished", "gameFinished", "license"}, "locales.txt");
 }
 void Game::createSun() {
     this->sun.setTexture(*Storage::get()->getTexture("sun"));
@@ -106,14 +107,14 @@ void Game::createEndingMsgs() {
     this->defeatMessage.setOutlineColor(sf::Color::Black);
     this->defeatMessage.setOutlineThickness(2);
     this->defeatMessage.setFont(*Storage::get()->getFont("font1"));
-    this->defeatMessage.setString(L"история завершена");
+    this->defeatMessage.setString(*Storage::get()->getText("death"));
     this->defeatMessage.setCharacterSize(40);
     this->defeatMessage.setPosition(((float)this->window.getSize().x - this->defeatMessage.getLocalBounds().width) / 2, ((float)this->window.getSize().y - this->defeatMessage.getLocalBounds().height) / 2);
 
     this->finishRect = this->defeatRect;
 
     this->finishMessageDefault = this->defeatMessage;
-    this->finishMessageDefault.setString(L"глава окончена");
+    this->finishMessageDefault.setString(*Storage::get()->getText("levelFinished"));
     this->finishMessageDefault.setPosition(((float)this->window.getSize().x - this->finishMessageDefault.getLocalBounds().width) / 2, ((float)this->window.getSize().y - this->finishMessageDefault.getLocalBounds().height) / 2);
 
     this->finishMessageLast.setFillColor(this->finishMessageDefault.getFillColor());
@@ -121,14 +122,14 @@ void Game::createEndingMsgs() {
     this->finishMessageLast.setOutlineThickness(1);
     this->finishMessageLast.setFont(*this->finishMessageDefault.getFont());
     this->finishMessageLast.setCharacterSize(18);
-    this->finishMessageLast.setString(L"лорд так и не увидел меча, что убил его. он умер мгновенно,\nне успев понять, что мир вернется к прежнему виду.");
+    this->finishMessageLast.setString(*Storage::get()->getText("gameFinished"));
     this->finishMessageLast.setPosition(((float)this->window.getSize().x - this->finishMessageLast.getLocalBounds().width) / 2, ((float)this->window.getSize().y - this->finishMessageLast.getLocalBounds().height) / 2);
 }
 void Game::createLicenseTitle() {
     this->license.setFillColor(this->finishMessageLast.getFillColor());
     this->license.setFont(*this->finishMessageDefault.getFont());
     this->license.setCharacterSize(8);
-    this->license.setString("Darklands. Copyright (C) 2023 gth-other. Darklands is free software: you can redistribute it and/or modify it under the terms of the\nGNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.");
+    this->license.setString(*Storage::get()->getText("license"));
     this->license.setPosition(0, 0);
 }
 void Game::updatePhysics(bool lastLevel) {
