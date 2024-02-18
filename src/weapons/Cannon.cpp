@@ -21,7 +21,7 @@
 
 
 Cannon::Cannon() = default;
-Cannon::Cannon(sf::Vector2f position, bool right, Map *map, Player *player) : AsymmetricalWeapon(position, right, map, player) {}
+Cannon::Cannon(sf::Vector2f position, bool right) : AsymmetricalWeapon(position, right) {}
 float Cannon::getMinimalLength() const {
     return 32 * 4;
 }

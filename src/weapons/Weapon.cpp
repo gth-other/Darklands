@@ -22,35 +22,30 @@
 
 Weapon::Weapon() = default;
 Weapon::~Weapon() = default;
-Weapon::Weapon(sf::Vector2f position, Map *map, Player *player) {
+Weapon::Weapon(sf::Vector2f position) {
     this->position = position;
     this->shots = 0;
-    this->map = map;
-    this->player = player;
 }
-void Weapon::update(std::list<Bullet> &bullets) {
-    if (this->impossibleToShoot()) {
+void Weapon::update(std::list<Bullet> &bullets, const Map *map, const Player *player) {
+    if (this->impossibleToShoot(player)) {
         return;
     }
     this->restartTimer();
     this->updateShotsCtr();
 
-    float alpha = this->getAlpha();
+    float alpha = this->getAlpha(player);
     float maxVAbs = this->getMaxVAbs(alpha);
-    float bestVAbs = this->getBestVAbs(alpha, maxVAbs);
+    float bestVAbs = this->getBestVAbs(alpha, maxVAbs, map, player);
 
     this->addBullet(alpha, bestVAbs, bullets);
-    this->playSound();
-}
-float Weapon::getPlayerCenterX() const {
-    return this->player->getCenterX();
+    this->playSound(player);
 }
 float Weapon::getPositionX() const {
     return this->position.x;
 }
-bool Weapon::impossibleToShoot() const {
-    return (!this->player->isAlive() or
-        this->player->isObservingSpheres() or
+bool Weapon::impossibleToShoot(const Player *player) const {
+    return (!player->isAlive() or
+        player->isObservingSpheres() or
         (this->shots % this->getShotsInRow() == 0 and this->timer.getElapsedTime().asSeconds() < this->getLongDelay()) or
         (this->shots % this->getShotsInRow() != 0 and this->timer.getElapsedTime().asSeconds() < this->getShortDelay()) or
         std::abs(player->getCenterX() - this->position.x) > this->getMaximalLength() or
@@ -72,7 +67,7 @@ float Weapon::getMaxVAbs(float alpha) const {
     }
     return maxVAbs;
 }
-float Weapon::getBestVAbs(float alpha, float maxVAbs) const {
+float Weapon::getBestVAbs(float alpha, float maxVAbs, const Map *map, const Player *player) const {
     // TODO: Возможно, что следует оптимизировать поиск через формулы балистики.
     int32_t l = 0, r = (int32_t)maxVAbs;
     while (l <= r) {
@@ -83,10 +78,8 @@ float Weapon::getBestVAbs(float alpha, float maxVAbs) const {
                                            this->getBulletSize().y),
                              (float)m,
                              alpha,
-                             this->getBulletG(),
-                             this->player,
-                             this->map);
-        if (bullet.getFinalCenterPosition().x > this->player->getCenterX()) {
+                             this->getBulletG());
+        if (bullet.getFinalCenterPosition(map, player).x > player->getCenterX()) {
             if (alpha > 90) {
                 l = m + 1;
             }
@@ -106,10 +99,16 @@ float Weapon::getBestVAbs(float alpha, float maxVAbs) const {
     return (float)l;
 }
 void Weapon::addBullet(float alpha, float bestVAbs, std::list<Bullet> &bullets) const {
-    bullets.emplace_back(sf::FloatRect(this->position.x, this->position.y, this->getBulletSize().x, this->getBulletSize().y), bestVAbs, alpha, this->getBulletG(), this->player, this->map);
+    bullets.emplace_back(sf::FloatRect(this->position.x,
+                                       this->position.y,
+                                       this->getBulletSize().x,
+                                       this->getBulletSize().y),
+                         bestVAbs,
+                         alpha,
+                         this->getBulletG());
 }
-void Weapon::playSound() const {
+void Weapon::playSound(const Player *player) const {
     SoundQueue::get()->push(Storage::get()->getSoundBuffer("fire"),
-                            std::abs(this->position.x - this->player->getCenterX()),
-                            std::abs(this->position.y - this->player->getCenterY()));
+                            std::abs(this->position.x - player->getCenterX()),
+                            std::abs(this->position.y - player->getCenterY()));
 }

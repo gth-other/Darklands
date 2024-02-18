@@ -21,17 +21,17 @@
 
 
 AsymmetricalWeapon::AsymmetricalWeapon() = default;
-AsymmetricalWeapon::AsymmetricalWeapon(sf::Vector2f position, bool right, Map *map, Player *player) : Weapon(position, map, player) {
+AsymmetricalWeapon::AsymmetricalWeapon(sf::Vector2f position, bool right) : Weapon(position) {
     this->right = right;
 }
-bool AsymmetricalWeapon::impossibleToShoot() const {
-    if ((this->getPlayerCenterX() > this->getPositionX() and !this->right) or
-        (this->getPlayerCenterX() < this->getPositionX() and this->right)) {
+bool AsymmetricalWeapon::impossibleToShoot(const Player *player) const {
+    if ((player->getCenterX() > this->getPositionX() and !this->right) or
+        (player->getCenterX() < this->getPositionX() and this->right)) {
         return true;
     }
-    return Weapon::impossibleToShoot();
+    return Weapon::impossibleToShoot(player);
 }
-float AsymmetricalWeapon::getAlpha() const {
+float AsymmetricalWeapon::getAlpha(const Player *player) const {
     float alpha = this->getNormalAlpha();
     if (!this->right) {
         alpha = 180 - alpha;

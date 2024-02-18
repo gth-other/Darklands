@@ -26,7 +26,7 @@
 class Cannon : public AsymmetricalWeapon {
 public:
     Cannon();
-    Cannon(sf::Vector2f position, bool right, Map *map, Player *player);
+    Cannon(sf::Vector2f position, bool right);
 
     [[nodiscard]] float getMinimalLength() const override;
     [[nodiscard]] float getMaximalLength() const override;

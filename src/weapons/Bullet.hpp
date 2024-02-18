@@ -29,12 +29,13 @@
 class Bullet : public sf::Drawable {
 public:
     Bullet();
-    Bullet(sf::FloatRect rect, float v, float alpha, float g, Player *player, Map *map);
-    void update(float extraTime = 0);
+    Bullet(sf::FloatRect rect, float v, float alpha, float g);
+
+    void update(const Map *map, const Player *player, float extraTime = 0);
     [[nodiscard]] bool isExist() const;
     [[nodiscard]] sf::FloatRect getRect() const;
-    void remove();
-    [[nodiscard]] sf::Vector2f getFinalCenterPosition() const;
+    void remove(const Player *player);
+    [[nodiscard]] sf::Vector2f getFinalCenterPosition(const Map *map, const Player *player) const;
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 private:
     sf::FloatRect rect;
@@ -44,9 +45,7 @@ private:
     bool noSound;
     sf::Clock timer;
     sf::Clock animationClock;
-    Player *player;
-    Map *map;
 
-    void collisionX();
-    void collisionY();
+    void collisionX(const Map *map, const Player *player);
+    void collisionY(const Map *map, const Player *player);
 };

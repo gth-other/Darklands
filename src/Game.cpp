@@ -147,13 +147,13 @@ uint8_t Game::startLevel(const std::string &path, bool lastLevel) {
             int32_t id = this->map.getID(x, y);
             auto position = sf::Vector2f(32 * (float)x, 32 * (float)y);
             if (id == Cannon().getLeftMuzzleID()) {
-                this->weapons.push_back(std::make_unique<Cannon>(position, false, &this->map, &this->player));
+                this->weapons.push_back(std::make_unique<Cannon>(position, false));
             }
             else if (id == Cannon().getRightMuzzleID()) {
-                this->weapons.push_back(std::make_unique<Cannon>(position, true, &this->map, &this->player));
+                this->weapons.push_back(std::make_unique<Cannon>(position, true));
             }
             else if (id == Mortar().getMuzzleID()) {
-                this->weapons.push_back(std::make_unique<Mortar>(position, &this->map, &this->player));
+                this->weapons.push_back(std::make_unique<Mortar>(position));
             }
             else if (id == Player().getID()) {
                 this->player = Player(position);
@@ -217,7 +217,7 @@ uint8_t Game::startLevel(const std::string &path, bool lastLevel) {
                 sf::Keyboard::isKeyPressed(sf::Keyboard::W) * Player::Flags::Jump), &this->map
         );
         for (auto &weapon : this->weapons) {
-            weapon->update(bullets);
+            weapon->update(bullets, &map, &player);
         }
         for (auto &enemy : this->enemies) {
             if (enemy->isAlive()) {
@@ -226,7 +226,7 @@ uint8_t Game::startLevel(const std::string &path, bool lastLevel) {
         }
         for (auto &bullet : this->bullets) {
             if (bullet.isExist()) {
-                bullet.update();
+                bullet.update(&map, &player);
                 if (this->player.isAlive() and bullet.getRect().intersects(this->player.getCompressedRect())) {
                     this->player.kill("cannonBall");
                 }

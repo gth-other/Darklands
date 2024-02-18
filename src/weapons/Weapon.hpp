@@ -30,13 +30,12 @@ class Weapon {
 public:
     Weapon();
     virtual ~Weapon();
-    Weapon(sf::Vector2f position, Map *map, Player *player);
+    Weapon(sf::Vector2f position);
 
-    void update(std::list<Bullet> &bullets);
+    void update(std::list<Bullet> &bullets, const Map *map, const Player *player);
 protected:
-    [[nodiscard]] float getPlayerCenterX() const;
     [[nodiscard]] float getPositionX() const;
-    [[nodiscard]] virtual bool impossibleToShoot() const;
+    [[nodiscard]] virtual bool impossibleToShoot(const Player *player) const;
     [[nodiscard]] virtual float getMinimalLength() const = 0;
     [[nodiscard]] virtual float getMaximalLength() const = 0;
     [[nodiscard]] virtual int32_t getShotsInRow() const = 0;
@@ -44,18 +43,16 @@ protected:
     [[nodiscard]] virtual float getLongDelay() const = 0;
     [[nodiscard]] virtual sf::Vector2f getBulletSize() const = 0;
     [[nodiscard]] virtual float getBulletG() const = 0;
-    [[nodiscard]] virtual float getAlpha() const = 0;
+    [[nodiscard]] virtual float getAlpha(const Player *player) const = 0;
 private:
     sf::Vector2f position;
     int32_t shots;
     sf::Clock timer;
-    Map *map;
-    Player *player;
 
     void restartTimer();
     void updateShotsCtr();
     [[nodiscard]] float getMaxVAbs(float alpha) const;
-    [[nodiscard]] float getBestVAbs(float alpha, float maxVAbs) const;
+    [[nodiscard]] float getBestVAbs(float alpha, float maxVAbs, const Map *map, const Player *player) const;
     void addBullet(float alpha, float bestVAbs, std::list<Bullet> &bullets) const;
-    void playSound() const;
+    void playSound(const Player *player) const;
 };

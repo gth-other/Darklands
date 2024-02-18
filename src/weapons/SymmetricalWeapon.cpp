@@ -21,10 +21,10 @@
 
 
 SymmetricalWeapon::SymmetricalWeapon() = default;
-SymmetricalWeapon::SymmetricalWeapon(sf::Vector2f position, Map *map, Player *player) : Weapon(position, map, player) {}
-float SymmetricalWeapon::getAlpha() const {
+SymmetricalWeapon::SymmetricalWeapon(sf::Vector2f position) : Weapon(position) {}
+float SymmetricalWeapon::getAlpha(const Player *player) const {
     float alpha = 90;
-    if (this->getPlayerCenterX() > this->getPositionX()) {
+    if (player->getCenterX() > this->getPositionX()) {
         alpha = alpha - this->getDeltaAlpha();
     }
     else {

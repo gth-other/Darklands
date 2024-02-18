@@ -21,18 +21,16 @@
 
 
 Bullet::Bullet() = default;
-Bullet::Bullet(sf::FloatRect rect, float v, float alpha, float g, Player *player, Map *map) {
+Bullet::Bullet(sf::FloatRect rect, float v, float alpha, float g) {
     this->rect = rect;
     this->v.x = v * std::cos(alpha * M_PIf / 180);
     this->v.y = -std::abs(v * std::sin(alpha * M_PIf / 180));
     this->g = g;
     this->exist = true;
     this->noSound = false;
-    this->player = player;
-    this->map = map;
 }
-void Bullet::update(float extraTime) {
-    float fullTime = this->timer.getElapsedTime().asSeconds() + extraTime;
+void Bullet::update(const Map *map, const Player *player, float artificialTime) {
+    float fullTime = this->timer.getElapsedTime().asSeconds() + artificialTime;
     this->timer.restart();
 
     for (float i = 0; i < fullTime; i = i + 1.f / 30.f) {
@@ -40,9 +38,9 @@ void Bullet::update(float extraTime) {
 
         this->v.y = this->v.y + dt * this->g;
         this->rect.left = this->rect.left + dt * this->v.x;
-        this->collisionX();
+        this->collisionX(map, player);
         this->rect.top = this->rect.top + dt * this->v.y;
-        this->collisionY();
+        this->collisionY(map, player);
     }
 }
 bool Bullet::isExist() const {
@@ -51,20 +49,22 @@ bool Bullet::isExist() const {
 sf::FloatRect Bullet::getRect() const {
     return {this->rect.left, this->rect.top, this->rect.width, this->rect.height};
 }
-void Bullet::remove() {
+void Bullet::remove(const Player *player) {
     this->exist = false;
     if (this->noSound) {
         return;
     }
-    SoundQueue::get()->push(Storage::get()->getSoundBuffer("ground"), std::abs(this->player->getCenterX() - this->rect.left), std::abs(this->player->getCenterY() - this->rect.top));
+    SoundQueue::get()->push(Storage::get()->getSoundBuffer("ground"),
+                            std::abs(player->getCenterX() - this->rect.left),
+                            std::abs(player->getCenterY() - this->rect.top));
 }
-sf::Vector2f Bullet::getFinalCenterPosition() const {
+sf::Vector2f Bullet::getFinalCenterPosition(const Map *map, const Player *player) const {
     sf::Vector2f result;
     Bullet copy = (*this);
     copy.noSound = true;
     for (; ;) {
         result = {copy.rect.left + copy.rect.width / 2, copy.rect.top + copy.rect.height / 2};
-        copy.update(1.f / 60);
+        copy.update(map, player, 1.f / 60);
         if (!copy.exist) {
             return result;
         }
@@ -90,32 +90,32 @@ void Bullet::draw(sf::RenderTarget &target, sf::RenderStates states) const {
     sprite.setRotation(alpha);
     target.draw(sprite, states);
 }
-void Bullet::collisionX() {
+void Bullet::collisionX(const Map *map, const Player *player) {
     for (int32_t y = (int32_t)rect.top / 32; y <= (int32_t)(rect.top + rect.height) / 32; y = y + 1) {
         for (int32_t x = (int32_t)rect.left / 32; x <= (int32_t)(rect.left + rect.width) / 32; x = x + 1) {
             if (this->getRect().intersects(sf::FloatRect(32 * (float)x, 32 * (float)y, 32, 32))) {
-                if (x < 0 or y < 0 or x >= this->map->getWidth() or y >= this->map->getHeight()) {
+                if (x < 0 or y < 0 or x >= map->getWidth() or y >= map->getHeight()) {
                     this->exist = false;
                     return;
                 }
-                if (this->map->isSolid(x, y, false)) {
-                    this->remove();
+                if (map->isSolid(x, y, false)) {
+                    this->remove(player);
                     return;
                 }
             }
         }
     }
 }
-void Bullet::collisionY() {
+void Bullet::collisionY(const Map *map, const Player *player) {
     for (int32_t y = (int32_t)rect.top / 32; y <= (int32_t)(rect.top + rect.height) / 32; y = y + 1) {
         for (int32_t x = (int32_t)rect.left / 32; x <= (int32_t)(rect.left + rect.width) / 32; x = x + 1) {
             if (this->getRect().intersects(sf::FloatRect(32 * (float)x, 32 * (float)y, 32, 32))) {
-                if (x < 0 or y < 0 or x >= this->map->getWidth() or y >= this->map->getHeight()) {
+                if (x < 0 or y < 0 or x >= map->getWidth() or y >= map->getHeight()) {
                     this->exist = false;
                     return;
                 }
-                if (this->map->isSolid(x, y, false)) {
-                    this->remove();
+                if (map->isSolid(x, y, false)) {
+                    this->remove(player);
                     return;
                 }
             }

@@ -26,10 +26,10 @@
 class SymmetricalWeapon : public Weapon {
 public:
     SymmetricalWeapon();
-    SymmetricalWeapon(sf::Vector2f position, Map *map, Player *player);
+    SymmetricalWeapon(sf::Vector2f position);
 protected:
    [[nodiscard]] virtual float getDeltaAlpha() const = 0;
    [[nodiscard]] virtual int32_t getMuzzleID() const = 0;
 private:
-    [[nodiscard]] float getAlpha() const override;
+    [[nodiscard]] float getAlpha(const Player *player) const override;
 };
