@@ -21,7 +21,7 @@
 
 
 Lord::Lord() = default;
-Lord::Lord(sf::Vector2f position, Player *player, std::vector<sf::Vector2f> *resPositions, std::list<std::unique_ptr<Enemy>> *enemies) : Patroller(position, player) {
+Lord::Lord(sf::Vector2f position, Player *player, const std::vector<sf::Vector2f> *resPositions, std::list<std::unique_ptr<Enemy>> *enemies) : Patroller(position, player) {
     this->deathCtr = 0;
     this->resPositions = resPositions;
     this->enemies = enemies;

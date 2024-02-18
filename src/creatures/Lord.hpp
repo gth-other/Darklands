@@ -28,7 +28,7 @@
 class Lord : public Patroller {
 public:
     Lord();
-    Lord(sf::Vector2f position, Player *player, std::vector<sf::Vector2f> *resPositions, std::list<std::unique_ptr<Enemy>> *enemies);
+    Lord(sf::Vector2f position, Player *player, const std::vector<sf::Vector2f> *resPositions, std::list<std::unique_ptr<Enemy>> *enemies);
 
     void kill(const std::string &reason) override;
     [[nodiscard]] std::string getMurderSoundName() const override;
@@ -36,7 +36,7 @@ public:
     [[nodiscard]] bool isBoss() const override;
 private:
     int32_t deathCtr;
-    std::vector<sf::Vector2f> *resPositions;
+    const std::vector<sf::Vector2f> *resPositions;
     std::list<std::unique_ptr<Enemy>> *enemies;
 
     static constexpr int32_t MAXIMAL_DEATHS = 10;
