@@ -17,7 +17,7 @@
  */
 
 
-#include <map>
+#include <unordered_map>
 #include <cstdint>
 #include <string>
 #include <SFML/Graphics.hpp>
@@ -41,8 +41,8 @@ public:
     [[nodiscard]] sf::Music *getMusic(const std::string& name);
 private:
     std::string root;
-    std::map<std::string, sf::Texture> textures;
-    std::map<std::string, sf::Font> fonts;
-    std::map<std::string, sf::SoundBuffer> soundbuffers;
-    std::map<std::string, sf::Music> music;
+    std::unordered_map<std::string, sf::Texture> textures;
+    std::unordered_map<std::string, sf::Font> fonts;
+    std::unordered_map<std::string, sf::SoundBuffer> soundbuffers;
+    std::unordered_map<std::string, sf::Music> music;
 };
