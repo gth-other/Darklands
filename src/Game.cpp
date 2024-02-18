@@ -115,7 +115,7 @@ void Game::start() {
 }
 int32_t Game::getCurrentLevel() {
     std::ifstream file;
-    file.open(std::string(ROOT) + "/appdata/conf.dl");
+    file.open(std::string(Storage::ROOT) + "/appdata/conf.dl");
     if (file.is_open()) {
         std::string buff;
         std::getline(file, buff);
@@ -124,11 +124,11 @@ int32_t Game::getCurrentLevel() {
     return 1;
 }
 void Game::setCurrentLevel(int32_t level) {
-    if (!std::filesystem::exists(std::string(ROOT) + "/appdata")) {
-        std::filesystem::create_directory(std::string(ROOT) + "/appdata");
+    if (!std::filesystem::exists(std::string(Storage::ROOT) + "/appdata")) {
+        std::filesystem::create_directory(std::string(Storage::ROOT) + "/appdata");
     }
     std::ofstream file;
-    file.open(std::string(ROOT) + "/appdata/conf.dl");
+    file.open(std::string(Storage::ROOT) + "/appdata/conf.dl");
     file << std::to_string(level);
     file.close();
 }
@@ -136,7 +136,7 @@ uint8_t Game::startLevel(const std::string &path, bool lastLevel) {
     SoundQueue::get()->clear();
     Playlist::get()->restartMusic();
 
-    this->map = Map(std::string(ROOT) + "/" + path, &this->playerView);
+    this->map = Map(std::string(Storage::ROOT) + "/" + path, &this->playerView);
 
     this->weapons.clear();
     this->bullets.clear();

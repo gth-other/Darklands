@@ -57,7 +57,6 @@ private:
     float finishX;
 
     enum Flag {NEXT, EXIT};
-    static constexpr std::string_view ROOT = "../data";
     static constexpr int32_t LEVELS_NUMBER = 4;
 
     static int32_t getCurrentLevel();
